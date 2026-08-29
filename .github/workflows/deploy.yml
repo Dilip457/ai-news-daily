@@ -18,6 +18,6 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
           git add index.html
-          git rm -f .github/workflows/deploy.yml 2>/dev/null || true
+          git rm -f data.gz.b64 2>/dev/null || true
           git commit -m "Deploy: full briefing HTML" || echo "No changes"
           git push
