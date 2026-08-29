@@ -18,9 +18,9 @@ jobs:
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Decode and decompress
+      - name: Decompress briefing
         run: |
-          base64 -d data.gz.b64 | gunzip > index_full.html
+          gunzip -c data.gz.b64 > index_full.html
           echo "Decompressed file size: $(wc -c < index_full.html) bytes"
 
       - name: Replace index.html
