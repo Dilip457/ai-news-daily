@@ -401,7 +401,7 @@ Delivery:      GET request via web_get_contents (no multipart POST)
 Repo:     Dilip457/ai-news-daily (public)
 URL:      https://github.com/Dilip457/ai-news-daily
 Pages:    https://dilip457.github.io/ai-news-daily/
-Owner:    Dilip457 (Dilip Sanjay J, ID: 73051507)
+Owner:    Dilip457 (Dilip Sanjay J), Srikar459 (Srikar J) 
 Branch:   main
 ```
 
