@@ -34,9 +34,11 @@ jobs:
           wc -c index.html
           grep -c "toggleTheme" index.html || true
           grep -c "modal-overlay" index.html || true
+          mkdir -p updates
+          cp index.html updates/2026-08-31.html
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add index.html
+          git add index.html updates/2026-08-31.html
           git rm -f data.gz.b64 2>/dev/null || true
           git commit -m "Deploy: full briefing HTML" || echo "No changes"
           git push
