@@ -13,27 +13,8 @@ jobs:
       - uses: actions/checkout@v4
       - name: Decompress and deploy
         run: |
-          set +e
-          echo "=== file info ==="
-          ls -la data.gz.b64
-          file data.gz.b64
-          echo "=== first bytes ==="
-          od -A x -t x1z data.gz.b64 | head -3
-          echo "=== base64 decode ==="
           base64 -d data.gz.b64 > index.html.gz
-          DECODE_RC=$?
-          echo "base64 decode exit: $DECODE_RC"
-          if [ $DECODE_RC -ne 0 ]; then echo "base64 decode failed"; exit 1; fi
-          echo "=== gunzip ==="
           gunzip -f index.html.gz
-          GUNZIP_RC=$?
-          echo "gunzip exit: $GUNZIP_RC"
-          if [ $GUNZIP_RC -ne 0 ]; then echo "gunzip failed"; exit 1; fi
-          echo "=== result ==="
-          ls -la index.html
-          wc -c index.html
-          grep -c "toggleTheme" index.html || true
-          grep -c "modal-overlay" index.html || true
           mkdir -p updates
           cp index.html updates/2026-08-31.html
           git config user.name "github-actions[bot]"
