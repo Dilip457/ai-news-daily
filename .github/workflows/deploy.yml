@@ -11,36 +11,31 @@ jobs:
       contents: write
     steps:
       - uses: actions/checkout@v4
-      - name: Install jq
-        run: sudo apt-get update && sudo apt-get install -y jq
-      - name: Decode
+        with:
+          persist-credentials: true
+      - name: Decode and deploy
         run: |
-          python3 -c "
-          import base64
-          with open('data.gz.b64','rb') as f: raw=f.read()
-          raw=raw.strip()
-          pad=4-(len(raw)%4)
-          if pad!=4: raw+=b'='*pad
-          dec=base64.b64decode(raw)
-          with open('index.html.gz','wb') as f: f.write(dec)
-          "
-          gunzip -f index.html.gz
-          wc -c index.html
-      - name: Push via API
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          python3 << 'EOF'
+          import base64, gzip, os
+          with open('data.gz.b64', 'rb') as f:
+              raw = f.read().strip()
+          padding = 4 - (len(raw) % 4)
+          if padding != 4:
+              raw += b'=' * padding
+          decoded = base64.b64decode(raw)
+          html = gzip.decompress(decoded).decode('utf-8')
+          with open('index.html', 'w') as f:
+              f.write(html)
+          os.makedirs('updates', exist_ok=True)
+          with open('updates/2026-09-05.html', 'w') as f:
+              f.write(html)
+          print(f'HTML size: {len(html)}')
+          EOF
+      - name: Commit and push
         run: |
-          B64=$(base64 -w 0 index.html)
-          REPO="${{ github.repository }}"
-          # Update index.html
-          SHA=$(curl -sf -H "Authorization: token $GH_TOKEN" "https://api.github.com/repos/$REPO/contents/index.html" | jq -r '.sha')
-          echo "SHA=$SHA"
-          jq -n --arg c "$B64" --arg s "$SHA" '{message:"Deploy HTML",content:$c,sha:$s,branch:"main"}' > /tmp/payload.json
-          curl -sf -X PUT -H "Authorization: token $GH_TOKEN" -H "Accept: application/vnd.github+json" "https://api.github.com/repos/$REPO/contents/index.html" -d @/tmp/payload.json
-          # Create updates/2026-09-05.html
-          jq -n --arg c "$B64" '{message:"Archive",content:$c,branch:"main"}' > /tmp/payload2.json
-          curl -sf -X PUT -H "Authorization: token $GH_TOKEN" -H "Accept: application/vnd.github+json" "https://api.github.com/repos/$REPO/contents/updates/2026-09-05.html" -d @/tmp/payload2.json || true
-          # Delete data.gz.b64
-          DSHA=$(curl -sf -H "Authorization: token $GH_TOKEN" "https://api.github.com/repos/$REPO/contents/data.gz.b64" | jq -r '.sha')
-          jq -n --arg s "$DSHA" '{message:"Cleanup",sha:$s,branch:"main"}' > /tmp/payload3.json
-          curl -sf -X DELETE -H "Authorization: token $GH_TOKEN" -H "Accept: application/vnd.github+json" "https://api.github.com/repos/$REPO/contents/data.gz.b64" -d @/tmp/payload3.json || true
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add index.html updates/2026-09-05.html
+          git rm -f data.gz.b64 || true
+          git commit -m "Deploy: full briefing HTML" || echo "No changes"
+          git push
