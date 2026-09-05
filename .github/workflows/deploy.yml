@@ -11,81 +11,36 @@ jobs:
       contents: write
     steps:
       - uses: actions/checkout@v4
-      - name: Debug
-        run: |
-          echo "File size: $(wc -c < data.gz.b64)"
-          echo "First 100 chars:"
-          head -c 100 data.gz.b64
-          echo ""
-          echo "Last 100 chars:"
-          tail -c 100 data.gz.b64
-          echo ""
-      - name: Decode and deploy
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          REPO: ${{ github.repository }}
+      - name: Install jq
+        run: sudo apt-get update && sudo apt-get install -y jq
+      - name: Decode
         run: |
           python3 -c "
-          import base64, gzip, json, os, urllib.request
-
-          with open('data.gz.b64', 'rb') as f:
-              raw = f.read()
-
-          print(f'Raw file size: {len(raw)}')
-          print(f'First 20 bytes: {raw[:20]}')
-
-          # Remove any whitespace/newlines
-          raw_clean = raw.strip()
-          # Add padding if needed
-          padding = 4 - (len(raw_clean) % 4)
-          if padding != 4:
-              raw_clean += b'=' * padding
-
-          try:
-              decoded = base64.b64decode(raw_clean)
-              print(f'After decode: {len(decoded)} bytes')
-              print(f'First 4 bytes (hex): {decoded[:4].hex()}')
-              html = gzip.decompress(decoded).decode('utf-8')
-              print(f'HTML size: {len(html)}')
-          except Exception as e:
-              print(f'Decode error: {e}')
-              raise
-
-          # Push via API
-          b64 = base64.b64encode(html.encode('utf-8')).decode('ascii')
-          token = os.environ['GH_TOKEN']
-          repo = os.environ['REPO']
-          headers = {'Authorization': f'token {token}', 'Accept': 'application/vnd.github+json'}
-
-          # Update index.html
-          req = urllib.request.Request(f'https://api.github.com/repos/{repo}/contents/index.html', headers=headers)
-          resp = urllib.request.urlopen(req)
-          sha = json.loads(resp.read())['sha']
-          print(f'index.html SHA: {sha}')
-
-          data = json.dumps({'message': 'Deploy: briefing HTML', 'content': b64, 'sha': sha, 'branch': 'main'}).encode()
-          req = urllib.request.Request(f'https://api.github.com/repos/{repo}/contents/index.html', data=data, method='PUT', headers=headers)
-          resp = urllib.request.urlopen(req)
-          print(f'index.html updated!')
-
-          # Create updates/2026-09-05.html
-          data = json.dumps({'message': 'Deploy: archive', 'content': b64, 'branch': 'main'}).encode()
-          req = urllib.request.Request(f'https://api.github.com/repos/{repo}/contents/updates/2026-09-05.html', data=data, method='PUT', headers=headers)
-          try:
-              resp = urllib.request.urlopen(req)
-              print(f'archive created!')
-          except Exception as e:
-              print(f'archive error: {e}')
-
-          # Delete data.gz.b64
-          req = urllib.request.Request(f'https://api.github.com/repos/{repo}/contents/data.gz.b64', headers=headers)
-          resp = urllib.request.urlopen(req)
-          data_sha = json.loads(resp.read())['sha']
-          data = json.dumps({'message': 'Cleanup', 'sha': data_sha, 'branch': 'main'}).encode()
-          req = urllib.request.Request(f'https://api.github.com/repos/{repo}/contents/data.gz.b64', data=data, method='DELETE', headers=headers)
-          try:
-              resp = urllib.request.urlopen(req)
-              print(f'data.gz.b64 deleted!')
-          except Exception as e:
-              print(f'cleanup error: {e}')
+          import base64
+          with open('data.gz.b64','rb') as f: raw=f.read()
+          raw=raw.strip()
+          pad=4-(len(raw)%4)
+          if pad!=4: raw+=b'='*pad
+          dec=base64.b64decode(raw)
+          with open('index.html.gz','wb') as f: f.write(dec)
           "
+          gunzip -f index.html.gz
+          wc -c index.html
+      - name: Push via API
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          B64=$(base64 -w 0 index.html)
+          REPO="${{ github.repository }}"
+          # Update index.html
+          SHA=$(curl -sf -H "Authorization: token $GH_TOKEN" "https://api.github.com/repos/$REPO/contents/index.html" | jq -r '.sha')
+          echo "SHA=$SHA"
+          jq -n --arg c "$B64" --arg s "$SHA" '{message:"Deploy HTML",content:$c,sha:$s,branch:"main"}' > /tmp/payload.json
+          curl -sf -X PUT -H "Authorization: token $GH_TOKEN" -H "Accept: application/vnd.github+json" "https://api.github.com/repos/$REPO/contents/index.html" -d @/tmp/payload.json
+          # Create updates/2026-09-05.html
+          jq -n --arg c "$B64" '{message:"Archive",content:$c,branch:"main"}' > /tmp/payload2.json
+          curl -sf -X PUT -H "Authorization: token $GH_TOKEN" -H "Accept: application/vnd.github+json" "https://api.github.com/repos/$REPO/contents/updates/2026-09-05.html" -d @/tmp/payload2.json || true
+          # Delete data.gz.b64
+          DSHA=$(curl -sf -H "Authorization: token $GH_TOKEN" "https://api.github.com/repos/$REPO/contents/data.gz.b64" | jq -r '.sha')
+          jq -n --arg s "$DSHA" '{message:"Cleanup",sha:$s,branch:"main"}' > /tmp/payload3.json
+          curl -sf -X DELETE -H "Authorization: token $GH_TOKEN" -H "Accept: application/vnd.github+json" "https://api.github.com/repos/$REPO/contents/data.gz.b64" -d @/tmp/payload3.json || true
