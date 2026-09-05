@@ -3,7 +3,7 @@ on:
   workflow_dispatch:
   push:
     paths:
-      - 'data.gz.b64'
+      - 'data.gz'
 jobs:
   deploy:
     runs-on: ubuntu-latest
@@ -13,14 +13,17 @@ jobs:
       - uses: actions/checkout@v4
         with:
           persist-credentials: true
-      - name: Decode and deploy
+      - name: Decompress and deploy
         run: |
-          python3 -c "import base64,gzip,os; raw=open('data.gz.b64','rb').read().strip(); pad=4-(len(raw)%4); raw+=b'='*pad if pad!=4 else b''; dec=base64.b64decode(raw); html=gzip.decompress(dec).decode('utf-8'); open('index.html','w').write(html); os.makedirs('updates',exist_ok=True); open('updates/2026-09-05.html','w').write(html); print(f'HTML size: {len(html)}')"
+          gunzip -c data.gz > index.html
+          wc -c index.html
+          mkdir -p updates
+          cp index.html updates/2026-09-05.html
       - name: Commit and push
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
           git add index.html updates/2026-09-05.html
-          git rm -f data.gz.b64 || true
+          git rm -f data.gz || true
           git commit -m "Deploy: full briefing HTML" || echo "No changes"
           git push
