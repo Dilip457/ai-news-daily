@@ -15,22 +15,7 @@ jobs:
           persist-credentials: true
       - name: Decode and deploy
         run: |
-          python3 << 'EOF'
-          import base64, gzip, os
-          with open('data.gz.b64', 'rb') as f:
-              raw = f.read().strip()
-          padding = 4 - (len(raw) % 4)
-          if padding != 4:
-              raw += b'=' * padding
-          decoded = base64.b64decode(raw)
-          html = gzip.decompress(decoded).decode('utf-8')
-          with open('index.html', 'w') as f:
-              f.write(html)
-          os.makedirs('updates', exist_ok=True)
-          with open('updates/2026-09-05.html', 'w') as f:
-              f.write(html)
-          print(f'HTML size: {len(html)}')
-          EOF
+          python3 -c "import base64,gzip,os; raw=open('data.gz.b64','rb').read().strip(); pad=4-(len(raw)%4); raw+=b'='*pad if pad!=4 else b''; dec=base64.b64decode(raw); html=gzip.decompress(dec).decode('utf-8'); open('index.html','w').write(html); os.makedirs('updates',exist_ok=True); open('updates/2026-09-05.html','w').write(html); print(f'HTML size: {len(html)}')"
       - name: Commit and push
         run: |
           git config user.name "github-actions[bot]"
