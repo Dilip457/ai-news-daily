@@ -11,6 +11,15 @@ jobs:
       contents: write
     steps:
       - uses: actions/checkout@v4
+      - name: Debug
+        run: |
+          echo "File size: $(wc -c < data.gz.b64)"
+          echo "First 100 chars:"
+          head -c 100 data.gz.b64
+          echo ""
+          echo "Last 100 chars:"
+          tail -c 100 data.gz.b64
+          echo ""
       - name: Decode and deploy
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -19,39 +28,28 @@ jobs:
           python3 -c "
           import base64, gzip, json, os, urllib.request
 
-          # Read data.gz.b64
-          with open('data.gz.b64', 'r') as f:
-              raw = f.read().strip()
+          with open('data.gz.b64', 'rb') as f:
+              raw = f.read()
 
-          # The file content on GitHub is base64-encoded by the API
-          # When we checkout, we get the raw content
-          # The raw content IS the base64(gzip(html)) string
-          # So we just need to decode it once and gunzip
+          print(f'Raw file size: {len(raw)}')
+          print(f'First 20 bytes: {raw[:20]}')
+
+          # Remove any whitespace/newlines
+          raw_clean = raw.strip()
+          # Add padding if needed
+          padding = 4 - (len(raw_clean) % 4)
+          if padding != 4:
+              raw_clean += b'=' * padding
 
           try:
-              # Try single decode
-              decoded = base64.b64decode(raw)
+              decoded = base64.b64decode(raw_clean)
+              print(f'After decode: {len(decoded)} bytes')
+              print(f'First 4 bytes (hex): {decoded[:4].hex()}')
               html = gzip.decompress(decoded).decode('utf-8')
-          except Exception as e1:
-              print(f'Single decode failed: {e1}')
-              try:
-                  # Try double decode (in case of auto-encoding)
-                  decoded = base64.b64decode(raw)
-                  decoded2 = base64.b64decode(decoded)
-                  html = gzip.decompress(decoded2).decode('utf-8')
-              except Exception as e2:
-                  print(f'Double decode failed: {e2}')
-                  # Last resort: try treating raw as gzip directly
-                  html = gzip.decompress(raw.encode()).decode('utf-8')
-
-          print(f'HTML size: {len(html)}')
-
-          # Save locally
-          with open('index.html', 'w') as f:
-              f.write(html)
-          os.makedirs('updates', exist_ok=True)
-          with open('updates/2026-09-05.html', 'w') as f:
-              f.write(html)
+              print(f'HTML size: {len(html)}')
+          except Exception as e:
+              print(f'Decode error: {e}')
+              raise
 
           # Push via API
           b64 = base64.b64encode(html.encode('utf-8')).decode('ascii')
@@ -68,14 +66,14 @@ jobs:
           data = json.dumps({'message': 'Deploy: briefing HTML', 'content': b64, 'sha': sha, 'branch': 'main'}).encode()
           req = urllib.request.Request(f'https://api.github.com/repos/{repo}/contents/index.html', data=data, method='PUT', headers=headers)
           resp = urllib.request.urlopen(req)
-          print(f'index.html updated: {resp.status}')
+          print(f'index.html updated!')
 
           # Create updates/2026-09-05.html
           data = json.dumps({'message': 'Deploy: archive', 'content': b64, 'branch': 'main'}).encode()
           req = urllib.request.Request(f'https://api.github.com/repos/{repo}/contents/updates/2026-09-05.html', data=data, method='PUT', headers=headers)
           try:
               resp = urllib.request.urlopen(req)
-              print(f'archive created: {resp.status}')
+              print(f'archive created!')
           except Exception as e:
               print(f'archive error: {e}')
 
@@ -87,7 +85,7 @@ jobs:
           req = urllib.request.Request(f'https://api.github.com/repos/{repo}/contents/data.gz.b64', data=data, method='DELETE', headers=headers)
           try:
               resp = urllib.request.urlopen(req)
-              print(f'data.gz.b64 deleted: {resp.status}')
+              print(f'data.gz.b64 deleted!')
           except Exception as e:
               print(f'cleanup error: {e}')
           "
