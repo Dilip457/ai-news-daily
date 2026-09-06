@@ -3,6 +3,7 @@ on:
   workflow_dispatch:
   push:
     paths:
+      - 'data.gz.b64'
       - 'data.gz'
 jobs:
   deploy:
@@ -15,15 +16,22 @@ jobs:
           persist-credentials: true
       - name: Decompress and deploy
         run: |
+          if [ -f data.gz.b64 ]; then
+            base64 -d data.gz.b64 > data.gz
+          fi
           gunzip -c data.gz > index.html
           wc -c index.html
           mkdir -p updates
-          cp index.html updates/2026-09-05.html
+          DATE=$(date -u +%Y-%m-%d)
+          cp index.html updates/${DATE}.html
       - name: Commit and push
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add index.html updates/2026-09-05.html
+          git add index.html
+          DATE=$(date -u +%Y-%m-%d)
+          git add updates/${DATE}.html
+          git rm -f data.gz.b64 || true
           git rm -f data.gz || true
-          git commit -m "Deploy: full briefing HTML" || echo "No changes"
+          git commit -m "Deploy: briefing ${DATE}" || echo "No changes"
           git push
