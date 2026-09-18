@@ -1,37 +1,44 @@
 name: Deploy Briefing
+
 on:
   workflow_dispatch:
   push:
     paths:
       - 'data.gz.b64'
-      - 'data.gz'
+      - 'data.gz.b64.part*'
+      - '.github/workflows/deploy.yml'
+
+permissions:
+  contents: write
+
 jobs:
   deploy:
     runs-on: ubuntu-latest
-    permissions:
-      contents: write
     steps:
       - uses: actions/checkout@v4
-        with:
-          persist-credentials: true
-      - name: Decompress and deploy
+
+      - name: Assemble briefing
         run: |
           if [ -f data.gz.b64 ]; then
-            base64 -d data.gz.b64 > data.gz
+            cat data.gz.b64 > assembled.b64
+          elif ls data.gz.b64.part* >/dev/null 2>&1; then
+            cat $(ls data.gz.b64.part* | sort -V) > assembled.b64
+          else
+            echo "No briefing data found - nothing to deploy"
+            exit 0
           fi
-          gunzip -c data.gz > index.html
-          wc -c index.html
-          mkdir -p updates
-          DATE=$(date -u +%Y-%m-%d)
-          cp index.html updates/${DATE}.html
-      - name: Commit and push
+          base64 -d assembled.b64 > index.html.gz
+          gunzip -f index.html.gz
+
+      - name: Commit and clean up
         run: |
+          DATE=$(grep -oE '20[0-9]{2}-[0-9]{2}-[0-9]{2}' index.html | head -1)
+          [ -z "$DATE" ] && DATE=$(date +%F)
+          mkdir -p updates
+          cp index.html "updates/${DATE}.html"
           git config user.name "github-actions[bot]"
-          git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add index.html
-          DATE=$(date -u +%Y-%m-%d)
-          git add updates/${DATE}.html
-          git rm -f data.gz.b64 || true
-          git rm -f data.gz || true
-          git commit -m "Deploy: briefing ${DATE}" || echo "No changes"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add index.html "updates/${DATE}.html"
+          git rm -f --ignore-unmatch data.gz.b64 data.gz.b64.part1 data.gz.b64.part2 data.gz.b64.part3 data.gz.b64.part4 assembled.b64 index.html.gz
+          git commit -m "Deploy: briefing ${DATE}" || echo "No changes to commit"
           git push
