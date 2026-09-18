@@ -30,12 +30,17 @@ SCRIPTS = [
 
 TEMPLATE_MARKERS = [
     "--bg:#070710",
+    "--bg2:#0c0c18",
     "--accent:#7c3aed",
+    "--accent2:#0891b2",
+    "--accent3:#db2777",
+    "--text:#edecf5",
     "bg-canvas",
     'class="kicker"',
+    'class="brief-list"',
+    'class="bento"',
     "three.min.js",
     "Inter",
-    "Instrument Serif",
 ]
 
 
