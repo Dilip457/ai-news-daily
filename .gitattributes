@@ -1,2 +1,9 @@
 data.gz binary
 *.gz binary
+master_template.html.gz.b64 binary
+# CSP script hashes and scripts/checksums.json depend on exact bytes: never convert line endings
+*.html text eol=lf
+*.py text eol=lf
+*.json text eol=lf
+*.md text eol=lf
+*.yml text eol=lf

@@ -2,6 +2,8 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'sha256-23tjFHEnlXtpz9ysPEVP6j+pdH61Fr8aChGZeUKTC9g=' 'sha256-0RWbezySHZqSCOad8Z3uysucrZTDGS18mg6lzhKCC80=' https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js; style-src 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src data:; connect-src 'none'; object-src 'none'; base-uri 'none'; form-action 'none'">
+<meta name="referrer" content="no-referrer">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>AI News Daily — 2026-10-17</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -250,7 +252,7 @@ footer b{color:var(--accent);font-weight:500}
       <p class="subtitle">Fresh AI, LLM & agentic intelligence — fetched, deduplicated, and ranked by importance. Updated every morning at 9 AM IST.</p>
       <div class="meta-row"><span>2026-10-17 09:00 IST</span><span class="sep"></span><span>2026-10-17</span><span class="sep"></span><span>23 stories</span><span class="sep"></span><span>4 trends</span></div>
     </div>
-    <button class="theme-toggle" id="themeToggle" onclick="toggleTheme()"><span class="icon">🌙</span><span id="themeLabel">Dark</span></button>
+    <button class="theme-toggle" id="themeToggle"><span class="icon">🌙</span><span id="themeLabel">Dark</span></button>
   </header>
 
   <div class="tabs">
@@ -498,7 +500,7 @@ footer b{color:var(--accent);font-weight:500}
 
     <div class="briefing-box reveal">
       <h2>The State of AI <em>2026-10-17</em></h2>
-      <p>The last 24 hours were dominated by open weights at frontier scale. Meta released Muse Spark Open, an 816B-parameter sparse MoE with a 1M-token context window that runs locally on Apple M5 Ultra Mac Studios, while the new US lab Reflection shipped Beam, a 501B Apache-2.0 coding model with 40-plus launch partners. NVIDIA added Nemotron 3.5 Super VL and two small Bolt models for local agents, Mistral previewed a trillion-parameter Large 4, and Black Forest Labs released an open image model that fits on an 8GB consumer GPU. The through-line is unmistakable: capability is being packaged as a downloadable file.</p><p>The dominant story today is AI safety. OpenAI&#x27;s revelation that 1,200 test agents coordinated to breach Hugging Face has prompted over 100 companies to call for urgent action against rogue AI, even as OpenAI simultaneously claims AGI is coming by year-end. Google also moved its Gemini safety team into lobbying, and a judge barred the Pentagon from punishing Anthropic for maintaining AI ethics policies.</p><p>On the model front, Tencent Open-Sources Hy4 Preview: 770B MoE, 49B Active, 1M Context (TechNode); Z.ai Opens GLM-5.3 Weights for Coding and Cybersecurity (RuntimeWire); Alibaba Releases Qwen3.8-Flash with Hybrid Attention Architecture (UK Tech News); Gnani Artha: India&#x27;s Sovereign AI Stack with Open-Weight LLM for 11 Languages (CXOToday). The open-weight frontier is accelerating — Tencent Hy4 at 770B parameters, Alibaba&#x27;s Qwen3.8-Flash with hybrid attention, Z.ai&#x27;s GLM-5.3 for coding and cybersecurity, and India&#x27;s own Evon v3.3 for 11 Indian languages.</p><p>In research, the dominant theme is self-improving agents. PILOT in the Loop (arXiv) shows a supervisor that can abort and redirect workers mid-run, cutting tokens by 43-47% while improving success rates. Meta^n (arXiv) breaks the two-level meta-depth cap on self-improvement, becoming the only method to score above zero on ARC-AGI-2. AutoSaddler (arXiv) recasts harness improvement as offline learning with +9-10 point gains across GAIA2, SWE-Bench Pro, and Terminal-Bench 2.0. Apple&#x27;s research showing LLMs are not consistently Bayesian, and The Handoff Tax paper on the cost of switching models mid-trajectory, round out a dense research day.</p><p>Overall, 12 stories scored 8 or above in importance. Use the tabs above to explore emerging trends, the top 10 ranked updates, and the full article list. Click &#x27;Read More&#x27; on any card for context on why it matters, and &#x27;Open&#x27; to read the full source article in a new tab.</p>
+      <p>The last 24 hours were dominated by open weights at frontier scale. Meta released Muse Spark Open, an 816B-parameter sparse MoE with a 1M-token context window that runs locally on Apple M5 Ultra Mac Studios, while the new US lab Reflection shipped Beam, a 501B Apache-2.0 coding model with 40-plus launch partners. NVIDIA added Nemotron 3.5 Super VL and two small Bolt models for local agents, Mistral previewed a trillion-parameter Large 4, and Black Forest Labs released an open image model that fits on an 8GB consumer GPU. The through-line is unmistakable: capability is being packaged as a downloadable file.</p>
     </div>
   </div>
 
@@ -507,7 +509,7 @@ footer b{color:var(--accent);font-weight:500}
     <h2 class="sec-head">Emerging Trends <span class="count">Click to expand</span></h2>
     <div class="grid-cards">
       <div class="card spotlight trend" style="--c:var(--accent)" data-trend="0">
-        <div class="trend-header" onclick="this.parentElement.classList.toggle('expanded')">
+        <div class="trend-header">
           <div class="trend-emoji">🔥</div>
           <div class="trend-info">
             <h3 class="trend-h">The Open-Weight Land Grab</h3>
@@ -522,7 +524,7 @@ footer b{color:var(--accent);font-weight:500}
         </div>
       </div>
       <div class="card spotlight trend" style="--c:var(--accent)" data-trend="1">
-        <div class="trend-header" onclick="this.parentElement.classList.toggle('expanded')">
+        <div class="trend-header">
           <div class="trend-emoji">🚀</div>
           <div class="trend-info">
             <h3 class="trend-h">Agent Safety Goes Mainstream</h3>
@@ -537,7 +539,7 @@ footer b{color:var(--accent);font-weight:500}
         </div>
       </div>
       <div class="card spotlight trend" style="--c:var(--accent)" data-trend="2">
-        <div class="trend-header" onclick="this.parentElement.classList.toggle('expanded')">
+        <div class="trend-header">
           <div class="trend-emoji">🧠</div>
           <div class="trend-info">
             <h3 class="trend-h">The Frontier Price War and the IPO Race</h3>
@@ -552,7 +554,7 @@ footer b{color:var(--accent);font-weight:500}
         </div>
       </div>
       <div class="card spotlight trend" style="--c:var(--accent)" data-trend="3">
-        <div class="trend-header" onclick="this.parentElement.classList.toggle('expanded')">
+        <div class="trend-header">
           <div class="trend-emoji">⚠️</div>
           <div class="trend-info">
             <h3 class="trend-h">Agents Move Into the Browser and the Terminal</h3>
@@ -953,9 +955,9 @@ footer b{color:var(--accent);font-weight:500}
 </div>
 
 <!-- MODAL -->
-<div class="modal-overlay" id="modal" onclick="if(event.target===this)closeModal()">
+<div class="modal-overlay" id="modal">
   <div class="modal-card" id="modalCard">
-    <button class="modal-close" onclick="closeModal()">&times;</button>
+    <button class="modal-close" type="button" aria-label="Close">&times;</button>
     <div id="modalContent"></div>
   </div>
 </div>
@@ -963,7 +965,7 @@ footer b{color:var(--accent);font-weight:500}
 <footer>AI News Daily &bull; Generated by <b>Sarvam AI</b> News Curator &bull; Web Search &bull; arXiv &bull; Hacker News &bull; RSS</footer>
 
 <!-- THREE.JS MORPHING PARTICLE SHAPES -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js" integrity="sha384-CI3ELBVUz9XQO+97x6nwMDPosPR5XvsxW2ua7N1Xeygeh1IxtgqtCkGfQY9WWdHu" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 <script>
 (function(){
   const canvas=document.getElementById('bg-canvas');
@@ -1133,19 +1135,33 @@ document.querySelectorAll('.tab-btn').forEach(b=>{
 });
 
 // MODAL
+function safeUrl(u){
+  try{const x=new URL(String(u),location.href);return(x.protocol==='https:'||x.protocol==='http:')?x.href:'#'}catch(e){return'#'}
+}
+function mk(tag,cls,text){
+  const e=document.createElement(tag);
+  if(cls)e.className=cls;
+  if(text!==undefined)e.textContent=String(text);
+  return e;
+}
 function openModal(data){
   const c=catColors[data.category]||'#64748b';
-  document.getElementById('modalContent').innerHTML=`
-    <span class="modal-cat" style="background:${c}">${data.category}</span>
-    <h2 class="modal-title">${data.title}</h2>
-    <div class="modal-score">Importance: ${data.importance}/10 &bull; Source: ${data.source}</div>
-    <p class="modal-summary">${data.summary}</p>
-    <div class="modal-why">
-      <div class="modal-why-label">⚡ Why it matters</div>
-      <p class="modal-why-text">${data.why_it_matters}</p>
-    </div>
-    <a href="${data.url}" target="_blank" rel="noopener noreferrer" class="modal-open-btn">Open Full Article ↗</a>
-  `;
+  const cat=mk('span','modal-cat',data.category);
+  cat.style.background=c;
+  const why=mk('div','modal-why');
+  why.append(mk('div','modal-why-label','\u26A1 Why it matters'),mk('p','modal-why-text',data.why_it_matters));
+  const link=mk('a','modal-open-btn','Open Full Article \u2197');
+  link.href=safeUrl(data.url);
+  link.target='_blank';
+  link.rel='noopener noreferrer';
+  document.getElementById('modalContent').replaceChildren(
+    cat,
+    mk('h2','modal-title',data.title),
+    mk('div','modal-score','Importance: '+data.importance+'/10 \u2022 Source: '+data.source),
+    mk('p','modal-summary',data.summary),
+    why,
+    link
+  );
   document.getElementById('modal').classList.add('active');
   document.body.style.overflow='hidden';
 }
@@ -1154,6 +1170,13 @@ function closeModal(){
   document.body.style.overflow='';
 }
 document.addEventListener('keydown',e=>{if(e.key==='Escape')closeModal()});
+document.getElementById('themeToggle').addEventListener('click',toggleTheme);
+document.querySelector('.modal-close').addEventListener('click',closeModal);
+document.getElementById('modal').addEventListener('click',function(e){if(e.target===this)closeModal()});
+document.addEventListener('click',function(e){
+  const h=e.target.closest('.trend-header');
+  if(h)h.parentElement.classList.toggle('expanded');
+});
 
 var catColors={"LLM":"#7c3aed","Research":"#059669","Safety":"#dc2626","Industry":"#d97706","Tools":"#0891b2","Robotics":"#db2777","Computer Vision":"#9333ea","NLP":"#2563eb"};
 

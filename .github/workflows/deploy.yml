@@ -1,31 +1,58 @@
 name: Deploy Briefing
 
+# Triggered by the agent pushing data.manifest.json, which it does LAST, after
+# data.gz.b64.part1..4. Nothing is deployed unless deploy_gate.py verifies every
+# hash and the template validator passes.
 on:
   workflow_dispatch:
   push:
+    branches: [main]
     paths:
-      - 'data.gz.b64.part*'
+      - 'data.manifest.json'
+
+permissions: {}
+
+concurrency:
+  group: deploy-briefing
+  cancel-in-progress: false
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
+    timeout-minutes: 10
     permissions:
       contents: write
     steps:
-      - uses: actions/checkout@v4
-      - name: Assemble, decompress and deploy
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
+
+      - name: Check for a pending briefing
+        id: pending
         run: |
-          cat data.gz.b64.part1 data.gz.b64.part2 data.gz.b64.part3 data.gz.b64.part4 > /tmp/data.gz.b64
-          base64 -d /tmp/data.gz.b64 > index.html.gz
-          gunzip -f index.html.gz
-          DATE=$(grep -oE '20[0-9]{2}-[0-9]{2}-[0-9]{2}' index.html | head -1)
-          if [ -z "$DATE" ]; then DATE=$(date -u +%Y-%m-%d); fi
-          echo "Deploying briefing for $DATE"
+          if [ -f data.manifest.json ]; then
+            echo "found=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "No data.manifest.json: nothing to deploy."
+            echo "found=false" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Verify, assemble and validate
+        id: gate
+        if: steps.pending.outputs.found == 'true'
+        run: python3 scripts/deploy_gate.py "$RUNNER_TEMP/index.html"
+
+      - name: Deploy
+        if: steps.pending.outputs.found == 'true'
+        env:
+          DATE: ${{ steps.gate.outputs.date }}
+        run: |
+          set -euo pipefail
+          [[ "$DATE" =~ ^[0-9]{4}-[0-9]{2}-[0-9]{2}$ ]] || { echo "bad date from gate"; exit 1; }
           mkdir -p updates
-          cp index.html "updates/${DATE}.html"
+          cp "$RUNNER_TEMP/index.html" index.html
+          cp "$RUNNER_TEMP/index.html" "updates/${DATE}.html"
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
           git add index.html "updates/${DATE}.html"
-          git rm -f data.gz.b64.part1 data.gz.b64.part2 data.gz.b64.part3 data.gz.b64.part4
+          git rm -q --ignore-unmatch data.manifest.json data.gz.b64.part1 data.gz.b64.part2 data.gz.b64.part3 data.gz.b64.part4
           git commit -m "Deploy: full briefing HTML (${DATE})" || echo "No changes"
           git push
