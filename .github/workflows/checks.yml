@@ -1,0 +1,22 @@
+name: Checks
+
+# Integrity, secret scan and security tests for every change.
+on:
+  push:
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
+        with:
+          persist-credentials: false
+      - name: Checksums and secret scan
+        run: python3 scripts/repo_audit.py
+      - name: Security tests
+        run: python3 -m unittest discover -s tests -v

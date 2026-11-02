@@ -20,6 +20,16 @@ VALIDATION:
     all required template markers. If any are missing, it prints an error
     and exits with code 1.
 
+INPUT SAFETY:
+    analysis_final.json is assembled from scraped web content, so every field is
+    treated as untrusted: types and lengths are enforced, URLs must be http(s),
+    importance is clamped to 1-10, stats are recomputed from the articles, and
+    everything is HTML-escaped. Invalid articles are dropped with a warning.
+
+PATHS:
+    AI_NEWS_HOME (default /scratch/work/notes) holds master_template.html.
+    AI_NEWS_WORK (default /scratch/work) receives the output HTML.
+
 USAGE BY THE CRON AGENT:
     The agent MUST run this script. The agent MUST NOT write its own HTML.
     The agent MUST NOT modify this script or the master template.
@@ -27,11 +37,17 @@ USAGE BY THE CRON AGENT:
     from the GitHub repo Dilip457/ai-news-daily.
 """
 
-import json, re, os, sys, hashlib
+import json, re, os, sys
+from collections import Counter
 from html import escape
-from datetime import datetime
+from datetime import datetime, timedelta, timezone
+from urllib.parse import urlsplit
 
-TEMPLATE_PATH = "/workspace/notes/master_template.html"
+AI_NEWS_HOME = os.environ.get("AI_NEWS_HOME", "/scratch/work/notes")
+AI_NEWS_WORK = os.environ.get("AI_NEWS_WORK", "/scratch/work")
+TEMPLATE_PATH = os.path.join(AI_NEWS_HOME, "master_template.html")
+IST = timezone(timedelta(hours=5, minutes=30))
+DATE_RE = re.compile(r"^\d{4}-\d{2}-\d{2}$")
 
 cat_colors = {
     "LLM": "#7c3aed", "Research": "#059669", "Safety": "#dc2626",
@@ -55,15 +71,144 @@ REQUIRED_MARKERS = [
     'class="noise"',          # Noise texture
     'class="aurora"',         # Aurora background
     'toggleTheme',            # Theme toggle function
+    'http-equiv="Content-Security-Policy"',  # CSP (XSS backstop)
+    'integrity="sha384-',     # SRI on the Three.js CDN script
 ]
+
+# ---------------------------------------------------------------------------
+# Input validation: analysis_final.json is built from untrusted web content
+# ---------------------------------------------------------------------------
+MAX_ARTICLES = 60
+MAX_TRENDS = 10
+# Control chars, zero-width chars and bidi overrides (used to disguise text/URLs)
+UNSAFE_CHARS_RE = re.compile("[\x00-\x08\x0b\x0c\x0e-\x1f\x7f​-‏‪-‮⁦-⁩﻿]")
+BARE_HOST_RE = re.compile(r"^(?:www\.)?[a-z0-9-]+(?:\.[a-z0-9-]+)+(?:[/?#]|$)", re.I)
+
+
+def warn(msg):
+    print("WARNING: " + msg, file=sys.stderr)
+
+
+def clean_text(value, limit):
+    if isinstance(value, bool) or not isinstance(value, (str, int, float)):
+        raise ValueError("expected text, got " + type(value).__name__)
+    text = UNSAFE_CHARS_RE.sub("", str(value))
+    text = re.sub(r"\s+", " ", text).strip()
+    if len(text) > limit:
+        text = text[:limit - 1].rstrip() + "…"
+    return text
+
+
+def clean_url(value):
+    url = clean_text(value, 2048)
+    if BARE_HOST_RE.match(url):
+        url = "https://" + url  # e.g. "www.example.com/story" scraped without a scheme
+    parts = urlsplit(url)
+    if parts.scheme.lower() not in ("http", "https") or not parts.hostname:
+        raise ValueError("URL must be http(s): " + url[:80])
+    if parts.username or parts.password or " " in url:
+        raise ValueError("URL contains credentials or spaces: " + url[:80])
+    return url
+
+
+def clean_importance(value):
+    if isinstance(value, bool):
+        raise ValueError("importance must be a number")
+    return max(1, min(10, int(float(value))))
+
+
+def clean_text_list(values, limit, max_items):
+    if not isinstance(values, list):
+        return []
+    out = []
+    for v in values[:max_items]:
+        try:
+            t = clean_text(v, limit)
+        except ValueError:
+            continue
+        if t:
+            out.append(t)
+    return out
+
+
+def clean_data(data):
+    """Validate and normalise analysis_final.json. Returns a new, safe dict."""
+    if not isinstance(data, dict):
+        raise ValueError("analysis JSON must be an object")
+    raw_articles = data.get("articles", [])
+    if not isinstance(raw_articles, list):
+        raise ValueError("articles must be a list")
+    articles = []
+    for i, a in enumerate(raw_articles[:MAX_ARTICLES]):
+        try:
+            if not isinstance(a, dict):
+                raise ValueError("not an object")
+            article = {
+                "title": clean_text(a["title"], 300),
+                "url": clean_url(a["url"]),
+                "source": clean_text(a.get("source", ""), 120),
+                "summary": clean_text(a.get("summary", ""), 2000),
+                "why_it_matters": clean_text(a.get("why_it_matters", ""), 1000),
+                "category": clean_text(a.get("category", ""), 40),
+                "importance": clean_importance(a.get("importance", 1)),
+            }
+            if not article["title"]:
+                raise ValueError("empty title")
+            if article["category"] not in cat_colors:
+                warn("article %d: unknown category %r -> Industry" % (i, article["category"]))
+                article["category"] = "Industry"
+            articles.append(article)
+        except (KeyError, ValueError, TypeError) as e:
+            warn("dropping article %d: %s" % (i, e))
+
+    trends = []
+    raw_trends = data.get("trends", [])
+    for i, t in enumerate(raw_trends[:MAX_TRENDS] if isinstance(raw_trends, list) else []):
+        try:
+            trends.append({
+                "title": clean_text(t["title"], 120),
+                "description": clean_text(t.get("description", ""), 600),
+                "related": clean_text_list(t.get("related", []), 80, 20),
+            })
+        except (KeyError, ValueError, TypeError, AttributeError) as e:
+            warn("dropping trend %d: %s" % (i, e))
+
+    raw_stats = data.get("stats") if isinstance(data.get("stats"), dict) else {}
+
+    def stat(name):
+        try:
+            return max(len(articles), min(10000, int(raw_stats.get(name, len(articles)))))
+        except (TypeError, ValueError):
+            return len(articles)
+
+    def text(name, limit):
+        try:
+            return clean_text(data.get(name, ""), limit)
+        except ValueError:
+            return ""
+
+    # Counts and categories are recomputed from the cleaned articles, never trusted.
+    return {
+        "articles": articles,
+        "trends": trends,
+        "stats": {
+            "total": len(articles),
+            "collected": stat("collected"),
+            "deduped": stat("deduped"),
+            "categories": dict(Counter(a["category"] for a in articles)),
+        },
+        "why_read": text("why_read", 1000),
+        "concept_title": text("concept_title", 200),
+        "concept_subtitle": text("concept_subtitle", 300),
+        "concept_paras": clean_text_list(data.get("concept_paras", []), 2000, 8),
+        "briefing_paragraphs": clean_text_list(data.get("briefing_paragraphs", []), 2000, 8),
+    }
 
 def esc(s):
     return escape(str(s))
 
 def json_attr(obj):
-    j = json.dumps(obj, ensure_ascii=False)
-    j = j.replace("\x27", "&#x27;").replace("\x22", "&#x22;")
-    return j
+    return escape(json.dumps(obj, ensure_ascii=False), quote=True)
 
 def rich_html(text):
     parts = text.split("<em>")
@@ -174,7 +319,7 @@ def build_trend_cards(trends, articles):
         count = len(related)
         cards.append(
             '      <div class="card spotlight trend" style="--c:var(--accent)" data-trend="' + str(i) + '">\n'
-            '        <div class="trend-header" onclick="this.parentElement.classList.toggle(\'expanded\')">\n'
+            '        <div class="trend-header">\n'
             '          <div class="trend-emoji">' + emoji + '</div>\n'
             '          <div class="trend-info">\n'
             '            <h3 class="trend-h">' + esc(t["title"]) + '</h3>\n'
@@ -230,15 +375,20 @@ def validate_output(html):
             missing.append(marker)
     return missing
 
-def build_briefing(data, date_str=None):
+def build_briefing(data, date_str=None, template_path=None):
+    template_path = template_path or TEMPLATE_PATH
     if date_str is None:
-        date_str = datetime.now().strftime("%Y-%m-%d")
-
-    if not os.path.exists(TEMPLATE_PATH):
-        print(f"ERROR: Master template not found at {TEMPLATE_PATH}")
-        print("Restore it from GitHub repo Dilip457/ai-news-daily")
+        date_str = datetime.now(IST).strftime("%Y-%m-%d")
+    if not DATE_RE.match(date_str):
+        print(f"ERROR: date must be YYYY-MM-DD, got {date_str!r}")
         sys.exit(1)
 
+    if not os.path.exists(template_path):
+        print(f"ERROR: Master template not found at {template_path}")
+        print("Run bootstrap.py to restore it from GitHub repo Dilip457/ai-news-daily")
+        sys.exit(1)
+
+    data = clean_data(data)
     articles = sorted(data["articles"], key=lambda x: x["importance"], reverse=True)
     trends = data["trends"]
     stats = data["stats"]
@@ -251,7 +401,7 @@ def build_briefing(data, date_str=None):
     concept_html_str = build_concept_html(data.get("concept_paras", []))
     briefing_html_str = build_briefing_html(data.get("briefing_paragraphs", []))
 
-    with open(TEMPLATE_PATH, "r") as f:
+    with open(template_path, "r", encoding="utf-8") as f:
         html = f.read()
 
     # Verify template integrity BEFORE modifying
@@ -290,14 +440,13 @@ def build_briefing(data, date_str=None):
     html = html.replace('data-count="35"', 'data-count="' + str(stats.get("deduped", stats["total"])) + '"')
     html = html.replace('data-count="25"', 'data-count="' + str(stats["total"]) + '"')
 
-    # 6. Replace the "Today pipeline collected" paragraph
-    briefing_paragraphs = data.get("briefing_paragraphs", [])
-    if briefing_paragraphs:
-        html = re.sub(
-            r'<p>Today&#x27;s pipeline collected.*?</p>',
-            "<p>" + esc(briefing_paragraphs[0]) + "</p>",
-            html, count=1, flags=re.DOTALL
-        )
+    # 6. Replace the whole briefing-box body (the template keeps several Aug 29 sample
+    #    paragraphs on one line; all of them must go, even when no paragraphs are given)
+    html = re.sub(
+        r'(<div class="briefing-box reveal">\s*<h2>.*?</h2>).*?(\s*</div>)',
+        lambda m: m.group(1) + "\n      " + briefing_html_str + m.group(2),
+        html, count=1, flags=re.DOTALL
+    )
 
     # 6b. Replace hardcoded date in briefing heading
     html = html.replace("The State of AI <em>2026-08-29</em>", "The State of AI <em>" + date_str + "</em>")
@@ -383,6 +532,8 @@ def build_briefing(data, date_str=None):
 
     # FINAL VALIDATION — ensure all template markers are still present
     missing = validate_output(html)
+    if re.search(r"""\son[a-z]+\s*=\s*["']""", html):
+        missing.append("inline event handler (forbidden by CSP)")
     if missing:
         print(f"ERROR: Output is missing template markers: {missing}")
         print("The template may have been corrupted during content swap.")
@@ -392,21 +543,22 @@ def build_briefing(data, date_str=None):
     return html
 
 if __name__ == "__main__":
-    data_path = sys.argv[1] if len(sys.argv) > 1 else "/scratch/work/analysis_final.json"
+    data_path = sys.argv[1] if len(sys.argv) > 1 else os.path.join(AI_NEWS_WORK, "analysis_final.json")
     date_str = sys.argv[2] if len(sys.argv) > 2 else None
 
-    with open(data_path) as f:
+    with open(data_path, encoding="utf-8") as f:
         data = json.load(f)
 
     html = build_briefing(data, date_str)
 
     if date_str is None:
-        date_str = datetime.now().strftime("%Y-%m-%d")
-    outpath = "/scratch/work/ai-news-" + date_str + ".html"
-    with open(outpath, "w") as f:
+        date_str = datetime.now(IST).strftime("%Y-%m-%d")
+    os.makedirs(AI_NEWS_WORK, exist_ok=True)
+    outpath = os.path.join(AI_NEWS_WORK, "ai-news-" + date_str + ".html")
+    with open(outpath, "w", encoding="utf-8") as f:
         f.write(html)
 
     print("Built: " + outpath + " (" + str(len(html)) + " bytes)")
-    print("Articles: " + str(len(data["articles"])) + " | Trends: " + str(len(data["trends"])) + " | Date: " + date_str)
+    print("Articles in: " + str(len(data.get("articles", []))) + " | Trends: " + str(len(data["trends"])) + " | Date: " + date_str)
     print("Template validation: PASSED — all required markers present")
     print("UI is identical to the approved master template")

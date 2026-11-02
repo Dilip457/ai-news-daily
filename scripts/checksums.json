@@ -1,8 +1,9 @@
 {
-  "generate_briefing_fixed.py": "d130cb575237cc10084beca414a10b03de8ccb41a15ab3af76078e935dcbbc3e",
-  "template_validator.py": "714aa1b03c7ff621ef836c16400668d830055092564b47831fbac0f028829835",
-  "telegram_deliver.py": "03e750c116be1fe32b55425800bbc334b1e619dd5a81186c24f4f4f2ee2e4ced",
-  "pipeline_validator.py": "9d456bb79eb49bb07daba540b2c97ff4e94cbff0292c43f8e6b97e1ddd082931",
-  "master_template.html": "1906223220627cb3eb7c59a74b68aa8c896283c3d457bc52312267994376c41c",
-  "bootstrap.py": "fe00f3eddbbb127b0d327c875d4448da26c902fadd4734dc123a1c8c74d575e3"
+  "generate_briefing_fixed.py": "997bb57df322f4da540c499293457bee5d2bd784f9852dc0bcba03e112687b86",
+  "template_validator.py": "0afc1fc5cc2c3827067447a27fe505931b3afe211ffbe86dd97902294d6a39bc",
+  "telegram_deliver.py": "40b19f24ef18517443ce3aa690b8f8cbb48a5455d198d9ca3b65ea93b0835330",
+  "pipeline_validator.py": "08e126d39545c59e0bcf82bd5cc7063c1bd911b2dda93023b779e5a6bc2df4d2",
+  "prepare_publish.py": "6a2ed53b3c8aa340109e9ca95fb62adf0ea3af8c896dadbc326abc4538ee1ae8",
+  "master_template.html": "638beb937a9ce66c07b76cc2330328bd52d3a0d0f3722806f8e635ea6f21cfd6",
+  "bootstrap.py": "12cad6d80af6e596e06c37ac91f8cdddb9adaa03835f226d7f7e3411093d5a3d"
 }

@@ -1,335 +1,311 @@
 #!/usr/bin/env python3
 """
-Telegram Delivery Module — Build, Send, Validate, Retry
-=========================================================
-Replaces send_telegram.py with full delivery tracking.
-
+Telegram Delivery Module — Build, Validate, Log
+================================================
 The sandbox blocks direct HTTP. The agent calls web_get_contents with the URL
 this script builds. This script then validates the response and logs the result.
 
-Delivery log: /workspace/notes/telegram_delivery_log.json
-   { "date": "2026-09-05", "status": "delivered|failed|pending",
-     "message_id": 28, "attempts": 1, "last_error": null, "timestamp": "..." }
+Credentials come from the environment, never from this file:
+  TELEGRAM_BOT_TOKEN   bot token from @BotFather
+  TELEGRAM_CHAT_ID     target chat id (e.g. -100123...)
+
+Delivery log: $AI_NEWS_HOME/telegram_delivery_log.json  (same format as the repo copy)
+  {"sent": [{"date": "2026-11-02", "message_id": 89, "status": "ok",
+             "delivered_at": "2026-11-02T00:41:24Z"}],
+   "last_error": {"date": "...", "error": "...", "at": "..."}}
+
+Messages are sent as plain text (no parse_mode), so markup inside scraped
+headlines can never turn into links or formatting in the group.
 
 Commands:
-  --build "text"              Build URL from inline text, save to file
+  --build "text"              Build URL from inline text, save to file (refuses if already sent today)
   --build --file /path        Build URL from file content
   --build-fallback            Build a short fallback URL from last message
   --validate 'json_response'  Validate web_get_contents response, log result
-  --check                     Print delivery status from log
-  --reset                     Reset log to pending (new day)
-  --status-code               Exit 0 if delivered, 1 if not (for pipeline checks)
+  --check                     Print today's delivery status
+  --status-code               Exit 0 if delivered today, 1 if not
+
+The built URL contains the bot token. It is written to a file and never printed:
+do not echo it, log it, or paste it into chat or commit messages.
 """
 
-import sys
 import json
 import os
+import re
+import sys
 import urllib.parse
-from datetime import datetime, timezone
+from datetime import datetime, timedelta, timezone
 
-BOT_TOKEN = "8645739822:AAFQrtZ1czXuDm9USN8Z8j4tpAS9HM2Q4V0"
-CHAT_ID = "-5322260984"
 MAX_URL_LEN = 3800  # Telegram GET URL practical limit (safe margin)
 BRIEFING_LINK = "https://dilip457.github.io/ai-news-daily/"
-
-# Persistent paths (in /workspace/ which survives sandbox restarts)
-LOG_PATH = "/workspace/notes/telegram_delivery_log.json"
-URL_OUTPUT_PATH = "/workspace/input/telegram_url.txt"
-MESSAGE_SAVE_PATH = "/workspace/notes/telegram_last_message.txt"
-FALLBACK_URL_PATH = "/workspace/input/telegram_retry_url.txt"
+IST = timezone(timedelta(hours=5, minutes=30))
+TOKEN_RE = re.compile(r"^\d{5,12}:[A-Za-z0-9_-]{30,}$")
+CHAT_ID_RE = re.compile(r"^-?\d{5,20}$")
 
 
-def now_ist():
-    """Current timestamp in IST."""
-    return datetime.now(timezone(offset=datetime.now().astimezone().utcoffset())).isoformat()
+def _home():
+    return os.environ.get("AI_NEWS_HOME", "/scratch/work/notes")
+
+
+def _work():
+    return os.environ.get("AI_NEWS_WORK", "/scratch/work")
+
+
+def log_path():
+    return os.path.join(_home(), "telegram_delivery_log.json")
+
+
+def url_output_path():
+    return os.path.join(_work(), "telegram_url.txt")
+
+
+def fallback_url_path():
+    return os.path.join(_work(), "telegram_retry_url.txt")
+
+
+def message_save_path():
+    return os.path.join(_work(), "telegram_last_message.txt")
+
+
+class ConfigError(Exception):
+    pass
+
+
+def credentials():
+    token = os.environ.get("TELEGRAM_BOT_TOKEN", "").strip()
+    chat_id = os.environ.get("TELEGRAM_CHAT_ID", "").strip()
+    if not TOKEN_RE.match(token):
+        raise ConfigError("TELEGRAM_BOT_TOKEN is missing or malformed (set it as a secret env var)")
+    if not CHAT_ID_RE.match(chat_id):
+        raise ConfigError("TELEGRAM_CHAT_ID is missing or malformed (set it as an env var)")
+    return token, chat_id
 
 
 def today_str():
-    return datetime.now().strftime("%Y-%m-%d")
+    """The pipeline is dated in IST regardless of the sandbox clock's zone."""
+    return datetime.now(IST).strftime("%Y-%m-%d")
+
+
+def utc_now():
+    return datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
 
 
 def load_log():
-    """Load the delivery log, or create a fresh one."""
-    if os.path.exists(LOG_PATH):
-        try:
-            with open(LOG_PATH) as f:
-                return json.load(f)
-        except (json.JSONDecodeError, IOError):
-            pass
-    return {
-        "date": today_str(),
-        "status": "pending",
-        "message_id": None,
-        "attempts": 0,
-        "last_error": None,
-        "timestamp": now_ist(),
-    }
+    """Load the delivery log in the repo format, migrating the old flat format."""
+    try:
+        with open(log_path(), encoding="utf-8") as f:
+            log = json.load(f)
+    except (OSError, json.JSONDecodeError):
+        return {"sent": []}
+    if not isinstance(log, dict):
+        return {"sent": []}
+    if not isinstance(log.get("sent"), list):
+        # Legacy single-day format: {"date", "status": "delivered", "message_id"}
+        legacy = log
+        log = {"sent": []}
+        if legacy.get("status") == "delivered" and legacy.get("message_id"):
+            log["sent"].append({"date": legacy.get("date"), "message_id": legacy["message_id"], "status": "ok"})
+    return log
 
 
 def save_log(log):
-    """Save the delivery log."""
-    os.makedirs(os.path.dirname(LOG_PATH), exist_ok=True)
-    with open(LOG_PATH, "w") as f:
+    os.makedirs(os.path.dirname(log_path()), exist_ok=True)
+    tmp = log_path() + ".tmp"
+    with open(tmp, "w", encoding="utf-8") as f:
         json.dump(log, f, indent=2)
+        f.write("\n")
+    os.replace(tmp, log_path())
 
 
-def reset_log():
-    """Reset the log for a new day."""
-    log = {
-        "date": today_str(),
-        "status": "pending",
-        "message_id": None,
-        "attempts": 0,
-        "last_error": None,
-        "timestamp": now_ist(),
-    }
-    save_log(log)
-    print(f"Log reset: {json.dumps(log)}")
+def delivery_for(date_str, log=None):
+    log = log if log is not None else load_log()
+    for entry in log.get("sent", []):
+        if isinstance(entry, dict) and entry.get("date") == date_str and entry.get("status") == "ok":
+            return entry
+    return None
+
+
+def is_delivered(date_str=None):
+    return delivery_for(date_str or today_str()) is not None
 
 
 def truncate_message(text, max_url_len=MAX_URL_LEN):
     """Truncate message to fit Telegram GET URL limits. Preserves briefing link."""
-    base = f"https://api.telegram.org/bot{BOT_TOKEN}/sendMessage?chat_id={CHAT_ID}&parse_mode=HTML&text="
-    max_text_encoded = max_url_len - len(base) - 100
-    max_text_raw = int(max_text_encoded / 1.3)
+    base_len = len("https://api.telegram.org/bot<token>/sendMessage?chat_id=&text=") + 60
+    max_text_raw = int((max_url_len - base_len - 100) / 1.3)
 
     if len(text) <= max_text_raw:
         return text
 
-    lines = text.split("\n")
     link_line = f"Read the full briefing:\n{BRIEFING_LINK}"
-
     result = []
     current_len = 0
-    for line in lines:
+    for line in text.split("\n"):
         if BRIEFING_LINK in line:
             continue
         if current_len + len(line) + 1 > max_text_raw - len(link_line) - 20:
             break
         result.append(line)
         current_len += len(line) + 1
-
     result.append("...")
     result.append(link_line)
     return "\n".join(result)
 
 
 def build_telegram_url(text):
-    """Build the Telegram sendMessage API URL."""
-    base = f"https://api.telegram.org/bot{BOT_TOKEN}/sendMessage"
+    token, chat_id = credentials()
     params = urllib.parse.urlencode({
-        "chat_id": CHAT_ID,
-        "parse_mode": "HTML",
-        "text": text
+        "chat_id": chat_id,
+        "text": text,
+        "disable_web_page_preview": "true",
     })
-    return f"{base}?{params}"
+    return f"https://api.telegram.org/bot{token}/sendMessage?{params}"
 
 
-def build_url(text, output_path=URL_OUTPUT_PATH):
-    """Build URL, save to file, save message for retry."""
+def _write_private(path, content):
+    os.makedirs(os.path.dirname(path), exist_ok=True)
+    fd = os.open(path, os.O_WRONLY | os.O_CREAT | os.O_TRUNC, 0o600)
+    with os.fdopen(fd, "w", encoding="utf-8") as f:
+        f.write(content)
+
+
+def build_url(text, output_path=None):
+    """Build URL, save it (0600) to a file, save message for retry. Never prints the URL."""
+    output_path = output_path or url_output_path()
     text = truncate_message(text)
     url = build_telegram_url(text)
-
-    os.makedirs(os.path.dirname(output_path), exist_ok=True)
-    with open(output_path, "w") as f:
-        f.write(url)
-    with open(MESSAGE_SAVE_PATH, "w") as f:
-        f.write(text)
-
-    print(f"URL built: {len(url)} chars")
-    print(f"Message length: {len(text)} chars")
-    print(f"URL saved to: {output_path}")
-    print(f"Message saved to: {MESSAGE_SAVE_PATH}")
+    _write_private(output_path, url)
+    _write_private(message_save_path(), text)
+    print(f"URL built: {len(url)} chars -> {output_path} (contains the bot token: do not print it)")
+    print(f"Message length: {len(text)} chars -> {message_save_path()}")
     return url
 
 
 def build_fallback():
     """Build a short fallback message from the last saved message."""
-    if not os.path.exists(MESSAGE_SAVE_PATH):
+    if not os.path.exists(message_save_path()):
         print("ERROR: No previous message found for fallback")
         return None
+    with open(message_save_path(), encoding="utf-8") as f:
+        lines = f.read().strip().split("\n")
 
-    with open(MESSAGE_SAVE_PATH) as f:
-        original = f.read()
-
-    # Extract just the essentials: date line, top story, link
-    lines = original.strip().split("\n")
-    essential = []
-
-    # Keep the title line (first line)
-    if lines:
-        essential.append(lines[0])
-
-    # Find "Top story" line
-    for line in lines:
-        if "Top story" in line or "top story" in line.lower():
-            essential.append(line)
-            break
-
-    # Find concept line
-    for line in lines:
-        if "Concept" in line:
-            essential.append(line)
-            break
-
-    essential.append("")
-    essential.append(f"Read the full briefing:\n{BRIEFING_LINK}")
-
-    fallback_text = "\n".join(essential)
-    url = build_telegram_url(fallback_text)
-
-    with open(FALLBACK_URL_PATH, "w") as f:
-        f.write(url)
-
-    print(f"Fallback URL built: {len(url)} chars")
-    print(f"Fallback message: {len(fallback_text)} chars")
-    print(f"Saved to: {FALLBACK_URL_PATH}")
+    essential = lines[:1]
+    essential += [l for l in lines if "top story" in l.lower()][:1]
+    essential += [l for l in lines if "Concept" in l][:1]
+    essential += ["", f"Read the full briefing:\n{BRIEFING_LINK}"]
+    url = build_telegram_url("\n".join(essential))
+    _write_private(fallback_url_path(), url)
+    print(f"Fallback URL built: {len(url)} chars -> {fallback_url_path()}")
     return url
 
 
-def validate_response(response_text):
-    """
-    Validate the Telegram API response.
-    Returns (success: bool, message_id: int|None, error: str|None).
-    """
+def _extract_json(text):
+    """web_get_contents may wrap the JSON in other text; find the {"ok": ...} object."""
     try:
-        if isinstance(response_text, dict):
-            data = response_text
-        else:
-            text = response_text.strip()
-            try:
-                data = json.loads(text)
-            except json.JSONDecodeError:
-                # web_get_contents wraps JSON in a search-result format
-                # Try to find the Telegram JSON in the text
-                start = text.find('{"ok"')
-                if start == -1:
-                    start = text.find('{"ok":')
-                if start >= 0:
-                    depth = 0
-                    for i in range(start, len(text)):
-                        if text[i] == '{':
-                            depth += 1
-                        elif text[i] == '}':
-                            depth -= 1
-                            if depth == 0:
-                                data = json.loads(text[start:i+1])
-                                break
-                    else:
-                        return False, None, f"Could not parse JSON from response: {text[:200]}"
-                else:
-                    return False, None, f"No JSON found in response: {text[:200]}"
+        return json.loads(text)
+    except json.JSONDecodeError:
+        pass
+    start = text.find('{"ok"')
+    if start < 0:
+        return None
+    try:
+        obj, _ = json.JSONDecoder().raw_decode(text[start:])
+        return obj
+    except json.JSONDecodeError:
+        return None
 
+
+def validate_response(response_text):
+    """Returns (success, message_id, error)."""
+    try:
+        _, chat_id = credentials()
+        data = response_text if isinstance(response_text, dict) else _extract_json(str(response_text).strip())
+        if not isinstance(data, dict):
+            return False, None, "No Telegram JSON found in response"
         if not data.get("ok"):
-            error_desc = data.get("description", "unknown error")
-            error_code = data.get("error_code", "?")
-            return False, None, f"Telegram API error: code={error_code}, desc={error_desc}"
-
-        result = data.get("result", {})
+            return False, None, f"Telegram API error: code={data.get('error_code', '?')}, desc={data.get('description', 'unknown')}"
+        result = data.get("result") or {}
         message_id = result.get("message_id")
-        chat = result.get("chat", {})
-
-        if message_id and chat.get("id") == int(CHAT_ID):
+        if isinstance(message_id, int) and str((result.get("chat") or {}).get("id")) == chat_id:
             return True, message_id, None
+        return False, None, "Unexpected response shape (message_id/chat id mismatch)"
+    except ConfigError as e:
+        return False, None, str(e)
+    except Exception as e:  # never let a parsing bug crash the pipeline silently
+        return False, None, f"Validation error: {type(e).__name__}"
 
-        return False, None, f"Unexpected response: {json.dumps(data)[:300]}"
 
-    except Exception as e:
-        return False, None, f"Validation error: {e}"
-
-
-def log_delivery_result(success, message_id=None, error=None):
-    """Log the delivery attempt result."""
+def log_delivery_result(success, message_id=None, error=None, date_str=None):
+    date_str = date_str or today_str()
     log = load_log()
-
-    # If already delivered, don't overwrite (anti-duplicate)
-    if log["status"] == "delivered" and log.get("message_id"):
-        print(f"ALREADY DELIVERED: message_id={log['message_id']}")
-        print("Not updating log. Message was already sent successfully.")
+    existing = delivery_for(date_str, log)
+    if existing:
+        print(f"ALREADY DELIVERED for {date_str}: message_id={existing.get('message_id')} (log unchanged)")
         return
-
-    log["attempts"] = log.get("attempts", 0) + 1
-    log["timestamp"] = now_ist()
-
     if success:
-        log["status"] = "delivered"
-        log["message_id"] = message_id
-        log["last_error"] = None
+        log["sent"].append({"date": date_str, "message_id": message_id, "status": "ok", "delivered_at": utc_now()})
+        log.pop("last_error", None)
         print(f"DELIVERY CONFIRMED: message_id={message_id}")
     else:
-        log["status"] = "failed"
-        log["last_error"] = error
+        log["last_error"] = {"date": date_str, "error": str(error)[:300], "at": utc_now()}
         print(f"DELIVERY FAILED: {error}")
-        print(f"Attempts so far: {log['attempts']}")
-
     save_log(log)
 
 
-def check_status():
-    """Print the current delivery status."""
+def check_status(date_str=None):
+    date_str = date_str or today_str()
     log = load_log()
-    print(f"Delivery Status: {log['status'].upper()}")
-    print(f"Date: {log.get('date', 'unknown')}")
-    print(f"Message ID: {log.get('message_id', 'none')}")
-    print(f"Attempts: {log.get('attempts', 0)}")
-    print(f"Last Error: {log.get('last_error', 'none')}")
-    print(f"Timestamp: {log.get('timestamp', 'unknown')}")
-    return log
+    entry = delivery_for(date_str, log)
+    print(f"Date: {date_str}")
+    print(f"Delivery Status: {'DELIVERED' if entry else 'NOT DELIVERED'}")
+    if entry:
+        print(f"Message ID: {entry.get('message_id')}")
+    last_error = log.get("last_error")
+    if last_error and last_error.get("date") == date_str:
+        print(f"Last Error: {last_error.get('error')}")
+    return entry
 
 
 def main():
     if len(sys.argv) < 2:
-        print("Usage:")
-        print('  python telegram_deliver.py --build "message text"')
-        print('  python telegram_deliver.py --build --file /path/to/message.txt')
-        print('  python telegram_deliver.py --validate \'{"ok":true,...}\'')
-        print("  python telegram_deliver.py --check")
-        print("  python telegram_deliver.py --reset")
-        print("  python telegram_deliver.py --build-fallback")
-        print("  python telegram_deliver.py --status-code")
+        print(__doc__)
         sys.exit(1)
-
     cmd = sys.argv[1]
-
-    if cmd == "--build":
-        if len(sys.argv) > 2 and sys.argv[2] == "--file":
-            with open(sys.argv[3]) as f:
-                text = f.read()
-        elif len(sys.argv) > 2:
-            text = sys.argv[2]
+    try:
+        if cmd == "--build":
+            if is_delivered():
+                print(f"ALREADY DELIVERED for {today_str()} — not building a second message.")
+                sys.exit(3)
+            if len(sys.argv) > 3 and sys.argv[2] == "--file":
+                with open(sys.argv[3], encoding="utf-8") as f:
+                    text = f.read()
+            elif len(sys.argv) > 2:
+                text = sys.argv[2]
+            else:
+                print("ERROR: No message text provided")
+                sys.exit(1)
+            build_url(text)
+        elif cmd == "--build-fallback":
+            if is_delivered():
+                print(f"ALREADY DELIVERED for {today_str()} — no fallback needed.")
+                sys.exit(3)
+            if build_fallback() is None:
+                sys.exit(1)
+        elif cmd == "--validate":
+            response_text = sys.argv[2] if len(sys.argv) > 2 else sys.stdin.read()
+            success, message_id, error = validate_response(response_text)
+            log_delivery_result(success, message_id, error)
+            sys.exit(0 if success else 1)
+        elif cmd == "--check":
+            check_status()
+        elif cmd == "--status-code":
+            sys.exit(0 if is_delivered() else 1)
         else:
-            print("ERROR: No message text provided")
+            print(f"Unknown command: {cmd}")
             sys.exit(1)
-        build_url(text)
-
-    elif cmd == "--build-fallback":
-        build_fallback()
-
-    elif cmd == "--validate":
-        response_text = sys.argv[2] if len(sys.argv) > 2 else sys.stdin.read()
-        success, message_id, error = validate_response(response_text)
-        log_delivery_result(success, message_id, error)
-        if success:
-            sys.exit(0)
-        else:
-            sys.exit(1)
-
-    elif cmd == "--check":
-        check_status()
-
-    elif cmd == "--reset":
-        reset_log()
-
-    elif cmd == "--status-code":
-        log = load_log()
-        if log["status"] == "delivered":
-            sys.exit(0)
-        else:
-            sys.exit(1)
-
-    else:
-        print(f"Unknown command: {cmd}")
-        sys.exit(1)
+    except ConfigError as e:
+        print(f"CONFIG ERROR: {e}")
+        sys.exit(2)
 
 
 if __name__ == "__main__":
