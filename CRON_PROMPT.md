@@ -52,6 +52,7 @@ Output: /scratch/work/ai-news-<DATE>.html
 Exit 0 = safe to publish. Exit 1 = DO NOT PUBLISH (send the alert). The same validator runs again in GitHub Actions before deploy, so a bypass here would still be rejected.
 
 ## STEP 4 — TELEGRAM (exactly ONE message, plain text)
+0. Token preflight (sends nothing): `python3 /scratch/work/notes/telegram_deliver.py --build-getme`, read /scratch/work/telegram_getme_url.txt and call web_get_contents with it, then `--validate-getme '<response>'`. Exit 0 prints the bot username — the token is live, continue. Exit 1 (e.g. 401 Unauthorized) means the token in the platform secret is stale or revoked: do not attempt the send, go to STEP 7 with "TELEGRAM_BOT_TOKEN rejected (401)". Never print the getMe URL.
 1. Write the message to /scratch/work/telegram_message.txt: top story + 5 key updates + concept of the day + https://dilip457.github.io/ai-news-daily/
 2. `python3 /scratch/work/notes/telegram_deliver.py --build --file /scratch/work/telegram_message.txt`
    (exit 3 = already delivered today → skip to STEP 6; exit 2 = TELEGRAM_BOT_TOKEN/CHAT_ID not set → no alert is possible, so stop and report "config error" in the run output)
