@@ -274,12 +274,6 @@
       "message_id": 89,
       "status": "ok",
       "delivered_at": "2026-11-02T00:41:24Z"
-    },
-    {
-      "date": "2026-11-03",
-      "message_id": 90,
-      "status": "ok",
-      "delivered_at": "2026-11-03T00:32:40Z"
     }
   ]
 }
