@@ -1,0 +1,82 @@
+name: Telegram Resolve Chat
+
+# One-off helper: turns the raw peer id shown in the Telegram Web URL hash
+# (web.telegram.org/k/#5322260984) into the exact chat id the Bot API accepts.
+# Read-only — it calls getChat, which sends nothing to anyone.
+#
+# Usage: Actions -> Telegram Resolve Chat -> Run workflow, raw_id = the digits
+# from the URL hash (no minus sign, no -100 prefix).
+#
+# Needs the TELEGRAM_BOT_TOKEN repository secret. The token is never printed;
+# GitHub masks secret values in logs regardless.
+on:
+  workflow_dispatch:
+    inputs:
+      raw_id:
+        description: 'Digits from the Telegram Web URL hash (e.g. 5322260984)'
+        required: true
+        type: string
+
+permissions: {}
+
+jobs:
+  resolve:
+    runs-on: ubuntu-latest
+    timeout-minutes: 3
+    steps:
+      - name: Resolve chat id
+        env:
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          RAW_ID: ${{ inputs.raw_id }}
+        run: |
+          python3 - <<'PY'
+          import json, os, re, sys, urllib.error, urllib.request
+
+          token = os.environ.get("TELEGRAM_BOT_TOKEN", "").strip()
+          raw = os.environ.get("RAW_ID", "").strip()
+          if not re.match(r"^\d{5,20}$", raw):
+              print(f"ERROR: raw_id must be digits only, got {raw!r}")
+              sys.exit(2)
+          if not re.match(r"^\d{5,12}:[A-Za-z0-9_-]{30,}$", token):
+              print("ERROR: TELEGRAM_BOT_TOKEN secret is missing or malformed")
+              sys.exit(2)
+
+          # Supergroups are -100<raw>, basic groups are -<raw>, users are <raw>.
+          candidates = [f"-100{raw}", f"-{raw}", raw]
+
+          def get_chat(chat_id):
+              url = f"https://api.telegram.org/bot{token}/getChat"
+              body = json.dumps({"chat_id": chat_id}).encode()
+              req = urllib.request.Request(
+                  url, data=body, method="POST",
+                  headers={"Content-Type": "application/json"},
+              )
+              try:
+                  with urllib.request.urlopen(req, timeout=20) as r:
+                      return True, json.loads(r.read().decode())
+              except urllib.error.HTTPError as e:
+                  try:
+                      return False, json.loads(e.read().decode())
+                  except Exception:
+                      return False, {"description": f"HTTP {e.code}"}
+              except Exception as e:
+                  return False, {"description": type(e).__name__}
+
+          found = None
+          for c in candidates:
+              ok, data = get_chat(c)
+              if ok and data.get("ok"):
+                  res = data.get("result") or {}
+                  print(f"MATCH  {c}  title={res.get('title')!r}  type={res.get('type')}  id={res.get('id')}")
+                  found = found or (c, res)
+              else:
+                  print(f"no     {c}  ({data.get('description', 'unknown')})")
+
+          print()
+          if not found:
+              print("No candidate matched. The bot must be a member of the group for getChat to work.")
+              sys.exit(1)
+          chat_id, res = found
+          print(f"USE THIS as the TELEGRAM_CHAT_ID repository secret:  {chat_id}")
+          print(f"Group: {res.get('title')} ({res.get('type')})")
+          PY
