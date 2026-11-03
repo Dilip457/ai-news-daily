@@ -52,12 +52,12 @@ Output: /scratch/work/ai-news-<DATE>.html
 Exit 0 = safe to publish. Exit 1 = DO NOT PUBLISH (send the alert). The same validator runs again in GitHub Actions before deploy, so a bypass here would still be rejected.
 
 ## STEP 4 — TELEGRAM (exactly ONE message, plain text)
-Pick the path first: call GITHUB_LIST_REPOSITORY_SECRETS on Dilip457/ai-news-daily. If `TELEGRAM_BOT_TOKEN` is listed, use PATH A. If it is not, use PATH B — never push an outbox the workflow cannot read.
+Always use PATH A. Use PATH B only if the "Telegram Delivery" run for your outbox failed with `CONFIG ERROR` (repository secret missing). Do not list or read repository secrets: the agent does not need, and should not have, that permission.
 
 ### PATH A — Actions delivery (preferred: the token never enters this sandbox)
 1. Write the message to /scratch/work/telegram_message.txt: top story + 5 key updates + concept of the day + https://dilip457.github.io/ai-news-daily/
 2. Read `telegram_delivery_log.json` from the repo (GITHUB_GET_REPOSITORY_CONTENT). If it already has <DATE> with status ok → skip to STEP 6.
-3. GITHUB_CREATE_OR_UPDATE_FILE_CONTENTS path `telegram/outbox.json`, content {"date":"<DATE>","text":"<the message, JSON-escaped>"} (message: "Telegram outbox <DATE>"). This push triggers telegram-deliver.yml, which sends the message and commits the log itself.
+3. GITHUB_CREATE_OR_UPDATE_FILE_CONTENTS path `telegram/outbox.json`, content {"date":"<DATE>","kind":"briefing","text":"<the message, JSON-escaped>"} (message: "Telegram outbox <DATE>"). This push triggers telegram-deliver.yml, which sends the message and commits the log itself.
 4. Wait ~60-90s, then read `telegram_delivery_log.json` from the repo again: <DATE> with status ok = delivered. If `last_error.date` is <DATE>, read the "Telegram Delivery" workflow run for the reason. Push the outbox at most once per date: the sender refuses a duplicate date, so a re-push is safe but pointless.
 5. Do NOT commit telegram_delivery_log.json on this path — the runner owns it.
 
@@ -87,7 +87,7 @@ PATH B: the log push in STEP 4 (PATH B step 6) is the record, and it must happen
 ## STEP 7 — ALERT (never fail silently)
 If ANY step fails after its retry, send ONE Telegram message through telegram_deliver.py (`--build "AI News pipeline FAILED on <DATE> at step <which>: <short error>. Manual check needed."`, then web_get_contents + --validate as in STEP 4).
 A visible failure message is better than silence. Never include secrets or tokens in the error text.
-On PATH A the alert is just another outbox push ({"date":"<DATE>","text":"<alert>"}), but a date already marked ok will not send twice — if you need a second message on the same date, say so in the run output instead. If the failure is the send itself, report it in the run output only.
+On PATH A the alert is an outbox push with `"kind":"alert"`: {"date":"<DATE>","kind":"alert","text":"<alert>"}. It is delivered even if today's briefing already went out, at most once per date (recorded under "alerts" in the log). If the failure is the Telegram send itself, report it in the run output only.
 
 ## RULES
 - Never fabricate articles, titles, or summaries. Zero new articles → still publish a "No new AI updates today" page and send the Telegram message.

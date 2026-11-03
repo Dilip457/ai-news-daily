@@ -73,3 +73,29 @@ one as a platform secret, scope the agent's GitHub token, and pin `AI_NEWS_REF` 
 updated, the old v4.1 instructions will fail at bootstrap because they hardcode
 `/workspace` paths and the old checksums. Update the prompt in the same session as
 the merge.
+
+## 2026-11-03 — Telegram delivery moved to GitHub Actions (PATH A)
+
+**What changed.** The agent now writes `telegram/outbox.json`. `telegram-deliver.yml`
+sends it from the Actions runner with `scripts/telegram_send.py`, using the
+`TELEGRAM_BOT_TOKEN` / `TELEGRAM_CHAT_ID` repository secrets, then commits the delivery
+log and removes the outbox (`[skip ci]`). The token no longer enters the agent sandbox
+or any fetch-tool URL. The old `web_get_contents` route stays as PATH B. End-to-end
+test: workflow run 41619987055, message_id 93.
+
+**Log note.** The test cleared and re-recorded today's entry, so the log shows
+message_id 93 for 2026-11-03. The real morning briefing was message_id 90 (see commit
+87bdc5e).
+
+**Follow-ups applied the same day.**
+- Both `telegram-deliver.yml` and `deploy.yml` now rebase and retry a rejected push. A
+  lost log commit would leave the outbox in place and allow a duplicate send.
+- Outbox `"kind": "alert"`: one failure alert per date can still go out after the
+  briefing was delivered, so failures are never silent on PATH A.
+- The agent no longer lists repository secrets to choose a path (it uses PATH A and
+  falls back on `CONFIG ERROR`), so its token needs no secrets permission.
+- Removed the one-off `telegram-resolve-chat.yml` debug workflow.
+
+**Open.** The agent's GitHub connection can write workflow files, which now means it
+could reach the repository secrets. See SECURITY.md item 3.
+

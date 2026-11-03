@@ -24,6 +24,8 @@ jobs:
       contents: write
     steps:
       - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
+        with:
+          fetch-depth: 0  # full history so the push retry can rebase
 
       - name: Check for a pending briefing
         id: pending
@@ -55,4 +57,10 @@ jobs:
           git add index.html "updates/${DATE}.html"
           git rm -q --ignore-unmatch data.manifest.json data.gz.b64.part1 data.gz.b64.part2 data.gz.b64.part3 data.gz.b64.part4
           git commit -m "Deploy: full briefing HTML (${DATE})" || echo "No changes"
-          git push
+          pushed=false
+          for attempt in 1 2 3; do
+            if git push; then pushed=true; break; fi
+            echo "push rejected (main moved); rebasing and retrying ($attempt/3)"
+            git pull --rebase -q origin main
+          done
+          $pushed || { echo "could not push after 3 attempts"; exit 1; }
