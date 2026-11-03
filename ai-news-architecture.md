@@ -47,7 +47,7 @@ The scheduler and the agent live on an external agent platform. This repo holds 
 
 | Area | v4.1 | v4.2 |
 |------|------|------|
-| Credentials | Bot token + chat ID hardcoded in two public scripts | `TELEGRAM_BOT_TOKEN` / `TELEGRAM_CHAT_ID` env vars, CI secret scan on every push |
+| Credentials | Bot token + chat ID hardcoded in two public scripts | Repository secrets read only on the Actions runner; CI secret scan on every push |
 | Page XSS | Modal rendered article fields with `innerHTML`; any scraped headline could run script | DOM/`textContent` rendering, http(s)-only links, CSP with hashed scripts, no inline handlers |
 | Third-party JS | Three.js from cdnjs with no integrity check | SRI sha384 + CSP allowlist |
 | Input handling | Agent JSON trusted as-is (`javascript:` URLs, non-numeric scores, regex-escape bugs) | Schema/length/URL validation, stats recomputed, regex replacements via callables |
@@ -66,7 +66,8 @@ The scheduler and the agent live on an external agent platform. This repo holds 
 | `scripts/checksums.json` | SHA-256 manifest for all pipeline files |
 | `scripts/generate_briefing_fixed.py` | Input validation + template-locked HTML builder |
 | `scripts/template_validator.py` | Template lock + security gate, used by the agent and by CI |
-| `scripts/telegram_deliver.py` | Telegram URL builder, response validator and delivery log |
+| `scripts/telegram_deliver.py` | Legacy fetch path: Telegram URL builder, response validator and delivery log |
+| `scripts/telegram_send.py` | CI only: sends `telegram/outbox.json` with the repository secret and owns the delivery log |
 | `scripts/pipeline_validator.py` | End-of-run check: HTML built + Telegram delivered |
 | `scripts/prepare_publish.py` | Writes the 4 parts + `data.manifest.json` for the publish |
 | `scripts/deploy_gate.py` | CI only: verifies and validates the payload before deploy |
@@ -91,7 +92,7 @@ The master template is the approved Aug 29 design. v4.2 adds a security patch (C
 
 ## Telegram
 
-Bot @Get_Excite_AI_News_bot → group "Daily AI news", sent via `web_get_contents` (the sandbox blocks direct HTTP). Credentials come from platform secrets. The request URL necessarily carries the token, so it lives only in a 0600 file and goes straight to the fetch tool. Messages are plain text. Exactly one message per day, enforced by the delivery log and by `telegram_deliver.py`. Failure alerts use the same channel, so the user always hears something.
+Bot @Get_Excite_AI_News_bot → group "Daily AI news". Preferred path: the agent writes `telegram/outbox.json` and `.github/workflows/telegram-deliver.yml` sends it with `scripts/telegram_send.py` using repository secrets. Actions runners have real internet access, so the token never enters the agent sandbox and no URL carrying it is ever built there. Legacy fallback, used only while no repo secret exists: `telegram_deliver.py` builds a sendMessage URL for `web_get_contents` (the sandbox blocks direct HTTP); that URL necessarily carries the token, so it lives only in a 0600 file and goes straight to the fetch tool. Both paths send plain text, at most one message per IST day, enforced by `telegram_delivery_log.json`. Failure alerts use the same channel, so the user always hears something.
 
 ## Rules
 

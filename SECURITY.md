@@ -21,11 +21,12 @@ The pipeline reads untrusted content from the open web every day and has write a
 - **Deploy** (`deploy.yml` + `deploy_gate.py`): runs only when `data.manifest.json` is pushed, has least-privilege permissions, a pinned `actions/checkout`, serialized runs, and fails closed.
 - **Checks** (`checks.yml`): checksum and secret audit plus the security test suite on every push and PR.
 - **Telegram** (`telegram_deliver.py`): credentials from env, the URL never printed (files are written 0600), plain text only, at most one message per IST day, enforced in code.
+- **Telegram delivery** (`telegram-deliver.yml` + `telegram_send.py`): the token stays on the Actions runner as a repository secret, so it never enters the agent sandbox and no URL carrying it is ever built there. Plain text, previews disabled, one message per IST date enforced in code, log committed by the runner with `[skip ci]`.
 
 ## Owner checklist (cannot be done from the repo)
 
 1. **Revoke the leaked bot token now.** It was committed in `scripts/telegram_deliver.py` and `scripts/pipeline_validator.py` and is still in git history. In Telegram, open @BotFather → `/mybots` → the bot → API Token → **Revoke current token**. Removing it from the files does not make the old token safe.
-2. Put the new token and the chat ID into the agent platform's secret store as `TELEGRAM_BOT_TOKEN` and `TELEGRAM_CHAT_ID`. Never paste them into the prompt text or the repo.
+2. Put the new token and the chat ID into **repo Settings → Secrets and variables → Actions** as `TELEGRAM_BOT_TOKEN` and `TELEGRAM_CHAT_ID` — that is what `telegram-deliver.yml` reads. The agent platform's secret store is only needed for the legacy fetch path (PATH B in CRON_PROMPT.md). Never paste them into the prompt text or the repo.
 3. Give the agent a **fine-grained GitHub token** scoped to this one repo with *Contents: read & write* and *Actions: read & write* (for the dispatch fallback) and **no** *Workflows* permission, so it cannot edit `.github/workflows/`.
 4. After merging, set `AI_NEWS_REF` in the agent prompt to the merge commit SHA, and set `BOOTSTRAP_SHA256` to the `bootstrap.py` value in `scripts/checksums.json`. Repeat whenever scripts change.
 5. In repo **Settings → Code security**, enable *Secret scanning* and *Push protection*.

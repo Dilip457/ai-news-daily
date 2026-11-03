@@ -52,15 +52,27 @@ Output: /scratch/work/ai-news-<DATE>.html
 Exit 0 = safe to publish. Exit 1 = DO NOT PUBLISH (send the alert). The same validator runs again in GitHub Actions before deploy, so a bypass here would still be rejected.
 
 ## STEP 4 — TELEGRAM (exactly ONE message, plain text)
-0. Token preflight (sends nothing): `python3 /scratch/work/notes/telegram_deliver.py --build-getme`, read /scratch/work/telegram_getme_url.txt and call web_get_contents with it, then `--validate-getme '<response>'`. Exit 0 prints the bot username — the token is live, continue. Exit 1 (e.g. 401 Unauthorized) means the token in the platform secret is stale or revoked: do not attempt the send, go to STEP 7 with "TELEGRAM_BOT_TOKEN rejected (401)". Never print the getMe URL.
-1. Write the message to /scratch/work/telegram_message.txt: top story + 5 key updates + concept of the day + https://dilip457.github.io/ai-news-daily/
-2. `python3 /scratch/work/notes/telegram_deliver.py --build --file /scratch/work/telegram_message.txt`
-   (exit 3 = already delivered today → skip to STEP 6; exit 2 = TELEGRAM_BOT_TOKEN/CHAT_ID not set → no alert is possible, so stop and report "config error" in the run output)
-3. Read /scratch/work/telegram_url.txt and call web_get_contents with it (GET). Do not print the URL.
-4. `python3 /scratch/work/notes/telegram_deliver.py --validate '<response>'` — exit 0 = delivered and logged.
+Pick the path first: call GITHUB_LIST_REPOSITORY_SECRETS on Dilip457/ai-news-daily. If `TELEGRAM_BOT_TOKEN` is listed, use PATH A. If it is not, use PATH B — never push an outbox the workflow cannot read.
 
-## STEP 5 — RECORD (before publishing, so the log commit never races deploy.yml)
-Push /scratch/work/notes/telegram_delivery_log.json to path `telegram_delivery_log.json` with GITHUB_CREATE_OR_UPDATE_FILE_CONTENTS (message: "Log Telegram delivery for <DATE> (message_id <id>)").
+### PATH A — Actions delivery (preferred: the token never enters this sandbox)
+1. Write the message to /scratch/work/telegram_message.txt: top story + 5 key updates + concept of the day + https://dilip457.github.io/ai-news-daily/
+2. Read `telegram_delivery_log.json` from the repo (GITHUB_GET_REPOSITORY_CONTENT). If it already has <DATE> with status ok → skip to STEP 6.
+3. GITHUB_CREATE_OR_UPDATE_FILE_CONTENTS path `telegram/outbox.json`, content {"date":"<DATE>","text":"<the message, JSON-escaped>"} (message: "Telegram outbox <DATE>"). This push triggers telegram-deliver.yml, which sends the message and commits the log itself.
+4. Wait ~60-90s, then read `telegram_delivery_log.json` from the repo again: <DATE> with status ok = delivered. If `last_error.date` is <DATE>, read the "Telegram Delivery" workflow run for the reason. Push the outbox at most once per date: the sender refuses a duplicate date, so a re-push is safe but pointless.
+5. Do NOT commit telegram_delivery_log.json on this path — the runner owns it.
+
+### PATH B — legacy fetch delivery (only when the repo secret is absent)
+1. Preflight (sends nothing): `python3 /scratch/work/notes/telegram_deliver.py --build-getme`, read /scratch/work/telegram_getme_url.txt and call web_get_contents with it, then `--validate-getme '<response>'`. Exit 0 prints the bot username — the token is live, continue. Exit 1 (e.g. 401 Unauthorized) means the token in the platform secret is stale or revoked: do not attempt the send, go to STEP 7 with "TELEGRAM_BOT_TOKEN rejected (401)". Never print the getMe URL.
+2. Write the message to /scratch/work/telegram_message.txt (same content as PATH A step 1).
+3. `python3 /scratch/work/notes/telegram_deliver.py --build --file /scratch/work/telegram_message.txt`
+   (exit 3 = already delivered today → skip to STEP 6; exit 2 = TELEGRAM_BOT_TOKEN/CHAT_ID not set → no alert is possible, so stop and report "config error" in the run output)
+4. Read /scratch/work/telegram_url.txt and call web_get_contents with it (GET). Do not print the URL.
+5. `python3 /scratch/work/notes/telegram_deliver.py --validate '<response>'` — exit 0 = delivered and logged.
+6. Push /scratch/work/notes/telegram_delivery_log.json to `telegram_delivery_log.json` (message: "Log Telegram delivery for <DATE> (message_id <id>)").
+
+## STEP 5 — RECORD
+PATH A: nothing to commit — telegram-deliver.yml already wrote and pushed telegram_delivery_log.json. Confirm it and move on.
+PATH B: the log push in STEP 4 (PATH B step 6) is the record, and it must happen before publishing so it never races deploy.yml.
 
 ## STEP 6 — PUBLISH (chunked, SHA-verified)
 1. `python3 /scratch/work/notes/prepare_publish.py /scratch/work/ai-news-<DATE>.html <DATE>`
@@ -75,6 +87,7 @@ Push /scratch/work/notes/telegram_delivery_log.json to path `telegram_delivery_l
 ## STEP 7 — ALERT (never fail silently)
 If ANY step fails after its retry, send ONE Telegram message through telegram_deliver.py (`--build "AI News pipeline FAILED on <DATE> at step <which>: <short error>. Manual check needed."`, then web_get_contents + --validate as in STEP 4).
 A visible failure message is better than silence. Never include secrets or tokens in the error text.
+On PATH A the alert is just another outbox push ({"date":"<DATE>","text":"<alert>"}), but a date already marked ok will not send twice — if you need a second message on the same date, say so in the run output instead. If the failure is the send itself, report it in the run output only.
 
 ## RULES
 - Never fabricate articles, titles, or summaries. Zero new articles → still publish a "No new AI updates today" page and send the Telegram message.
