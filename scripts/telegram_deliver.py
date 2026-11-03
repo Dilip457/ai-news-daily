@@ -21,7 +21,9 @@ Commands:
   --build "text"              Build URL from inline text, save to file (refuses if already sent today)
   --build --file /path        Build URL from file content
   --build-fallback            Build a short fallback URL from last message
+  --build-getme               Build a read-only getMe URL (token validity check)
   --validate 'json_response'  Validate web_get_contents response, log result
+  --validate-getme 'json'     Validate a getMe response (no message is sent)
   --check                     Print today's delivery status
   --status-code               Exit 0 if delivered today, 1 if not
 
@@ -63,12 +65,24 @@ def fallback_url_path():
     return os.path.join(_work(), "telegram_retry_url.txt")
 
 
+def getme_url_path():
+    return os.path.join(_work(), "telegram_getme_url.txt")
+
+
 def message_save_path():
     return os.path.join(_work(), "telegram_last_message.txt")
 
 
 class ConfigError(Exception):
     pass
+
+
+def token_only():
+    """Token without the chat id — enough for a read-only getMe preflight."""
+    token = os.environ.get("TELEGRAM_BOT_TOKEN", "").strip()
+    if not TOKEN_RE.match(token):
+        raise ConfigError("TELEGRAM_BOT_TOKEN is missing or malformed (set it as a secret env var)")
+    return token
 
 
 def credentials():
@@ -181,6 +195,25 @@ def build_url(text, output_path=None):
     return url
 
 
+def build_getme():
+    """Build the getMe URL (sends nothing) so the token can be checked before delivery."""
+    url = f"https://api.telegram.org/bot{token_only()}/getMe"
+    _write_private(getme_url_path(), url)
+    print(f"getMe URL built -> {getme_url_path()} (contains the bot token: do not print it)")
+    return url
+
+
+def validate_getme(response_text):
+    """Returns (ok, description). Confirms the token is live without messaging the group."""
+    data = response_text if isinstance(response_text, dict) else _extract_json(str(response_text).strip())
+    if not isinstance(data, dict):
+        return False, "No Telegram JSON found in response"
+    if not data.get("ok"):
+        return False, f"Telegram API error: code={data.get('error_code', '?')}, desc={data.get('description', 'unknown')}"
+    r = data.get("result") or {}
+    return True, f"@{r.get('username', '?')} (id {r.get('id', '?')})"
+
+
 def build_fallback():
     """Build a short fallback message from the last saved message."""
     if not os.path.exists(message_save_path()):
@@ -291,6 +324,13 @@ def main():
                 sys.exit(3)
             if build_fallback() is None:
                 sys.exit(1)
+        elif cmd == "--build-getme":
+            build_getme()
+        elif cmd == "--validate-getme":
+            response_text = sys.argv[2] if len(sys.argv) > 2 else sys.stdin.read()
+            ok, detail = validate_getme(response_text)
+            print(f"TOKEN {'VALID' if ok else 'INVALID'}: {detail}")
+            sys.exit(0 if ok else 1)
         elif cmd == "--validate":
             response_text = sys.argv[2] if len(sys.argv) > 2 else sys.stdin.read()
             success, message_id, error = validate_response(response_text)

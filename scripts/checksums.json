@@ -1,7 +1,7 @@
 {
   "generate_briefing_fixed.py": "997bb57df322f4da540c499293457bee5d2bd784f9852dc0bcba03e112687b86",
   "template_validator.py": "0afc1fc5cc2c3827067447a27fe505931b3afe211ffbe86dd97902294d6a39bc",
-  "telegram_deliver.py": "40b19f24ef18517443ce3aa690b8f8cbb48a5455d198d9ca3b65ea93b0835330",
+  "telegram_deliver.py": "4471eba5dd746bd3fb1cac7ac912866b61d64da874debbbda4d7fe184531f6b8",
   "pipeline_validator.py": "08e126d39545c59e0bcf82bd5cc7063c1bd911b2dda93023b779e5a6bc2df4d2",
   "prepare_publish.py": "6a2ed53b3c8aa340109e9ca95fb62adf0ea3af8c896dadbc326abc4538ee1ae8",
   "master_template.html": "638beb937a9ce66c07b76cc2330328bd52d3a0d0f3722806f8e635ea6f21cfd6",
