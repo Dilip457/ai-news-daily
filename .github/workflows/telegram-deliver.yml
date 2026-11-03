@@ -28,6 +28,8 @@ jobs:
       contents: write
     steps:
       - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
+        with:
+          fetch-depth: 0  # full history so the push retry can rebase
 
       - name: Send the message
         env:
@@ -35,8 +37,10 @@ jobs:
           TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
         run: python3 scripts/telegram_send.py
 
-      # The log is written by the runner, so the agent never has to commit it and
-      # cannot race deploy.yml. Runs on failure too, to record last_error.
+      # The log is written by the runner, so the agent never has to commit it.
+      # Runs on failure too, to record last_error. If main moved meanwhile (e.g. a
+      # deploy commit), rebase and retry: a lost log commit would leave the outbox
+      # behind and let a later run send the same message twice.
       - name: Record the result
         if: always()
         run: |
@@ -50,4 +54,10 @@ jobs:
           git add telegram_delivery_log.json
           git rm -q --ignore-unmatch telegram/outbox.json
           git commit -m "Telegram delivery result [skip ci]" || echo "No changes"
-          git push
+          pushed=false
+          for attempt in 1 2 3; do
+            if git push; then pushed=true; break; fi
+            echo "push rejected (main moved); rebasing and retrying ($attempt/3)"
+            git pull --rebase -q origin main
+          done
+          $pushed || { echo "could not push after 3 attempts"; exit 1; }

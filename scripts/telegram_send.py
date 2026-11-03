@@ -12,11 +12,16 @@ scripts/checksums.json (the agent never executes it) and bootstrap.py does not
 download it.
 
 Inputs
-  telegram/outbox.json     {"date": "YYYY-MM-DD", "text": "..."} written by the agent
+  telegram/outbox.json     {"date": "YYYY-MM-DD", "text": "...", "kind": "briefing"|"alert"}
+                           written by the agent. "kind" defaults to "briefing".
+                           At most one briefing AND at most one alert per date: an
+                           alert must still get through after the briefing was sent
+                           (e.g. when the deploy fails), but can never repeat.
   TELEGRAM_BOT_TOKEN       repository secret
   TELEGRAM_CHAT_ID         repository secret
 Outputs
-  telegram_delivery_log.json   appended {"status": "ok"} entry, or last_error
+  telegram_delivery_log.json   briefing -> appended to "sent"; alert -> appended to
+                               "alerts"; failure -> last_error
   telegram/outbox.json         consumed (removed by the workflow, not here)
 
 Exit codes
@@ -46,6 +51,7 @@ IST = timezone(timedelta(hours=5, minutes=30))
 
 MAX_TEXT = 4000  # Telegram hard limit is 4096; keep a margin
 DATE_RE = re.compile(r"^\d{4}-\d{2}-\d{2}$")
+KINDS = ("briefing", "alert")
 TOKEN_RE = re.compile(r"^\d{5,12}:[A-Za-z0-9_-]{30,}$")
 CHAT_ID_RE = re.compile(r"^-?\d{5,20}$")
 
@@ -87,7 +93,10 @@ def load_outbox():
         raise ConfigError("telegram/outbox.json: date must be YYYY-MM-DD")
     if not isinstance(text, str) or not text.strip():
         raise ConfigError("telegram/outbox.json: text is empty")
-    return date, text
+    kind = data.get("kind", "briefing")
+    if kind not in KINDS:
+        raise ConfigError(f"telegram/outbox.json: kind must be one of {KINDS}")
+    return date, text, kind
 
 
 def load_log():
@@ -111,8 +120,11 @@ def save_log(log):
     os.replace(tmp, LOG)
 
 
-def delivered(date, log):
-    for entry in log.get("sent", []):
+def delivered(date, log, kind="briefing"):
+    entries = log.get("alerts", []) if kind == "alert" else log.get("sent", [])
+    if not isinstance(entries, list):
+        return None
+    for entry in entries:
         if isinstance(entry, dict) and entry.get("date") == date and entry.get("status") == "ok":
             return entry
     return None
@@ -193,12 +205,12 @@ def main():
     if outbox is None:
         print("Nothing to send: telegram/outbox.json is absent (already consumed).")
         return 0
-    date, text = outbox
+    date, text, kind = outbox
 
     log = load_log()
-    existing = delivered(date, log)
+    existing = delivered(date, log, kind)
     if existing:
-        print(f"ALREADY DELIVERED for {date}: message_id={existing.get('message_id')} — not sending again.")
+        print(f"ALREADY DELIVERED ({kind}) for {date}: message_id={existing.get('message_id')} — not sending again.")
         return 0
 
     try:
@@ -213,7 +225,7 @@ def main():
         "text": body,
         "disable_web_page_preview": True,
     }
-    print(f"Date: {date}")
+    print(f"Date: {date}  Kind: {kind}")
     print(f"Message: {len(body)} chars (limit {MAX_TEXT}), plain text, preview disabled")
 
     if dry:
@@ -227,9 +239,13 @@ def main():
         print(f"DELIVERY FAILED: {error}")
         return 1
 
-    log["sent"].append(
-        {"date": date, "message_id": message_id, "status": "ok", "delivered_at": utc_now()}
-    )
+    entry = {"date": date, "message_id": message_id, "status": "ok", "delivered_at": utc_now()}
+    if kind == "alert":
+        if not isinstance(log.get("alerts"), list):
+            log["alerts"] = []
+        log["alerts"].append(entry)
+    else:
+        log["sent"].append(entry)
     log.pop("last_error", None)
     save_log(log)
     print(f"DELIVERY CONFIRMED: message_id={message_id}")
