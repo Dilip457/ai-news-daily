@@ -1,0 +1,53 @@
+name: Telegram Delivery
+
+# The agent writes telegram/outbox.json when it has a briefing to send. This
+# workflow is the only thing that talks to api.telegram.org, so the bot token
+# lives as a repository secret on the runner and never appears in a URL built
+# inside the agent sandbox.
+#
+# Idempotent: scripts/telegram_send.py refuses to send a second message for a
+# date already recorded as delivered in telegram_delivery_log.json.
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - 'telegram/outbox.json'
+
+permissions: {}
+
+concurrency:
+  group: telegram-delivery
+  cancel-in-progress: false
+
+jobs:
+  send:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
+
+      - name: Send the message
+        env:
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+        run: python3 scripts/telegram_send.py
+
+      # The log is written by the runner, so the agent never has to commit it and
+      # cannot race deploy.yml. Runs on failure too, to record last_error.
+      - name: Record the result
+        if: always()
+        run: |
+          set -euo pipefail
+          if ! git status --porcelain -- telegram_delivery_log.json telegram/outbox.json | grep -q .; then
+            echo "Nothing to record."
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add telegram_delivery_log.json
+          git rm -q --ignore-unmatch telegram/outbox.json
+          git commit -m "Telegram delivery result [skip ci]" || echo "No changes"
+          git push
