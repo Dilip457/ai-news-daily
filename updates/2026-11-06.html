@@ -1,0 +1,1284 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'sha256-23tjFHEnlXtpz9ysPEVP6j+pdH61Fr8aChGZeUKTC9g=' 'sha256-0RWbezySHZqSCOad8Z3uysucrZTDGS18mg6lzhKCC80=' https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js; style-src 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src data:; connect-src 'none'; object-src 'none'; base-uri 'none'; form-action 'none'">
+<meta name="referrer" content="no-referrer">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI News Daily — 2026-11-06</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+
+/* ── DARK THEME (default) ── */
+:root{
+  --bg:#070710;--bg2:#0c0c18;
+  --surface:rgba(255,255,255,.025);--surface-h:rgba(255,255,255,.055);
+  --border:rgba(255,255,255,.06);--border-h:rgba(255,255,255,.14);
+  --text:#edecf5;--muted:#8389a3;--dim:#4a4f64;
+  --accent:#7c3aed;--accent2:#0891b2;--accent3:#db2777;
+  --modal-bg:rgba(7,7,16,.95);--modal-card:#0c0c18;
+  --shadow:0 20px 60px rgba(0,0,0,.5);
+}
+
+/* ── LIGHT THEME ── */
+[data-theme="light"]{
+  --bg:#f8f9fc;--bg2:#eef0f6;
+  --surface:rgba(0,0,0,.02);--surface-h:rgba(0,0,0,.04);
+  --border:rgba(0,0,0,.08);--border-h:rgba(0,0,0,.15);
+  --text:#1a1a2e;--muted:#555b6e;--dim:#8a92a6;
+  --accent:#6d28d9;--accent2:#0e7490;--accent3:#be185d;
+  --modal-bg:rgba(0,0,0,.3);--modal-card:#fff;
+  --shadow:0 20px 60px rgba(0,0,0,.15);
+}
+
+--radius:18px;
+html{scroll-behavior:smooth}
+body{
+  font-family:'Inter',system-ui,-apple-system,sans-serif;
+  background:var(--bg);color:var(--text);
+  line-height:1.6;overflow-x:hidden;
+  -webkit-font-smoothing:antialiased;
+  transition:background .3s,color .3s;
+}
+
+/* AURORA */
+.aurora{position:fixed;inset:0;z-index:0;pointer-events:none;overflow:hidden}
+.aurora::before,.aurora::after{content:'';position:absolute;width:70vw;height:70vw;border-radius:50%;filter:blur(120px);opacity:.3;animation:drift 22s ease-in-out infinite alternate}
+.aurora::before{background:radial-gradient(circle,#4338ca,transparent 70%);top:-20%;left:-15%}
+.aurora::after{background:radial-gradient(circle,#0e7490,transparent 70%);bottom:-25%;right:-15%;animation-delay:-8s}
+[data-theme="light"] .aurora::before,[data-theme="light"] .aurora::after{opacity:.08}
+@keyframes drift{from{transform:translate(0,0) scale(1)}to{transform:translate(60px,-40px) scale(1.15)}}
+
+/* NOISE + GRID */
+.noise{position:fixed;inset:0;z-index:1;pointer-events:none;opacity:.03;background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='200' height='200'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>")}
+[data-theme="light"] .noise{opacity:.01}
+.grid-bg{position:fixed;inset:0;z-index:0;pointer-events:none;background-image:linear-gradient(rgba(128,128,128,.02) 1px,transparent 1px),linear-gradient(90deg,rgba(128,128,128,.02) 1px,transparent 1px);background-size:50px 50px;mask-image:radial-gradient(ellipse 80% 60% at 50% 0%,#000,transparent);-webkit-mask-image:radial-gradient(ellipse 80% 60% at 50% 0%,#000,transparent)}
+
+.wrap{position:relative;z-index:2;max-width:1080px;margin:0 auto;padding:24px}
+
+/* HEADER */
+header{padding:50px 0 36px;border-bottom:1px solid var(--border);margin-bottom:32px;display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:20px}
+.header-left{flex:1;min-width:280px}
+.kicker{display:inline-flex;align-items:center;gap:8px;font-size:.72em;font-weight:600;color:var(--accent);letter-spacing:.1em;text-transform:uppercase;background:rgba(124,58,237,.08);padding:5px 14px;border-radius:100px;border:1px solid rgba(124,58,237,.15);margin-bottom:20px}
+[data-theme="light"] .kicker{background:rgba(109,40,217,.06);border-color:rgba(109,40,217,.12)}
+.kicker .live{width:6px;height:6px;border-radius:50%;background:var(--accent);box-shadow:0 0 10px var(--accent);animation:blink 1.8s ease-in-out infinite}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.3}}
+h1.title{font-size:2.8em;font-weight:800;line-height:.95;letter-spacing:-.03em;background:linear-gradient(135deg,#7c3aed,#0891b2,#db2777);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:8px}
+.subtitle{color:var(--muted);font-size:.95em;max-width:540px;margin-bottom:12px}
+.meta-row{display:flex;gap:16px;flex-wrap:wrap;font-size:.75em;color:var(--dim)}
+.meta-row span{display:flex;align-items:center;gap:5px}
+.meta-row .sep{width:3px;height:3px;border-radius:50%;background:var(--dim)}
+
+/* THEME TOGGLE */
+.theme-toggle{display:flex;align-items:center;gap:10px;background:var(--surface);border:1px solid var(--border);border-radius:100px;padding:6px 16px;cursor:pointer;font-family:inherit;font-size:.82em;color:var(--muted);transition:all .25s}
+.theme-toggle:hover{border-color:var(--accent);color:var(--text)}
+.theme-toggle .icon{font-size:1.2em}
+
+/* TABS */
+.tabs{display:flex;gap:4px;margin-bottom:32px;position:sticky;top:0;z-index:100;background:color-mix(in srgb,var(--bg) 85%,transparent);backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);padding:10px;border-radius:18px;border:1px solid var(--border)}
+.tab-btn{flex:1;padding:10px 16px;background:none;border:none;color:var(--muted);cursor:pointer;font-family:inherit;font-size:.85em;font-weight:500;border-radius:12px;transition:all .25s;white-space:nowrap}
+.tab-btn:hover{color:var(--text);background:var(--surface)}
+.tab-btn.active{color:var(--text);background:linear-gradient(135deg,rgba(124,58,237,.15),rgba(8,145,178,.08));box-shadow:inset 0 0 0 1px rgba(124,58,237,.2)}
+.tab-body{display:none;animation:fadeUp .4s ease}
+.tab-body.active{display:block}
+@keyframes fadeUp{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+
+/* BENTO */
+.bento{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:32px}
+.bento>*{border-radius:18px}
+.bento-why{grid-column:span 3;background:var(--surface);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border:1px solid var(--border);padding:24px;position:relative;overflow:hidden}
+.bento-why::before{content:'';position:absolute;inset:0;background:radial-gradient(circle at 80% 50%,rgba(124,58,237,.06),transparent 60%)}
+.bento-why p{position:relative;color:var(--text);font-size:1em;line-height:1.7}
+.bento-why .label{font-size:.7em;color:var(--accent);text-transform:uppercase;letter-spacing:.1em;margin-bottom:10px;display:block;font-weight:600}
+.bento-stat{background:var(--surface);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border:1px solid var(--border);padding:18px 14px;text-align:center;position:relative;overflow:hidden;transition:border-color .3s}
+.bento-stat:hover{border-color:var(--accent)}
+.bento-stat::after{content:'';position:absolute;bottom:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,var(--accent),transparent);opacity:.4}
+.bento-stat .num{font-size:1.8em;font-weight:800;line-height:1;font-variant-numeric:tabular-nums;background:linear-gradient(135deg,var(--accent),var(--accent2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.bento-stat .lbl{font-size:.62em;color:var(--muted);text-transform:uppercase;letter-spacing:.1em;margin-top:6px}
+
+/* SECTION HEADERS */
+.sec-head{font-size:1.25em;font-weight:700;margin-bottom:18px;display:flex;align-items:center;gap:12px;letter-spacing:-.02em}
+.sec-head::before{content:'';width:5px;height:22px;border-radius:3px;background:linear-gradient(180deg,var(--accent),var(--accent2));box-shadow:0 0 10px rgba(124,58,237,.3)}
+.sec-head .count{font-size:.6em;color:var(--dim);background:var(--surface);padding:3px 10px;border-radius:100px;border:1px solid var(--border)}
+.divider{border:none;border-top:1px solid var(--border);margin:36px 0 28px;position:relative}
+.divider::after{content:'';position:absolute;top:-1px;left:50%;transform:translateX(-50%);width:80px;height:2px;border-radius:2px;background:linear-gradient(90deg,transparent,var(--accent),transparent)}
+
+/* NEWS BRIEFS — clickable, wrapping text */
+.brief-list{display:flex;flex-direction:column;gap:6px;margin-bottom:32px}
+.brief-item{display:flex;align-items:flex-start;gap:14px;padding:14px 18px;background:color-mix(in srgb,var(--bg) 75%,transparent);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border:1px solid var(--border);border-radius:14px;transition:all .25s;position:relative;overflow:hidden;cursor:pointer}
+.brief-item:hover{background:color-mix(in srgb,var(--bg) 85%,transparent);border-color:var(--border-h);transform:translateX(4px)}
+.brief-item:hover .brief-num{color:var(--c,var(--accent))}
+.brief-num{font-size:.9em;font-weight:700;color:var(--dim);min-width:28px;transition:color .25s;flex-shrink:0;margin-top:2px}
+.brief-tag{padding:2px 10px;border-radius:100px;font-size:.65em;font-weight:600;color:#fff;white-space:nowrap;flex-shrink:0;margin-top:2px}
+.brief-body{flex:1;min-width:0}
+.brief-title{font-size:.88em;font-weight:600;color:var(--text);margin-bottom:4px}
+.brief-text{font-size:.8em;color:var(--muted);line-height:1.5}
+.brief-score{font-size:1em;font-weight:700;color:var(--c,var(--accent));min-width:36px;text-align:right;flex-shrink:0;margin-top:2px}
+.brief-score small{font-size:.5em;color:var(--dim);font-weight:400}
+
+/* CONCEPT */
+.concept{background:linear-gradient(135deg,color-mix(in srgb,var(--bg2) 90%,transparent),var(--bg));border:1px solid rgba(124,58,237,.12);border-radius:20px;padding:30px;margin-bottom:32px;position:relative;overflow:hidden}
+.concept::before{content:'';position:absolute;top:-40%;right:-10%;width:350px;height:350px;border-radius:50%;background:radial-gradient(circle,rgba(124,58,237,.06),transparent 70%);animation:drift 15s ease-in-out infinite alternate}
+.concept-label{display:inline-flex;align-items:center;gap:6px;font-size:.68em;font-weight:600;color:var(--accent);letter-spacing:.1em;text-transform:uppercase;background:rgba(124,58,237,.1);padding:5px 14px;border-radius:100px;border:1px solid rgba(124,58,237,.15);margin-bottom:16px;position:relative}
+.concept h2{font-size:1.6em;font-weight:700;letter-spacing:-.03em;margin-bottom:6px;position:relative;line-height:1.2}
+.concept h2 em{font-style:italic;font-weight:500;color:var(--accent)}
+.concept .sub{font-style:italic;font-size:1.05em;color:var(--muted);margin-bottom:24px;position:relative}
+.concept p{margin-bottom:14px;color:var(--text);line-height:1.8;font-size:.92em;position:relative}
+.concept p:last-child{margin-bottom:0}
+.concept em{color:var(--accent);font-style:italic;font-weight:500}
+
+/* BRIEFING */
+.briefing-box{background:var(--surface);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border:1px solid var(--border);border-radius:20px;padding:28px;margin-bottom:32px}
+.briefing-box h2{font-size:1.4em;font-weight:700;letter-spacing:-.03em;margin-bottom:18px;background:linear-gradient(135deg,var(--accent),var(--accent2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.briefing-box h2 em{font-style:italic;font-weight:500}
+.briefing-box p{margin-bottom:14px;color:var(--text);line-height:1.75;font-size:.92em}
+.briefing-box p:last-child{margin-bottom:0}
+
+/* SPOTLIGHT CARDS */
+.card{background:var(--surface);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border:1px solid var(--border);border-radius:18px;padding:22px;transition:all .3s cubic-bezier(.4,0,.2,1);position:relative;overflow:hidden}
+.spotlight::before{content:'';position:absolute;inset:0;border-radius:18px;background:radial-gradient(circle 250px at var(--mx,50%) var(--my,50%),rgba(124,58,237,.04),transparent 60%);opacity:0;transition:opacity .3s;pointer-events:none}
+.spotlight:hover::before{opacity:1}
+.spotlight:hover{border-color:color-mix(in srgb,var(--c,var(--accent)) 30%,transparent);background:var(--surface-h);transform:translateY(-2px);box-shadow:var(--shadow)}
+
+/* CARD CONTENT */
+.card-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px}
+.cat-pill{padding:4px 12px;border-radius:100px;font-size:.68em;font-weight:600;color:#fff}
+.cat-pill.small{padding:2px 8px;font-size:.6em}
+.card-score{font-size:1.1em;font-weight:700;color:var(--c,var(--accent));font-variant-numeric:tabular-nums}
+.card-score small{font-size:.5em;color:var(--dim);font-weight:400}
+.card-h{font-size:1.05em;font-weight:600;margin-bottom:10px;line-height:1.35;letter-spacing:-.01em}
+.card-sum{font-size:.87em;color:var(--muted);margin-bottom:14px;line-height:1.6}
+.card-why{background:rgba(124,58,237,.03);border-radius:12px;padding:14px;margin-bottom:14px;border-left:2px solid var(--c,var(--accent))}
+.card-why p{font-size:.85em;color:var(--text);margin-top:6px;line-height:1.6}
+.why-tag{font-size:.65em;color:var(--c,var(--accent));text-transform:uppercase;letter-spacing:.1em;font-weight:600}
+.card-bot{display:flex;justify-content:space-between;align-items:center}
+.src{font-size:.75em;color:var(--dim)}
+.card-actions{display:flex;gap:8px;align-items:center}
+.read-more-btn{padding:7px 14px;background:var(--surface);border:1px solid var(--border);border-radius:10px;color:var(--accent);cursor:pointer;font-family:inherit;font-size:.78em;font-weight:500;transition:all .25s}
+.read-more-btn:hover{background:var(--accent);color:#fff;border-color:var(--accent)}
+.open-link-btn{padding:7px 14px;background:var(--accent);border:1px solid var(--accent);border-radius:10px;color:#fff!important;text-decoration:none;font-size:.78em;font-weight:500;transition:all .25s;display:inline-block}
+.open-link-btn:hover{opacity:.85;transform:translateY(-1px)}
+.open-link-btn.small{padding:4px 10px;font-size:.72em}
+
+/* TOP 10 */
+.top10{display:flex;gap:18px}
+.rank{font-size:1.3em;font-weight:800;min-width:46px;height:46px;border-radius:12px;display:flex;align-items:center;justify-content:center;color:#fff;font-variant-numeric:tabular-nums;flex-shrink:0}
+.top10-body{flex:1;min-width:0}
+.top10-body .card-top{margin-bottom:10px}
+
+/* TRENDS — expandable */
+.trend{display:flex;flex-direction:column;gap:0}
+.trend-header{display:flex;gap:16px;align-items:flex-start;cursor:pointer;user-select:none}
+.trend-emoji{font-size:1.8em;min-width:48px;text-align:center;filter:drop-shadow(0 0 8px rgba(124,58,237,.2))}
+.trend-info{flex:1}
+.trend-h{font-size:1.05em;color:var(--accent);margin-bottom:8px;font-weight:600}
+.trend-d{font-size:.86em;color:var(--muted);margin-bottom:8px;line-height:1.6}
+.trend-n{font-size:.72em;color:var(--muted);background:var(--surface);padding:3px 10px;border-radius:100px;border:1px solid var(--border)}
+.trend-expand{font-size:.8em;color:var(--dim);transition:transform .3s;flex-shrink:0;margin-top:8px}
+.trend.expanded .trend-expand{transform:rotate(180deg)}
+.trend-stories{max-height:0;overflow:hidden;transition:max-height .4s ease;margin-top:0}
+.trend.expanded .trend-stories{max-height:600px;margin-top:16px}
+.trend-stories-label{font-size:.72em;color:var(--dim);text-transform:uppercase;letter-spacing:.08em;font-weight:600;margin-bottom:10px}
+.related-story{display:flex;align-items:center;gap:10px;padding:8px 12px;background:var(--surface);border:1px solid var(--border);border-left:2px solid var(--c,var(--accent));border-radius:10px;margin-bottom:6px;transition:all .2s}
+.related-story:hover{background:var(--surface-h)}
+.related-title{flex:1;font-size:.85em;color:var(--text);font-weight:500}
+.related-score{font-size:.75em;color:var(--dim);font-weight:600}
+
+/* MODAL */
+.modal-overlay{position:fixed;inset:0;z-index:1000;background:var(--modal-bg);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);display:none;align-items:center;justify-content:center;padding:20px;animation:fadeIn .2s ease}
+.modal-overlay.active{display:flex}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+.modal-card{background:var(--modal-card);border:1px solid var(--border);border-radius:20px;padding:32px;max-width:600px;width:100%;max-height:80vh;overflow-y:auto;box-shadow:var(--shadow);animation:slideUp .3s ease}
+@keyframes slideUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+.modal-close{position:absolute;top:16px;right:16px;width:36px;height:36px;border-radius:50%;background:var(--surface);border:1px solid var(--border);color:var(--text);cursor:pointer;font-size:1.2em;display:flex;align-items:center;justify-content:center;transition:all .2s}
+.modal-close:hover{background:var(--accent);color:#fff;border-color:var(--accent)}
+.modal-cat{display:inline-block;padding:4px 12px;border-radius:100px;font-size:.7em;font-weight:600;color:#fff;margin-bottom:12px}
+.modal-title{font-size:1.3em;font-weight:700;margin-bottom:12px;line-height:1.3;letter-spacing:-.02em;padding-right:40px}
+.modal-score{font-size:.85em;color:var(--accent);font-weight:600;margin-bottom:16px}
+.modal-summary{font-size:.92em;color:var(--text);line-height:1.7;margin-bottom:20px}
+.modal-why{background:rgba(124,58,237,.04);border-radius:12px;padding:16px;margin-bottom:20px;border-left:3px solid var(--accent)}
+.modal-why-label{font-size:.7em;color:var(--accent);text-transform:uppercase;letter-spacing:.1em;font-weight:600;margin-bottom:8px}
+.modal-why-text{font-size:.88em;color:var(--text);line-height:1.6}
+.modal-source{font-size:.8em;color:var(--dim);margin-bottom:16px}
+.modal-open-btn{display:inline-block;padding:10px 24px;background:var(--accent);color:#fff!important;text-decoration:none;border-radius:12px;font-size:.88em;font-weight:600;transition:all .25s}
+.modal-open-btn:hover{opacity:.85;transform:translateY(-1px)}
+
+/* SEARCH */
+.search{width:100%;padding:14px 20px;background:var(--surface);border:1px solid var(--border);border-radius:14px;color:var(--text);font-family:inherit;font-size:.9em;margin-bottom:18px;transition:all .25s}
+.search::placeholder{color:var(--dim)}
+.search:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 3px rgba(124,58,237,.1)}
+.chips{display:flex;gap:8px;margin-bottom:22px;flex-wrap:wrap}
+.chip{padding:7px 16px;background:var(--surface);border:1px solid var(--border);border-left:3px solid var(--c,var(--accent));border-radius:100px;color:var(--muted);cursor:pointer;font-family:inherit;font-size:.8em;font-weight:500;transition:all .25s}
+.chip:hover{color:var(--text);border-color:var(--c,var(--accent))}
+.chip.active{background:rgba(124,58,237,.12);color:var(--text);border-color:var(--accent)}
+
+.grid-cards{display:grid;gap:14px}
+.no-res{text-align:center;padding:50px;color:var(--dim);font-size:.9em}
+
+/* SCROLLBAR */
+::-webkit-scrollbar{width:6px}
+::-webkit-scrollbar-track{background:var(--bg)}
+::-webkit-scrollbar-thumb{background:var(--border);border-radius:3px}
+::-webkit-scrollbar-thumb:hover{background:var(--accent)}
+
+/* REVEAL */
+.reveal{opacity:0;transform:translateY(16px);transition:all .5s cubic-bezier(.4,0,.2,1)}
+.reveal.in{opacity:1;transform:translateY(0)}
+
+/* FOOTER */
+footer{text-align:center;padding:40px 20px;border-top:1px solid var(--border);margin-top:50px;color:var(--dim);font-size:.8em}
+footer b{color:var(--accent);font-weight:500}
+
+/* MOBILE */
+@media(max-width:768px){.bento{grid-template-columns:1fr 1fr}.bento-why{grid-column:span 2}.bento-stat{grid-column:span 1}}
+@media(max-width:520px){h1.title{font-size:2em}.bento{grid-template-columns:1fr}.bento-why,.bento-stat{grid-column:span 1}.top10{flex-direction:column;gap:10px}.concept,.briefing-box{padding:22px}.tabs{flex-wrap:wrap}.tab-btn{flex:none;font-size:.78em}.brief-item{flex-wrap:wrap;gap:8px}.brief-body{flex:1 1 100%;order:-1}}
+</style>
+</head>
+<body>
+
+<div class="aurora"></div>
+<canvas id="bg-canvas" style="position:fixed;top:0;left:0;width:100%;height:100%;z-index:0;pointer-events:none;"></canvas>
+<div class="grid-bg"></div>
+<div class="noise"></div>
+
+<div class="wrap">
+  <header>
+    <div class="header-left">
+      <div class="kicker"><span class="live"></span> Daily Briefing</div>
+      <h1 class="title">AI News Daily</h1>
+      <p class="subtitle">Fresh AI, LLM & agentic intelligence — fetched, deduplicated, and ranked by importance. Updated every morning at 9 AM IST.</p>
+      <div class="meta-row"><span>2026-11-06 09:00 IST</span><span class="sep"></span><span>2026-11-06</span><span class="sep"></span><span>24 stories</span><span class="sep"></span><span>4 trends</span></div>
+    </div>
+    <button class="theme-toggle" id="themeToggle"><span class="icon">🌙</span><span id="themeLabel">Dark</span></button>
+  </header>
+
+  <div class="tabs">
+    <button class="tab-btn active" data-tab="home">Home</button>
+    <button class="tab-btn" data-tab="trends">Trends (4)</button>
+    <button class="tab-btn" data-tab="top10">Top 10</button>
+    <button class="tab-btn" data-tab="all">All (24)</button>
+  </div>
+
+  <!-- HOME -->
+  <div class="tab-body active" id="home">
+    <div class="bento">
+      <div class="bento-why reveal"><span class="label">Why Read This Today</span><p>A frontier security model shipped with its containment score as the headline, four Chinese open-weight models landed in one window, and the market took its worst day since the tariff shock over data-center financing. Today&#x27;s briefing is about what happens when capability, openness and capital all get repriced at once.</p></div>
+      <div class="bento-stat reveal"><div class="num" data-count="96">0</div><div class="lbl">Collected</div></div>
+      <div class="bento-stat reveal"><div class="num" data-count="24">0</div><div class="lbl">After Dedup</div></div>
+      <div class="bento-stat reveal"><div class="num" data-count="24">0</div><div class="lbl">Published</div></div>
+      <div class="bento-stat reveal"><div class="num" data-count="5">0</div><div class="lbl">Trends</div></div>
+    </div>
+
+    <h2 class="sec-head">Today's News at a Glance <span class="count">24 stories — click any to read more</span></h2>
+    <div class="brief-list">
+      <div class="brief-item spotlight" style="--c:#dc2626" data-article='{&quot;title&quot;: &quot;OpenAI releases GPT-6 Cyber, a security model trained to stay inside scope&quot;, &quot;summary&quot;: &quot;OpenAI introduced GPT-6 Cyber, a cybersecurity model trained to find and validate exploitable vulnerabilities while remaining within the boundaries a researcher sets. It scores 48.5% on ExploitGym, up from 32.1% for GPT-5.6 Cyber, a 51% relative gain. In a separate alignment evaluation it avoided exploiting out-of-scope services in 99.93% of tests without its deployment prompt and 100% with it. OpenAI says the model has already uncovered and validated thousands of exploits in security-critical codebases including Linux and Firefox.&quot;, &quot;why_it_matters&quot;: &quot;It is the clearest attempt yet to ship a dual-use capability with the containment metric treated as a headline result rather than an appendix. If scope adherence holds outside lab evaluations, automated vulnerability research becomes something enterprises can actually deploy.&quot;, &quot;source&quot;: &quot;OpenAI&quot;, &quot;url&quot;: &quot;https://openai.com/index/introducing-gpt-6-cyber&quot;, &quot;category&quot;: &quot;Safety&quot;, &quot;importance&quot;: 10}'>
+        <span class="brief-num">01</span>
+        <span class="brief-tag" style="background:#dc2626">Safety</span>
+        <div class="brief-body">
+          <div class="brief-title">OpenAI releases GPT-6 Cyber, a security model trained to stay inside scope</div>
+          <div class="brief-text">OpenAI introduced GPT-6 Cyber, a cybersecurity model trained to find and validate exploitable vulnerabilities while remaining within the boundaries a researcher sets. It scores ...</div>
+        </div>
+        <span class="brief-score" style="--c:#dc2626">10<small>/10</small></span>
+      </div>
+      <div class="brief-item spotlight" style="--c:#d97706" data-article='{&quot;title&quot;: &quot;Wall Street&#x27;s AI trade cracks: S&amp;P 500 falls 4.4% in a single session&quot;, &quot;summary&quot;: &quot;A sell-off led by companies tied to the AI data-center buildout erased the market&#x27;s previous gain, its best day in three months. The S&amp;P 500 fell 4.4%, its worst session since the April 2025 tariff shock, the Dow dropped 1,833 points or 3.4%, and the Nasdaq fell 5.5%, leaving it 11.9% below its record high.&quot;, &quot;why_it_matters&quot;: &quot;The market has started pricing AI infrastructure as a political and financing risk rather than a pure growth story. That repricing will decide which data-center projects actually get built.&quot;, &quot;source&quot;: &quot;Associated Press&quot;, &quot;url&quot;: &quot;https://apnews.com/article/stocks-markets-ai-midterm-oil-trump-7ee9c212805aa5e70cf34d25aab7a36e&quot;, &quot;category&quot;: &quot;Industry&quot;, &quot;importance&quot;: 10}'>
+        <span class="brief-num">02</span>
+        <span class="brief-tag" style="background:#d97706">Industry</span>
+        <div class="brief-body">
+          <div class="brief-title">Wall Street&#x27;s AI trade cracks: S&amp;P 500 falls 4.4% in a single session</div>
+          <div class="brief-text">A sell-off led by companies tied to the AI data-center buildout erased the market&#x27;s previous gain, its best day in three months. The S&amp;P 500 fell 4.4%, its worst session since t...</div>
+        </div>
+        <span class="brief-score" style="--c:#d97706">10<small>/10</small></span>
+      </div>
+      <div class="brief-item spotlight" style="--c:#7c3aed" data-article='{&quot;title&quot;: &quot;Thinking Machines ships Inkling 2 Small, a 594B-parameter MoE with 17B active&quot;, &quot;summary&quot;: &quot;Inkling 2 Small is a mixture-of-experts model with 594 billion total parameters and 17 billion active, supporting image inputs and variable effort. It scores 31 on the Artificial Analysis Intelligence Index, with gains concentrated in agentic coding, vision, knowledge work and reasoning. It launches through Tinker with closed weights, and the company says full Apache 2.0 weights follow next week once external safety testing and red-teaming finish.&quot;, &quot;why_it_matters&quot;: &quot;A staged release, closed first and open after third-party testing, is becoming the template for labs that want open weights without shipping them untested. The 17B active footprint also keeps inference costs in a practical band.&quot;, &quot;source&quot;: &quot;Thinking Machines Lab&quot;, &quot;url&quot;: &quot;https://thinkingmachines.ai/news/inkling-2-small/&quot;, &quot;category&quot;: &quot;LLM&quot;, &quot;importance&quot;: 9}'>
+        <span class="brief-num">03</span>
+        <span class="brief-tag" style="background:#7c3aed">LLM</span>
+        <div class="brief-body">
+          <div class="brief-title">Thinking Machines ships Inkling 2 Small, a 594B-parameter MoE with 17B active</div>
+          <div class="brief-text">Inkling 2 Small is a mixture-of-experts model with 594 billion total parameters and 17 billion active, supporting image inputs and variable effort. It scores 31 on the Artificia...</div>
+        </div>
+        <span class="brief-score" style="--c:#7c3aed">9<small>/10</small></span>
+      </div>
+      <div class="brief-item spotlight" style="--c:#dc2626" data-article='{&quot;title&quot;: &quot;The Verge: GPT-6 Cyber&#x27;s selling point is staying out of bounds&quot;, &quot;summary&quot;: &quot;The Verge&#x27;s read on the launch focuses on the guarantee rather than the raw capability: the pitch is that GPT-6 Cyber finds more vulnerabilities without wandering into systems it was not asked to touch. The piece frames the release as a test of whether a frontier lab can sell offensive security tooling responsibly.&quot;, &quot;why_it_matters&quot;: &quot;Coverage that leads with containment rather than benchmark scores is a signal that buyers and regulators now judge cyber models on blast radius first.&quot;, &quot;source&quot;: &quot;The Verge&quot;, &quot;url&quot;: &quot;https://www.theverge.com/ai-artificial-intelligence/1027599/openai-gpt-6-cyber-launch&quot;, &quot;category&quot;: &quot;Safety&quot;, &quot;importance&quot;: 8}'>
+        <span class="brief-num">04</span>
+        <span class="brief-tag" style="background:#dc2626">Safety</span>
+        <div class="brief-body">
+          <div class="brief-title">The Verge: GPT-6 Cyber&#x27;s selling point is staying out of bounds</div>
+          <div class="brief-text">The Verge&#x27;s read on the launch focuses on the guarantee rather than the raw capability: the pitch is that GPT-6 Cyber finds more vulnerabilities without wandering into systems i...</div>
+        </div>
+        <span class="brief-score" style="--c:#dc2626">8<small>/10</small></span>
+      </div>
+      <div class="brief-item spotlight" style="--c:#7c3aed" data-article='{&quot;title&quot;: &quot;Moonshot releases Kimi K3.1 Pro open weights on Hugging Face&quot;, &quot;summary&quot;: &quot;Moonshot AI has published open weights for Kimi K3.1 Pro, described as a one-million-token multimodal agentic model, on Hugging Face. The release puts a long-context Chinese frontier model directly in the hands of anyone who wants to self-host or fine-tune it.&quot;, &quot;why_it_matters&quot;: &quot;Million-token context has until now been an API-only feature of closed models. Open weights at that scale change what long-document and long-horizon agent work costs to run.&quot;, &quot;source&quot;: &quot;Tech AI Latest&quot;, &quot;url&quot;: &quot;https://techailatest.news/open-source-ai/moonshot-kimi-k3-1-pro-open-weights-released&quot;, &quot;category&quot;: &quot;LLM&quot;, &quot;importance&quot;: 8}'>
+        <span class="brief-num">05</span>
+        <span class="brief-tag" style="background:#7c3aed">LLM</span>
+        <div class="brief-body">
+          <div class="brief-title">Moonshot releases Kimi K3.1 Pro open weights on Hugging Face</div>
+          <div class="brief-text">Moonshot AI has published open weights for Kimi K3.1 Pro, described as a one-million-token multimodal agentic model, on Hugging Face. The release puts a long-context Chinese fro...</div>
+        </div>
+        <span class="brief-score" style="--c:#7c3aed">8<small>/10</small></span>
+      </div>
+      <div class="brief-item spotlight" style="--c:#d97706" data-article='{&quot;title&quot;: &quot;Google agrees to backstop Anthropic&#x27;s $19 billion Kentucky data center lease&quot;, &quot;summary&quot;: &quot;Google has agreed to backstop the lease on Anthropic&#x27;s $19 billion Kentucky data-center commitment, according to reporting in DX Today&#x27;s daily roundup. The arrangement shifts part of the balance-sheet risk of Anthropic&#x27;s compute expansion onto its largest strategic investor.&quot;, &quot;why_it_matters&quot;: &quot;When a model lab&#x27;s landlord risk is carried by an investor, the compute race is being financed with vendor balance sheets rather than revenue. That is the structure regulators are now circling.&quot;, &quot;source&quot;: &quot;DX Today&quot;, &quot;url&quot;: &quot;https://dxtoday.com/blog/2026-11-05&quot;, &quot;category&quot;: &quot;Industry&quot;, &quot;importance&quot;: 8}'>
+        <span class="brief-num">06</span>
+        <span class="brief-tag" style="background:#d97706">Industry</span>
+        <div class="brief-body">
+          <div class="brief-title">Google agrees to backstop Anthropic&#x27;s $19 billion Kentucky data center lease</div>
+          <div class="brief-text">Google has agreed to backstop the lease on Anthropic&#x27;s $19 billion Kentucky data-center commitment, according to reporting in DX Today&#x27;s daily roundup. The arrangement shifts pa...</div>
+        </div>
+        <span class="brief-score" style="--c:#d97706">8<small>/10</small></span>
+      </div>
+      <div class="brief-item spotlight" style="--c:#dc2626" data-article='{&quot;title&quot;: &quot;Democrats pledge AI regulation after midterm wins&quot;, &quot;summary&quot;: &quot;Following the November 3 midterms, Democratic leaders pledged to pursue AI regulation, while the same briefing notes Anthropic reported a $567 million operating loss. The combination sets up a legislative session where AI spending and AI oversight are argued together.&quot;, &quot;why_it_matters&quot;: &quot;A Congress willing to legislate on AI changes the compliance cost of every data-center build and every model release. The loss figure is the counter-argument the industry will use.&quot;, &quot;source&quot;: &quot;Daily AI Brief&quot;, &quot;url&quot;: &quot;https://dailyaibrief.com/newsletters/daily-ai-brief/2026-11-05-democrats-pledge-ai-regulation-anthropic-reports-a-567-million-operating-loss-and-more-daily-ai-brief-575&quot;, &quot;category&quot;: &quot;Safety&quot;, &quot;importance&quot;: 8}'>
+        <span class="brief-num">07</span>
+        <span class="brief-tag" style="background:#dc2626">Safety</span>
+        <div class="brief-body">
+          <div class="brief-title">Democrats pledge AI regulation after midterm wins</div>
+          <div class="brief-text">Following the November 3 midterms, Democratic leaders pledged to pursue AI regulation, while the same briefing notes Anthropic reported a $567 million operating loss. The combin...</div>
+        </div>
+        <span class="brief-score" style="--c:#dc2626">8<small>/10</small></span>
+      </div>
+      <div class="brief-item spotlight" style="--c:#059669" data-article='{&quot;title&quot;: &quot;Science: modelling language learning from children&#x27;s everyday speech in the first 1,000 days&quot;, &quot;summary&quot;: &quot;A Science paper models language learning from individual children&#x27;s everyday speech across the first 1,000 days, using real longitudinal recordings rather than laboratory snapshots.&quot;, &quot;why_it_matters&quot;: &quot;Dense, naturalistic child-language data is the closest thing to a ground truth for sample-efficient learning, and it sets a benchmark that today&#x27;s data-hungry models fail badly.&quot;, &quot;source&quot;: &quot;Science&quot;, &quot;url&quot;: &quot;https://www.science.org/doi/10.1126/science.aeh9311&quot;, &quot;category&quot;: &quot;Research&quot;, &quot;importance&quot;: 8}'>
+        <span class="brief-num">08</span>
+        <span class="brief-tag" style="background:#059669">Research</span>
+        <div class="brief-body">
+          <div class="brief-title">Science: modelling language learning from children&#x27;s everyday speech in the first 1,000 days</div>
+          <div class="brief-text">A Science paper models language learning from individual children&#x27;s everyday speech across the first 1,000 days, using real longitudinal recordings rather than laboratory snapsh...</div>
+        </div>
+        <span class="brief-score" style="--c:#059669">8<small>/10</small></span>
+      </div>
+      <div class="brief-item spotlight" style="--c:#7c3aed" data-article='{&quot;title&quot;: &quot;Baidu releases ERNIE 5.5 Flash Base as a deliberately unfinished open model&quot;, &quot;summary&quot;: &quot;Baidu published ERNIE-5.5-Flash-Base, a 280-billion-parameter mixture-of-experts model with 14 billion active parameters, shipped without fine-tuning or post-training. It was pre-trained on 33.5 trillion tokens with a 128,000-token training context and is designed to support up to one million tokens during fine-tuning and inference. Weights are on Hugging Face in FP8 and BF16, and a post-trained version is expected later.&quot;, &quot;why_it_matters&quot;: &quot;Shipping a base checkpoint asks developers to do the post-training themselves, which is cheap for a well-resourced team and a wall for everyone else. It also signals Baidu competing on openness rather than on a finished product.&quot;, &quot;source&quot;: &quot;The Decoder&quot;, &quot;url&quot;: &quot;https://the-decoder.com/baidu-releases-ernie-5-5-flash-base-with-280-billion-parameters-as-an-open-source-foundation-model/&quot;, &quot;category&quot;: &quot;LLM&quot;, &quot;importance&quot;: 7}'>
+        <span class="brief-num">09</span>
+        <span class="brief-tag" style="background:#7c3aed">LLM</span>
+        <div class="brief-body">
+          <div class="brief-title">Baidu releases ERNIE 5.5 Flash Base as a deliberately unfinished open model</div>
+          <div class="brief-text">Baidu published ERNIE-5.5-Flash-Base, a 280-billion-parameter mixture-of-experts model with 14 billion active parameters, shipped without fine-tuning or post-training. It was pr...</div>
+        </div>
+        <span class="brief-score" style="--c:#7c3aed">7<small>/10</small></span>
+      </div>
+      <div class="brief-item spotlight" style="--c:#7c3aed" data-article='{&quot;title&quot;: &quot;Tencent launches Hy4 with vision and computer use&quot;, &quot;summary&quot;: &quot;Tencent&#x27;s Hy4 model arrives with native vision and computer-use capability, extending the Hunyuan line from text generation into screen-reading, clicking and form-filling agents. The launch places Tencent alongside other Chinese labs shipping agentic, multimodal models rather than pure chatbots.&quot;, &quot;why_it_matters&quot;: &quot;Computer use is the feature that turns a model into a worker on legacy software, and every major Chinese lab now ships it. That pressure will show up in pricing for agentic inference.&quot;, &quot;source&quot;: &quot;LLMs Blog&quot;, &quot;url&quot;: &quot;https://www.llms.blog/posts/tencent-hy4-launch-vision-computer-use&quot;, &quot;category&quot;: &quot;LLM&quot;, &quot;importance&quot;: 7}'>
+        <span class="brief-num">10</span>
+        <span class="brief-tag" style="background:#7c3aed">LLM</span>
+        <div class="brief-body">
+          <div class="brief-title">Tencent launches Hy4 with vision and computer use</div>
+          <div class="brief-text">Tencent&#x27;s Hy4 model arrives with native vision and computer-use capability, extending the Hunyuan line from text generation into screen-reading, clicking and form-filling agents...</div>
+        </div>
+        <span class="brief-score" style="--c:#7c3aed">7<small>/10</small></span>
+      </div>
+      <div class="brief-item spotlight" style="--c:#7c3aed" data-article='{&quot;title&quot;: &quot;Google ships Gemini Omni 1.2 Flash with native video&quot;, &quot;summary&quot;: &quot;Google released Gemini Omni 1.2 Flash with a one-million-token context and native video handling, now generally available in AI Studio. The release continues Google&#x27;s pattern of putting long context and media input into its cheapest tier first.&quot;, &quot;why_it_matters&quot;: &quot;Native video at Flash pricing moves video understanding from a specialist product into a default capability that developers can call per request.&quot;, &quot;source&quot;: &quot;The Decoder&quot;, &quot;url&quot;: &quot;https://the-decoder.com/&quot;, &quot;category&quot;: &quot;LLM&quot;, &quot;importance&quot;: 7}'>
+        <span class="brief-num">11</span>
+        <span class="brief-tag" style="background:#7c3aed">LLM</span>
+        <div class="brief-body">
+          <div class="brief-title">Google ships Gemini Omni 1.2 Flash with native video</div>
+          <div class="brief-text">Google released Gemini Omni 1.2 Flash with a one-million-token context and native video handling, now generally available in AI Studio. The release continues Google&#x27;s pattern of...</div>
+        </div>
+        <span class="brief-score" style="--c:#7c3aed">7<small>/10</small></span>
+      </div>
+      <div class="brief-item spotlight" style="--c:#059669" data-article='{&quot;title&quot;: &quot;Nature Machine Intelligence: reading model behaviour through fractal basin geometry&quot;, &quot;summary&quot;: &quot;The paper analyses the fractal geometry of basins in trained networks, using the structure of decision basins to explain why similar inputs can produce sharply different model behaviour.&quot;, &quot;why_it_matters&quot;: &quot;If instability has a measurable geometric signature, robustness testing stops being a hunt for adversarial examples and becomes a property you can estimate.&quot;, &quot;source&quot;: &quot;Nature Machine Intelligence&quot;, &quot;url&quot;: &quot;https://www.nature.com/articles/s42256-026-01336-3&quot;, &quot;category&quot;: &quot;Research&quot;, &quot;importance&quot;: 7}'>
+        <span class="brief-num">12</span>
+        <span class="brief-tag" style="background:#059669">Research</span>
+        <div class="brief-body">
+          <div class="brief-title">Nature Machine Intelligence: reading model behaviour through fractal basin geometry</div>
+          <div class="brief-text">The paper analyses the fractal geometry of basins in trained networks, using the structure of decision basins to explain why similar inputs can produce sharply different model b...</div>
+        </div>
+        <span class="brief-score" style="--c:#059669">7<small>/10</small></span>
+      </div>
+      <div class="brief-item spotlight" style="--c:#7c3aed" data-article='{&quot;title&quot;: &quot;Ant Ling releases Ling-3.2-flash, a 560B/25B native multimodal MoE&quot;, &quot;summary&quot;: &quot;Ling-3.2-flash is a 560-billion-parameter mixture-of-experts model with 25 billion active parameters, natively multimodal across image, text and video, with a one-million-token context and an API-first release.&quot;, &quot;why_it_matters&quot;: &quot;Another very large sparse model with a small active slice confirms the industry&#x27;s bet that parameter count should grow while per-token compute stays flat.&quot;, &quot;source&quot;: &quot;AGI Pulse&quot;, &quot;url&quot;: &quot;https://agipulse.org/e/1092&quot;, &quot;category&quot;: &quot;LLM&quot;, &quot;importance&quot;: 6}'>
+        <span class="brief-num">13</span>
+        <span class="brief-tag" style="background:#7c3aed">LLM</span>
+        <div class="brief-body">
+          <div class="brief-title">Ant Ling releases Ling-3.2-flash, a 560B/25B native multimodal MoE</div>
+          <div class="brief-text">Ling-3.2-flash is a 560-billion-parameter mixture-of-experts model with 25 billion active parameters, natively multimodal across image, text and video, with a one-million-token ...</div>
+        </div>
+        <span class="brief-score" style="--c:#7c3aed">6<small>/10</small></span>
+      </div>
+      <div class="brief-item spotlight" style="--c:#7c3aed" data-article='{&quot;title&quot;: &quot;Ripple-65B Preview ships as a cheaper open-weight coding model&quot;, &quot;summary&quot;: &quot;Ripple-65B Preview is positioned as a lower-cost open-weight model aimed at coding workloads, trading absolute benchmark leadership for inference economics.&quot;, &quot;why_it_matters&quot;: &quot;Most production coding agents are cost-bound, not capability-bound. A credible 65B option narrows the gap between self-hosted and frontier API economics.&quot;, &quot;source&quot;: &quot;AI Agents Listing&quot;, &quot;url&quot;: &quot;https://aiagentslisting.com/news/ripple-65b-preview-ships-as-a-cheaper-open-weight-coding-model&quot;, &quot;category&quot;: &quot;LLM&quot;, &quot;importance&quot;: 6}'>
+        <span class="brief-num">14</span>
+        <span class="brief-tag" style="background:#7c3aed">LLM</span>
+        <div class="brief-body">
+          <div class="brief-title">Ripple-65B Preview ships as a cheaper open-weight coding model</div>
+          <div class="brief-text">Ripple-65B Preview is positioned as a lower-cost open-weight model aimed at coding workloads, trading absolute benchmark leadership for inference economics..</div>
+        </div>
+        <span class="brief-score" style="--c:#7c3aed">6<small>/10</small></span>
+      </div>
+      <div class="brief-item spotlight" style="--c:#d97706" data-article='{&quot;title&quot;: &quot;Meta acquires Conductor to shore up its model pipeline&quot;, &quot;summary&quot;: &quot;Meta has bought Conductor for its model pipeline, the latest in a run of small AI acquisitions since China blocked its bid for Manus. The deal is a talent and tooling purchase rather than a product line.&quot;, &quot;why_it_matters&quot;: &quot;Meta is assembling capability through acqui-hires while its largest deal is blocked abroad, a pattern that keeps antitrust exposure low but integration debt high.&quot;, &quot;source&quot;: &quot;DEV Community digest&quot;, &quot;url&quot;: &quot;https://dev.to/hiroki-ii-ai/ai-daily-digest-november-6-2026-openai-ships-gpt-6-cyber-meta-buys-conductor-anthropic-locks-1jij&quot;, &quot;category&quot;: &quot;Industry&quot;, &quot;importance&quot;: 6}'>
+        <span class="brief-num">15</span>
+        <span class="brief-tag" style="background:#d97706">Industry</span>
+        <div class="brief-body">
+          <div class="brief-title">Meta acquires Conductor to shore up its model pipeline</div>
+          <div class="brief-text">Meta has bought Conductor for its model pipeline, the latest in a run of small AI acquisitions since China blocked its bid for Manus. The deal is a talent and tooling purchase r...</div>
+        </div>
+        <span class="brief-score" style="--c:#d97706">6<small>/10</small></span>
+      </div>
+      <div class="brief-item spotlight" style="--c:#0891b2" data-article='{&quot;title&quot;: &quot;Launch HN: Rivet orchestrates agents on S3 with the actor model&quot;, &quot;summary&quot;: &quot;Rivet, a YC W23 company, launched an open-source orchestrator that gives each agent a lightweight actor backed by S3 instead of a heavyweight sandbox. Actors provide a long-lived process for long turns, in-memory context, a WebSocket server for multiplayer, durable SQLite on S3 and hibernation when idle. Self-hosting needs one Rust binary and an S3 bucket.&quot;, &quot;why_it_matters&quot;: &quot;Agent infrastructure is converging on durable, cheap-to-park execution. That is what makes long-running agents affordable at scale rather than a per-sandbox tax.&quot;, &quot;source&quot;: &quot;Hacker News&quot;, &quot;url&quot;: &quot;https://news.ycombinator.com/item?id=50381687&quot;, &quot;category&quot;: &quot;Tools&quot;, &quot;importance&quot;: 6}'>
+        <span class="brief-num">16</span>
+        <span class="brief-tag" style="background:#0891b2">Tools</span>
+        <div class="brief-body">
+          <div class="brief-title">Launch HN: Rivet orchestrates agents on S3 with the actor model</div>
+          <div class="brief-text">Rivet, a YC W23 company, launched an open-source orchestrator that gives each agent a lightweight actor backed by S3 instead of a heavyweight sandbox. Actors provide a long-live...</div>
+        </div>
+        <span class="brief-score" style="--c:#0891b2">6<small>/10</small></span>
+      </div>
+      <div class="brief-item spotlight" style="--c:#0891b2" data-article='{&quot;title&quot;: &quot;Show HN: a text-to-image model trained for about $20K, Apache 2.0 weights&quot;, &quot;summary&quot;: &quot;A developer released a text-to-image model trained for roughly $20,000 and published the weights under Apache 2.0, arguing the result is usable rather than state of the art.&quot;, &quot;why_it_matters&quot;: &quot;The cost of a credible image model has fallen to a rounding error for a small team. That resets expectations for what a startup can build without a cloud budget.&quot;, &quot;source&quot;: &quot;Hacker News&quot;, &quot;url&quot;: &quot;https://news.ycombinator.com/item?id=50368208&quot;, &quot;category&quot;: &quot;Tools&quot;, &quot;importance&quot;: 6}'>
+        <span class="brief-num">17</span>
+        <span class="brief-tag" style="background:#0891b2">Tools</span>
+        <div class="brief-body">
+          <div class="brief-title">Show HN: a text-to-image model trained for about $20K, Apache 2.0 weights</div>
+          <div class="brief-text">A developer released a text-to-image model trained for roughly $20,000 and published the weights under Apache 2.0, arguing the result is usable rather than state of the art..</div>
+        </div>
+        <span class="brief-score" style="--c:#0891b2">6<small>/10</small></span>
+      </div>
+      <div class="brief-item spotlight" style="--c:#059669" data-article='{&quot;title&quot;: &quot;Anthropic: how researchers actually use Claude&quot;, &quot;summary&quot;: &quot;Anthropic published an analysis of how working scientists use Claude in their research, covering the tasks where the model helps and where researchers still route around it.&quot;, &quot;why_it_matters&quot;: &quot;Vendor-reported usage patterns are thin evidence, but they are the only public signal on where AI is genuinely embedded in scientific work rather than demoed.&quot;, &quot;source&quot;: &quot;Anthropic&quot;, &quot;url&quot;: &quot;https://www.anthropic.com/research/how-researchers-use-claude&quot;, &quot;category&quot;: &quot;Research&quot;, &quot;importance&quot;: 6}'>
+        <span class="brief-num">18</span>
+        <span class="brief-tag" style="background:#059669">Research</span>
+        <div class="brief-body">
+          <div class="brief-title">Anthropic: how researchers actually use Claude</div>
+          <div class="brief-text">Anthropic published an analysis of how working scientists use Claude in their research, covering the tasks where the model helps and where researchers still route around it..</div>
+        </div>
+        <span class="brief-score" style="--c:#059669">6<small>/10</small></span>
+      </div>
+      <div class="brief-item spotlight" style="--c:#059669" data-article='{&quot;title&quot;: &quot;AdamMAD swaps squared gradients for mean absolute deviation to calm training&quot;, &quot;summary&quot;: &quot;A new optimizer, AdamMAD, replaces the squared-gradient term in Adam&#x27;s second moment with mean absolute deviation, which the authors report cuts training oscillations.&quot;, &quot;why_it_matters&quot;: &quot;Optimizer changes are the cheapest lever on training cost. Even a modest stability gain compounds across a full pre-training run.&quot;, &quot;source&quot;: &quot;Bioengineer.org&quot;, &quot;url&quot;: &quot;https://bioengineer.org/new-adammad-optimizer-swaps-squared-gradients-for-mean-absolute-deviation-to-cut-training-oscillations/&quot;, &quot;category&quot;: &quot;Research&quot;, &quot;importance&quot;: 6}'>
+        <span class="brief-num">19</span>
+        <span class="brief-tag" style="background:#059669">Research</span>
+        <div class="brief-body">
+          <div class="brief-title">AdamMAD swaps squared gradients for mean absolute deviation to calm training</div>
+          <div class="brief-text">A new optimizer, AdamMAD, replaces the squared-gradient term in Adam&#x27;s second moment with mean absolute deviation, which the authors report cuts training oscillations..</div>
+        </div>
+        <span class="brief-score" style="--c:#059669">6<small>/10</small></span>
+      </div>
+      <div class="brief-item spotlight" style="--c:#059669" data-article='{&quot;title&quot;: &quot;Agents, think only when it helps: adaptive reasoning for agentic models&quot;, &quot;summary&quot;: &quot;A new arXiv paper argues agents should allocate reasoning effort adaptively, thinking longer only where it measurably improves the outcome and answering directly elsewhere.&quot;, &quot;why_it_matters&quot;: &quot;Most agent cost is wasted deliberation. Making effort a decision rather than a default is the difference between an agent that is affordable to run all day and one that is not.&quot;, &quot;source&quot;: &quot;Newsference&quot;, &quot;url&quot;: &quot;https://newsference.com/c/arxiv-agents-think-only-when-it-helps-24180009&quot;, &quot;category&quot;: &quot;Research&quot;, &quot;importance&quot;: 6}'>
+        <span class="brief-num">20</span>
+        <span class="brief-tag" style="background:#059669">Research</span>
+        <div class="brief-body">
+          <div class="brief-title">Agents, think only when it helps: adaptive reasoning for agentic models</div>
+          <div class="brief-text">A new arXiv paper argues agents should allocate reasoning effort adaptively, thinking longer only where it measurably improves the outcome and answering directly elsewhere..</div>
+        </div>
+        <span class="brief-score" style="--c:#059669">6<small>/10</small></span>
+      </div>
+      <div class="brief-item spotlight" style="--c:#d97706" data-article='{&quot;title&quot;: &quot;USA Today Co. leans on AI for advertising video&quot;, &quot;summary&quot;: &quot;Poynter reports on how Gannett&#x27;s USA Today Co. is using AI in advertising video production, part of a wider push by news publishers to turn editorial and commercial workflows over to generated media.&quot;, &quot;why_it_matters&quot;: &quot;Advertising, not journalism, is where publisher AI adoption is fastest, because the output is commercial and the disclosure expectations are thinner.&quot;, &quot;source&quot;: &quot;Poynter&quot;, &quot;url&quot;: &quot;https://www.poynter.org/business-work/2026/usa-today-co-ai-use-advertising-video/&quot;, &quot;category&quot;: &quot;Industry&quot;, &quot;importance&quot;: 5}'>
+        <span class="brief-num">21</span>
+        <span class="brief-tag" style="background:#d97706">Industry</span>
+        <div class="brief-body">
+          <div class="brief-title">USA Today Co. leans on AI for advertising video</div>
+          <div class="brief-text">Poynter reports on how Gannett&#x27;s USA Today Co. is using AI in advertising video production, part of a wider push by news publishers to turn editorial and commercial workflows ov...</div>
+        </div>
+        <span class="brief-score" style="--c:#d97706">5<small>/10</small></span>
+      </div>
+      <div class="brief-item spotlight" style="--c:#0891b2" data-article='{&quot;title&quot;: &quot;Gauge: an open-source CLI that tests your docs against coding agents&quot;, &quot;summary&quot;: &quot;Gauge is an open-source command-line tool that runs a project&#x27;s documentation and skill files past coding agents to check whether the instructions actually produce working results.&quot;, &quot;why_it_matters&quot;: &quot;As agents consume documentation instead of humans, docs become executable specification. Testing them is the obvious next step and almost nobody does it yet.&quot;, &quot;source&quot;: &quot;Models at Work&quot;, &quot;url&quot;: &quot;https://modelsatwork.news/article/gauge-open-source-cli-test-docs-skills-with-coding-agents-show-hn&quot;, &quot;category&quot;: &quot;Tools&quot;, &quot;importance&quot;: 5}'>
+        <span class="brief-num">22</span>
+        <span class="brief-tag" style="background:#0891b2">Tools</span>
+        <div class="brief-body">
+          <div class="brief-title">Gauge: an open-source CLI that tests your docs against coding agents</div>
+          <div class="brief-text">Gauge is an open-source command-line tool that runs a project&#x27;s documentation and skill files past coding agents to check whether the instructions actually produce working resul...</div>
+        </div>
+        <span class="brief-score" style="--c:#0891b2">5<small>/10</small></span>
+      </div>
+      <div class="brief-item spotlight" style="--c:#059669" data-article='{&quot;title&quot;: &quot;Self-supervised learning of universal latent spaces for operator learning&quot;, &quot;summary&quot;: &quot;The paper proposes a self-supervised route to latent representations that transfer across operator-learning tasks, instead of training a separate surrogate model per physical system.&quot;, &quot;why_it_matters&quot;: &quot;Reusable latent spaces would cut the data cost of scientific machine learning, where every new system currently means a new dataset and a new model.&quot;, &quot;source&quot;: &quot;ArXivSignals&quot;, &quot;url&quot;: &quot;https://arxivsignals.io/papers/2611.05735&quot;, &quot;category&quot;: &quot;Research&quot;, &quot;importance&quot;: 5}'>
+        <span class="brief-num">23</span>
+        <span class="brief-tag" style="background:#059669">Research</span>
+        <div class="brief-body">
+          <div class="brief-title">Self-supervised learning of universal latent spaces for operator learning</div>
+          <div class="brief-text">The paper proposes a self-supervised route to latent representations that transfer across operator-learning tasks, instead of training a separate surrogate model per physical sy...</div>
+        </div>
+        <span class="brief-score" style="--c:#059669">5<small>/10</small></span>
+      </div>
+      <div class="brief-item spotlight" style="--c:#059669" data-article='{&quot;title&quot;: &quot;Context enrichment helps LLM social agents, but robustness gains plateau&quot;, &quot;summary&quot;: &quot;A study of LLM social agents finds that enriching context reduces brittleness, but the robustness improvement plateaus rather than scaling with more context. The authors tie this to open questions about the reliability of agent-based social simulation.&quot;, &quot;why_it_matters&quot;: &quot;A lot of policy and market research now leans on simulated populations. A plateau in robustness means those simulations carry error bars nobody is reporting.&quot;, &quot;source&quot;: &quot;AI.Wire&quot;, &quot;url&quot;: &quot;https://thewire.ink/category/academic&quot;, &quot;category&quot;: &quot;Research&quot;, &quot;importance&quot;: 5}'>
+        <span class="brief-num">24</span>
+        <span class="brief-tag" style="background:#059669">Research</span>
+        <div class="brief-body">
+          <div class="brief-title">Context enrichment helps LLM social agents, but robustness gains plateau</div>
+          <div class="brief-text">A study of LLM social agents finds that enriching context reduces brittleness, but the robustness improvement plateaus rather than scaling with more context. The authors tie thi...</div>
+        </div>
+        <span class="brief-score" style="--c:#059669">5<small>/10</small></span>
+      </div>
+    </div>
+
+    <hr class="divider">
+
+    <div class="concept reveal">
+      <span class="concept-label">Concept of the Day</span>
+      <h2>Scope Discipline</h2>
+      <p class="sub">Why the most important number in a cyber model is the one measuring what it refuses to do</p>
+      <p>For three years the headline metric for a frontier model has been a capability score: how many problems it solves, how high it ranks, how far it beats the previous generation. GPT-6 Cyber breaks that pattern. The number OpenAI put first is not the 48.5% on ExploitGym but the 99.93% of tests in which the model declined to touch a service outside its brief, rising to 100% with its deployment prompt.</p>
+<p>That figure matters because offensive security is the first domain where a capability gain is indistinguishable from a risk gain. A model that finds one more vulnerability per hour is useful; a model that finds one more vulnerability per hour <em>in a system nobody authorised it to look at</em> is a liability with a support contract. The two cannot be separated by evaluating capability alone, which is why scope adherence had to become a first-class metric.</p>
+<p>The interesting part is the measurement design. ExploitGym tests whether a model can exploit a specified vulnerability, so the model is given an authorised target and scored on success. The alignment evaluation then does the opposite: it presents out-of-scope services and asks whether the model stays out. One evaluation rewards reaching; the other rewards stopping. A model has to be good at both, and the gap between them is the product.</p>
+<p>Compare this with how open weights are now released. Thinking Machines is shipping Inkling 2 Small behind an API first, with full Apache 2.0 weights held until external safety testing and red-teaming completes. That is the same idea in a different register: the capability exists on day one, but its distribution is gated on evidence that the containment work is real. Both cases treat safety as a <em>sequencing</em> problem rather than a filter bolted on at the end.</p>
+<p>The unresolved question is whether scope discipline transfers. A deployment prompt that produces 100% in-distribution compliance is a prompt, and prompts are what get stripped, jailbroken or simply forgotten by the integrator downstream. Until there is a public, adversarial benchmark for staying in bounds that is run by someone other than the lab that built the model, scope adherence remains a claim rather than a property. That benchmark is the most useful thing the field could publish next.</p>
+    </div>
+
+    <hr class="divider">
+
+    <div class="briefing-box reveal">
+      <h2>The State of AI <em>2026-11-06</em></h2>
+      <p>The biggest story today is a security model, and the most important thing about it is what it will not do. OpenAI&#x27;s GPT-6 Cyber improves on ExploitGym from 32.1% to 48.5% while holding out-of-scope behaviour to 99.93% without its deployment prompt and 100% with it, and it has already validated thousands of exploits in Linux and Firefox. Capability and containment shipped in the same release, and coverage led with the second.</p>
+<p>Four Chinese open-weight releases landed in the same window: Baidu&#x27;s ERNIE 5.5 Flash Base at 280B parameters with 14B active and no post-training at all, Moonshot&#x27;s Kimi K3.1 Pro with million-token context on Hugging Face, Ant Ling&#x27;s 560B/25B multimodal Ling-3.2-flash, and Tencent&#x27;s Hy4 with vision and computer use. Add Google&#x27;s Gemini Omni 1.2 Flash with native video and the shape is obvious: large sparse mixtures, small active slices, very long context.</p>
+<p>Money moved harder than models. The S&amp;P 500 fell 4.4% in one session, the Dow lost 1,833 points and the Nasdaq closed 11.9% below its record, all led by data-center names, in the same week Democrats won Congress and pledged AI regulation and Google agreed to backstop Anthropic&#x27;s $19 billion Kentucky lease. When an investor carries the landlord risk of a model lab, the compute race is being financed off balance sheet.</p>
+<p>Research was quieter but pointed. A Science paper models language learning from real children&#x27;s everyday speech across the first 1,000 days, Nature Machine Intelligence looks at fractal basin geometry as an explanation for unstable model behaviour, and an arXiv paper argues agents should spend reasoning effort adaptively rather than by default. Each one is about efficiency or predictability, not scale.</p>
+<p>In tools, Rivet launched an actor-based agent orchestrator that runs on a single Rust binary and an S3 bucket, and someone published a usable text-to-image model trained for about $20,000 under Apache 2.0. Both point the same way: the infrastructure floor keeps falling, and the interesting question is no longer whether you can afford to build, but whether you can afford to keep it in bounds.</p>
+    </div>
+  </div>
+
+  <!-- TRENDS -->
+  <div class="tab-body" id="trends">
+    <h2 class="sec-head">Emerging Trends <span class="count">Click to expand</span></h2>
+    <div class="grid-cards">
+      <div class="card spotlight trend" style="--c:var(--accent)" data-trend="0">
+        <div class="trend-header">
+          <div class="trend-emoji">🔥</div>
+          <div class="trend-info">
+            <h3 class="trend-h">Capability and containment are being shipped as one product</h3>
+            <p class="trend-d">GPT-6 Cyber leads with scope adherence the way models used to lead with benchmark scores, and Thinking Machines holds back weights until external red-teaming finishes. The frontier is being sold on blast radius, not just ability.</p>
+            <span class="trend-n">3 stories</span>
+          </div>
+          <span class="trend-expand">▼</span>
+        </div>
+        <div class="trend-stories">
+          <div class="trend-stories-label">Related stories (3)</div>
+          <div class="trend-story-list"><div class="trend-story">OpenAI releases GPT-6 Cyber, a security model trained to stay inside scope</div><div class="trend-story">Thinking Machines ships Inkling 2 Small, a 594B-parameter MoE with 17B active</div><div class="trend-story">The Verge: GPT-6 Cyber&#x27;s selling point is staying out of bounds</div></div>
+        </div>
+      </div>
+      <div class="card spotlight trend" style="--c:var(--accent)" data-trend="1">
+        <div class="trend-header">
+          <div class="trend-emoji">🚀</div>
+          <div class="trend-info">
+            <h3 class="trend-h">The open-weight race is Chinese, sparse and long-context</h3>
+            <p class="trend-d">ERNIE 5.5 Flash Base, Kimi K3.1 Pro, Ling-3.2-flash and Tencent Hy4 all landed in the same window, and all use large sparse MoE designs with small active parameter counts and very long context.</p>
+            <span class="trend-n">3 stories</span>
+          </div>
+          <span class="trend-expand">▼</span>
+        </div>
+        <div class="trend-stories">
+          <div class="trend-stories-label">Related stories (3)</div>
+          <div class="trend-story-list"><div class="trend-story">Moonshot releases Kimi K3.1 Pro open weights on Hugging Face</div><div class="trend-story">Baidu releases ERNIE 5.5 Flash Base as a deliberately unfinished open model</div><div class="trend-story">Ant Ling releases Ling-3.2-flash, a 560B/25B native multimodal MoE</div></div>
+        </div>
+      </div>
+      <div class="card spotlight trend" style="--c:var(--accent)" data-trend="2">
+        <div class="trend-header">
+          <div class="trend-emoji">🧠</div>
+          <div class="trend-info">
+            <h3 class="trend-h">Compute politics is repricing AI equities</h3>
+            <p class="trend-d">A 4.4% single-day fall in the S&amp;P 500, led by data-center names, arrived alongside midterm results and a Google backstop of Anthropic&#x27;s $19 billion Kentucky lease. Financing structure and local politics now move AI stocks more than model releases.</p>
+            <span class="trend-n">0 stories</span>
+          </div>
+          <span class="trend-expand">▼</span>
+        </div>
+        <div class="trend-stories">
+          <div class="trend-stories-label">Related stories (0)</div>
+          <div class="trend-story-list"></div>
+        </div>
+      </div>
+      <div class="card spotlight trend" style="--c:var(--accent)" data-trend="3">
+        <div class="trend-header">
+          <div class="trend-emoji">⚠️</div>
+          <div class="trend-info">
+            <h3 class="trend-h">Small budgets, credible models</h3>
+            <p class="trend-d">A usable text-to-image model for about $20,000, a cheaper 65B coding model and an open CLI for testing docs against agents point the same way: the floor for a serious build keeps dropping.</p>
+            <span class="trend-n">2 stories</span>
+          </div>
+          <span class="trend-expand">▼</span>
+        </div>
+        <div class="trend-stories">
+          <div class="trend-stories-label">Related stories (2)</div>
+          <div class="trend-story-list"><div class="trend-story">Ripple-65B Preview ships as a cheaper open-weight coding model</div><div class="trend-story">Gauge: an open-source CLI that tests your docs against coding agents</div></div>
+        </div>
+      </div>
+      </div>
+  </div>
+
+  <!-- TOP 10 -->
+  <div class="tab-body" id="top10">
+    <h2 class="sec-head">Top 10 Ranked Updates</h2>
+    <p style="color:var(--muted);font-size:.85em;margin-bottom:22px">Click "Open" to read the full article in a new tab, or "Read More" for details.</p>
+    <div class="grid-cards">
+      <div class="card spotlight top10" style="--c:#dc2626" data-article='{&quot;title&quot;: &quot;OpenAI releases GPT-6 Cyber, a security model trained to stay inside scope&quot;, &quot;summary&quot;: &quot;OpenAI introduced GPT-6 Cyber, a cybersecurity model trained to find and validate exploitable vulnerabilities while remaining within the boundaries a researcher sets. It scores 48.5% on ExploitGym, up from 32.1% for GPT-5.6 Cyber, a 51% relative gain. In a separate alignment evaluation it avoided exploiting out-of-scope services in 99.93% of tests without its deployment prompt and 100% with it. OpenAI says the model has already uncovered and validated thousands of exploits in security-critical codebases including Linux and Firefox.&quot;, &quot;why_it_matters&quot;: &quot;It is the clearest attempt yet to ship a dual-use capability with the containment metric treated as a headline result rather than an appendix. If scope adherence holds outside lab evaluations, automated vulnerability research becomes something enterprises can actually deploy.&quot;, &quot;source&quot;: &quot;OpenAI&quot;, &quot;url&quot;: &quot;https://openai.com/index/introducing-gpt-6-cyber&quot;, &quot;category&quot;: &quot;Safety&quot;, &quot;importance&quot;: 10}'>
+        <div class="rank" style="background:linear-gradient(135deg,#dc2626,#dc262688)">01</div>
+        <div class="card-body">
+          <span class="card-cat" style="background:#dc2626">Safety</span>
+          <h3 class="card-title">OpenAI releases GPT-6 Cyber, a security model trained to stay inside scope</h3>
+          <p class="card-summary">OpenAI introduced GPT-6 Cyber, a cybersecurity model trained to find and validate exploitable vulnerabilities while remaining within the boundaries a researcher sets. It scores 48.5% on ExploitGym, up from 32.1% for GPT-5.6 Cyber, a 51% relative gain.</p>
+          <div class="card-actions">
+            <a href="https://openai.com/index/introducing-gpt-6-cyber" target="_blank" rel="noopener" class="open-btn" style="--c:#dc2626">Open ↗</a>
+            <button class="read-more-btn" data-article='{&quot;title&quot;: &quot;OpenAI releases GPT-6 Cyber, a security model trained to stay inside scope&quot;, &quot;summary&quot;: &quot;OpenAI introduced GPT-6 Cyber, a cybersecurity model trained to find and validate exploitable vulnerabilities while remaining within the boundaries a researcher sets. It scores 48.5% on ExploitGym, up from 32.1% for GPT-5.6 Cyber, a 51% relative gain. In a separate alignment evaluation it avoided exploiting out-of-scope services in 99.93% of tests without its deployment prompt and 100% with it. OpenAI says the model has already uncovered and validated thousands of exploits in security-critical codebases including Linux and Firefox.&quot;, &quot;why_it_matters&quot;: &quot;It is the clearest attempt yet to ship a dual-use capability with the containment metric treated as a headline result rather than an appendix. If scope adherence holds outside lab evaluations, automated vulnerability research becomes something enterprises can actually deploy.&quot;, &quot;source&quot;: &quot;OpenAI&quot;, &quot;url&quot;: &quot;https://openai.com/index/introducing-gpt-6-cyber&quot;, &quot;category&quot;: &quot;Safety&quot;, &quot;importance&quot;: 10}' style="--c:#dc2626">Read More</button>
+          </div>
+          <div class="card-meta">OpenAI &middot; Score: 10/10</div>
+        </div>
+      </div>
+      <div class="card spotlight top10" style="--c:#d97706" data-article='{&quot;title&quot;: &quot;Wall Street&#x27;s AI trade cracks: S&amp;P 500 falls 4.4% in a single session&quot;, &quot;summary&quot;: &quot;A sell-off led by companies tied to the AI data-center buildout erased the market&#x27;s previous gain, its best day in three months. The S&amp;P 500 fell 4.4%, its worst session since the April 2025 tariff shock, the Dow dropped 1,833 points or 3.4%, and the Nasdaq fell 5.5%, leaving it 11.9% below its record high.&quot;, &quot;why_it_matters&quot;: &quot;The market has started pricing AI infrastructure as a political and financing risk rather than a pure growth story. That repricing will decide which data-center projects actually get built.&quot;, &quot;source&quot;: &quot;Associated Press&quot;, &quot;url&quot;: &quot;https://apnews.com/article/stocks-markets-ai-midterm-oil-trump-7ee9c212805aa5e70cf34d25aab7a36e&quot;, &quot;category&quot;: &quot;Industry&quot;, &quot;importance&quot;: 10}'>
+        <div class="rank" style="background:linear-gradient(135deg,#d97706,#d9770688)">02</div>
+        <div class="card-body">
+          <span class="card-cat" style="background:#d97706">Industry</span>
+          <h3 class="card-title">Wall Street&#x27;s AI trade cracks: S&amp;P 500 falls 4.4% in a single session</h3>
+          <p class="card-summary">A sell-off led by companies tied to the AI data-center buildout erased the market&#x27;s previous gain, its best day in three months. The S&amp;P 500 fell 4.4%, its worst session since the April 2025 tariff shock, the Dow dropped 1,833 points or 3.4%, and the Nasdaq fell 5.5%, leaving it 11.9% below its record high..</p>
+          <div class="card-actions">
+            <a href="https://apnews.com/article/stocks-markets-ai-midterm-oil-trump-7ee9c212805aa5e70cf34d25aab7a36e" target="_blank" rel="noopener" class="open-btn" style="--c:#d97706">Open ↗</a>
+            <button class="read-more-btn" data-article='{&quot;title&quot;: &quot;Wall Street&#x27;s AI trade cracks: S&amp;P 500 falls 4.4% in a single session&quot;, &quot;summary&quot;: &quot;A sell-off led by companies tied to the AI data-center buildout erased the market&#x27;s previous gain, its best day in three months. The S&amp;P 500 fell 4.4%, its worst session since the April 2025 tariff shock, the Dow dropped 1,833 points or 3.4%, and the Nasdaq fell 5.5%, leaving it 11.9% below its record high.&quot;, &quot;why_it_matters&quot;: &quot;The market has started pricing AI infrastructure as a political and financing risk rather than a pure growth story. That repricing will decide which data-center projects actually get built.&quot;, &quot;source&quot;: &quot;Associated Press&quot;, &quot;url&quot;: &quot;https://apnews.com/article/stocks-markets-ai-midterm-oil-trump-7ee9c212805aa5e70cf34d25aab7a36e&quot;, &quot;category&quot;: &quot;Industry&quot;, &quot;importance&quot;: 10}' style="--c:#d97706">Read More</button>
+          </div>
+          <div class="card-meta">Associated Press &middot; Score: 10/10</div>
+        </div>
+      </div>
+      <div class="card spotlight top10" style="--c:#7c3aed" data-article='{&quot;title&quot;: &quot;Thinking Machines ships Inkling 2 Small, a 594B-parameter MoE with 17B active&quot;, &quot;summary&quot;: &quot;Inkling 2 Small is a mixture-of-experts model with 594 billion total parameters and 17 billion active, supporting image inputs and variable effort. It scores 31 on the Artificial Analysis Intelligence Index, with gains concentrated in agentic coding, vision, knowledge work and reasoning. It launches through Tinker with closed weights, and the company says full Apache 2.0 weights follow next week once external safety testing and red-teaming finish.&quot;, &quot;why_it_matters&quot;: &quot;A staged release, closed first and open after third-party testing, is becoming the template for labs that want open weights without shipping them untested. The 17B active footprint also keeps inference costs in a practical band.&quot;, &quot;source&quot;: &quot;Thinking Machines Lab&quot;, &quot;url&quot;: &quot;https://thinkingmachines.ai/news/inkling-2-small/&quot;, &quot;category&quot;: &quot;LLM&quot;, &quot;importance&quot;: 9}'>
+        <div class="rank" style="background:linear-gradient(135deg,#7c3aed,#7c3aed88)">03</div>
+        <div class="card-body">
+          <span class="card-cat" style="background:#7c3aed">LLM</span>
+          <h3 class="card-title">Thinking Machines ships Inkling 2 Small, a 594B-parameter MoE with 17B active</h3>
+          <p class="card-summary">Inkling 2 Small is a mixture-of-experts model with 594 billion total parameters and 17 billion active, supporting image inputs and variable effort. It scores 31 on the Artificial Analysis Intelligence Index, with gains concentrated in agentic coding, vision, knowledge work and reasoning.</p>
+          <div class="card-actions">
+            <a href="https://thinkingmachines.ai/news/inkling-2-small/" target="_blank" rel="noopener" class="open-btn" style="--c:#7c3aed">Open ↗</a>
+            <button class="read-more-btn" data-article='{&quot;title&quot;: &quot;Thinking Machines ships Inkling 2 Small, a 594B-parameter MoE with 17B active&quot;, &quot;summary&quot;: &quot;Inkling 2 Small is a mixture-of-experts model with 594 billion total parameters and 17 billion active, supporting image inputs and variable effort. It scores 31 on the Artificial Analysis Intelligence Index, with gains concentrated in agentic coding, vision, knowledge work and reasoning. It launches through Tinker with closed weights, and the company says full Apache 2.0 weights follow next week once external safety testing and red-teaming finish.&quot;, &quot;why_it_matters&quot;: &quot;A staged release, closed first and open after third-party testing, is becoming the template for labs that want open weights without shipping them untested. The 17B active footprint also keeps inference costs in a practical band.&quot;, &quot;source&quot;: &quot;Thinking Machines Lab&quot;, &quot;url&quot;: &quot;https://thinkingmachines.ai/news/inkling-2-small/&quot;, &quot;category&quot;: &quot;LLM&quot;, &quot;importance&quot;: 9}' style="--c:#7c3aed">Read More</button>
+          </div>
+          <div class="card-meta">Thinking Machines Lab &middot; Score: 9/10</div>
+        </div>
+      </div>
+      <div class="card spotlight top10" style="--c:#dc2626" data-article='{&quot;title&quot;: &quot;The Verge: GPT-6 Cyber&#x27;s selling point is staying out of bounds&quot;, &quot;summary&quot;: &quot;The Verge&#x27;s read on the launch focuses on the guarantee rather than the raw capability: the pitch is that GPT-6 Cyber finds more vulnerabilities without wandering into systems it was not asked to touch. The piece frames the release as a test of whether a frontier lab can sell offensive security tooling responsibly.&quot;, &quot;why_it_matters&quot;: &quot;Coverage that leads with containment rather than benchmark scores is a signal that buyers and regulators now judge cyber models on blast radius first.&quot;, &quot;source&quot;: &quot;The Verge&quot;, &quot;url&quot;: &quot;https://www.theverge.com/ai-artificial-intelligence/1027599/openai-gpt-6-cyber-launch&quot;, &quot;category&quot;: &quot;Safety&quot;, &quot;importance&quot;: 8}'>
+        <div class="rank" style="background:linear-gradient(135deg,#dc2626,#dc262688)">04</div>
+        <div class="card-body">
+          <span class="card-cat" style="background:#dc2626">Safety</span>
+          <h3 class="card-title">The Verge: GPT-6 Cyber&#x27;s selling point is staying out of bounds</h3>
+          <p class="card-summary">The Verge&#x27;s read on the launch focuses on the guarantee rather than the raw capability: the pitch is that GPT-6 Cyber finds more vulnerabilities without wandering into systems it was not asked to touch. The piece frames the release as a test of whether a frontier lab can sell offensive security tooling responsibly..</p>
+          <div class="card-actions">
+            <a href="https://www.theverge.com/ai-artificial-intelligence/1027599/openai-gpt-6-cyber-launch" target="_blank" rel="noopener" class="open-btn" style="--c:#dc2626">Open ↗</a>
+            <button class="read-more-btn" data-article='{&quot;title&quot;: &quot;The Verge: GPT-6 Cyber&#x27;s selling point is staying out of bounds&quot;, &quot;summary&quot;: &quot;The Verge&#x27;s read on the launch focuses on the guarantee rather than the raw capability: the pitch is that GPT-6 Cyber finds more vulnerabilities without wandering into systems it was not asked to touch. The piece frames the release as a test of whether a frontier lab can sell offensive security tooling responsibly.&quot;, &quot;why_it_matters&quot;: &quot;Coverage that leads with containment rather than benchmark scores is a signal that buyers and regulators now judge cyber models on blast radius first.&quot;, &quot;source&quot;: &quot;The Verge&quot;, &quot;url&quot;: &quot;https://www.theverge.com/ai-artificial-intelligence/1027599/openai-gpt-6-cyber-launch&quot;, &quot;category&quot;: &quot;Safety&quot;, &quot;importance&quot;: 8}' style="--c:#dc2626">Read More</button>
+          </div>
+          <div class="card-meta">The Verge &middot; Score: 8/10</div>
+        </div>
+      </div>
+      <div class="card spotlight top10" style="--c:#7c3aed" data-article='{&quot;title&quot;: &quot;Moonshot releases Kimi K3.1 Pro open weights on Hugging Face&quot;, &quot;summary&quot;: &quot;Moonshot AI has published open weights for Kimi K3.1 Pro, described as a one-million-token multimodal agentic model, on Hugging Face. The release puts a long-context Chinese frontier model directly in the hands of anyone who wants to self-host or fine-tune it.&quot;, &quot;why_it_matters&quot;: &quot;Million-token context has until now been an API-only feature of closed models. Open weights at that scale change what long-document and long-horizon agent work costs to run.&quot;, &quot;source&quot;: &quot;Tech AI Latest&quot;, &quot;url&quot;: &quot;https://techailatest.news/open-source-ai/moonshot-kimi-k3-1-pro-open-weights-released&quot;, &quot;category&quot;: &quot;LLM&quot;, &quot;importance&quot;: 8}'>
+        <div class="rank" style="background:linear-gradient(135deg,#7c3aed,#7c3aed88)">05</div>
+        <div class="card-body">
+          <span class="card-cat" style="background:#7c3aed">LLM</span>
+          <h3 class="card-title">Moonshot releases Kimi K3.1 Pro open weights on Hugging Face</h3>
+          <p class="card-summary">Moonshot AI has published open weights for Kimi K3.1 Pro, described as a one-million-token multimodal agentic model, on Hugging Face. The release puts a long-context Chinese frontier model directly in the hands of anyone who wants to self-host or fine-tune it..</p>
+          <div class="card-actions">
+            <a href="https://techailatest.news/open-source-ai/moonshot-kimi-k3-1-pro-open-weights-released" target="_blank" rel="noopener" class="open-btn" style="--c:#7c3aed">Open ↗</a>
+            <button class="read-more-btn" data-article='{&quot;title&quot;: &quot;Moonshot releases Kimi K3.1 Pro open weights on Hugging Face&quot;, &quot;summary&quot;: &quot;Moonshot AI has published open weights for Kimi K3.1 Pro, described as a one-million-token multimodal agentic model, on Hugging Face. The release puts a long-context Chinese frontier model directly in the hands of anyone who wants to self-host or fine-tune it.&quot;, &quot;why_it_matters&quot;: &quot;Million-token context has until now been an API-only feature of closed models. Open weights at that scale change what long-document and long-horizon agent work costs to run.&quot;, &quot;source&quot;: &quot;Tech AI Latest&quot;, &quot;url&quot;: &quot;https://techailatest.news/open-source-ai/moonshot-kimi-k3-1-pro-open-weights-released&quot;, &quot;category&quot;: &quot;LLM&quot;, &quot;importance&quot;: 8}' style="--c:#7c3aed">Read More</button>
+          </div>
+          <div class="card-meta">Tech AI Latest &middot; Score: 8/10</div>
+        </div>
+      </div>
+      <div class="card spotlight top10" style="--c:#d97706" data-article='{&quot;title&quot;: &quot;Google agrees to backstop Anthropic&#x27;s $19 billion Kentucky data center lease&quot;, &quot;summary&quot;: &quot;Google has agreed to backstop the lease on Anthropic&#x27;s $19 billion Kentucky data-center commitment, according to reporting in DX Today&#x27;s daily roundup. The arrangement shifts part of the balance-sheet risk of Anthropic&#x27;s compute expansion onto its largest strategic investor.&quot;, &quot;why_it_matters&quot;: &quot;When a model lab&#x27;s landlord risk is carried by an investor, the compute race is being financed with vendor balance sheets rather than revenue. That is the structure regulators are now circling.&quot;, &quot;source&quot;: &quot;DX Today&quot;, &quot;url&quot;: &quot;https://dxtoday.com/blog/2026-11-05&quot;, &quot;category&quot;: &quot;Industry&quot;, &quot;importance&quot;: 8}'>
+        <div class="rank" style="background:linear-gradient(135deg,#d97706,#d9770688)">06</div>
+        <div class="card-body">
+          <span class="card-cat" style="background:#d97706">Industry</span>
+          <h3 class="card-title">Google agrees to backstop Anthropic&#x27;s $19 billion Kentucky data center lease</h3>
+          <p class="card-summary">Google has agreed to backstop the lease on Anthropic&#x27;s $19 billion Kentucky data-center commitment, according to reporting in DX Today&#x27;s daily roundup. The arrangement shifts part of the balance-sheet risk of Anthropic&#x27;s compute expansion onto its largest strategic investor..</p>
+          <div class="card-actions">
+            <a href="https://dxtoday.com/blog/2026-11-05" target="_blank" rel="noopener" class="open-btn" style="--c:#d97706">Open ↗</a>
+            <button class="read-more-btn" data-article='{&quot;title&quot;: &quot;Google agrees to backstop Anthropic&#x27;s $19 billion Kentucky data center lease&quot;, &quot;summary&quot;: &quot;Google has agreed to backstop the lease on Anthropic&#x27;s $19 billion Kentucky data-center commitment, according to reporting in DX Today&#x27;s daily roundup. The arrangement shifts part of the balance-sheet risk of Anthropic&#x27;s compute expansion onto its largest strategic investor.&quot;, &quot;why_it_matters&quot;: &quot;When a model lab&#x27;s landlord risk is carried by an investor, the compute race is being financed with vendor balance sheets rather than revenue. That is the structure regulators are now circling.&quot;, &quot;source&quot;: &quot;DX Today&quot;, &quot;url&quot;: &quot;https://dxtoday.com/blog/2026-11-05&quot;, &quot;category&quot;: &quot;Industry&quot;, &quot;importance&quot;: 8}' style="--c:#d97706">Read More</button>
+          </div>
+          <div class="card-meta">DX Today &middot; Score: 8/10</div>
+        </div>
+      </div>
+      <div class="card spotlight top10" style="--c:#dc2626" data-article='{&quot;title&quot;: &quot;Democrats pledge AI regulation after midterm wins&quot;, &quot;summary&quot;: &quot;Following the November 3 midterms, Democratic leaders pledged to pursue AI regulation, while the same briefing notes Anthropic reported a $567 million operating loss. The combination sets up a legislative session where AI spending and AI oversight are argued together.&quot;, &quot;why_it_matters&quot;: &quot;A Congress willing to legislate on AI changes the compliance cost of every data-center build and every model release. The loss figure is the counter-argument the industry will use.&quot;, &quot;source&quot;: &quot;Daily AI Brief&quot;, &quot;url&quot;: &quot;https://dailyaibrief.com/newsletters/daily-ai-brief/2026-11-05-democrats-pledge-ai-regulation-anthropic-reports-a-567-million-operating-loss-and-more-daily-ai-brief-575&quot;, &quot;category&quot;: &quot;Safety&quot;, &quot;importance&quot;: 8}'>
+        <div class="rank" style="background:linear-gradient(135deg,#dc2626,#dc262688)">07</div>
+        <div class="card-body">
+          <span class="card-cat" style="background:#dc2626">Safety</span>
+          <h3 class="card-title">Democrats pledge AI regulation after midterm wins</h3>
+          <p class="card-summary">Following the November 3 midterms, Democratic leaders pledged to pursue AI regulation, while the same briefing notes Anthropic reported a $567 million operating loss. The combination sets up a legislative session where AI spending and AI oversight are argued together..</p>
+          <div class="card-actions">
+            <a href="https://dailyaibrief.com/newsletters/daily-ai-brief/2026-11-05-democrats-pledge-ai-regulation-anthropic-reports-a-567-million-operating-loss-and-more-daily-ai-brief-575" target="_blank" rel="noopener" class="open-btn" style="--c:#dc2626">Open ↗</a>
+            <button class="read-more-btn" data-article='{&quot;title&quot;: &quot;Democrats pledge AI regulation after midterm wins&quot;, &quot;summary&quot;: &quot;Following the November 3 midterms, Democratic leaders pledged to pursue AI regulation, while the same briefing notes Anthropic reported a $567 million operating loss. The combination sets up a legislative session where AI spending and AI oversight are argued together.&quot;, &quot;why_it_matters&quot;: &quot;A Congress willing to legislate on AI changes the compliance cost of every data-center build and every model release. The loss figure is the counter-argument the industry will use.&quot;, &quot;source&quot;: &quot;Daily AI Brief&quot;, &quot;url&quot;: &quot;https://dailyaibrief.com/newsletters/daily-ai-brief/2026-11-05-democrats-pledge-ai-regulation-anthropic-reports-a-567-million-operating-loss-and-more-daily-ai-brief-575&quot;, &quot;category&quot;: &quot;Safety&quot;, &quot;importance&quot;: 8}' style="--c:#dc2626">Read More</button>
+          </div>
+          <div class="card-meta">Daily AI Brief &middot; Score: 8/10</div>
+        </div>
+      </div>
+      <div class="card spotlight top10" style="--c:#059669" data-article='{&quot;title&quot;: &quot;Science: modelling language learning from children&#x27;s everyday speech in the first 1,000 days&quot;, &quot;summary&quot;: &quot;A Science paper models language learning from individual children&#x27;s everyday speech across the first 1,000 days, using real longitudinal recordings rather than laboratory snapshots.&quot;, &quot;why_it_matters&quot;: &quot;Dense, naturalistic child-language data is the closest thing to a ground truth for sample-efficient learning, and it sets a benchmark that today&#x27;s data-hungry models fail badly.&quot;, &quot;source&quot;: &quot;Science&quot;, &quot;url&quot;: &quot;https://www.science.org/doi/10.1126/science.aeh9311&quot;, &quot;category&quot;: &quot;Research&quot;, &quot;importance&quot;: 8}'>
+        <div class="rank" style="background:linear-gradient(135deg,#059669,#05966988)">08</div>
+        <div class="card-body">
+          <span class="card-cat" style="background:#059669">Research</span>
+          <h3 class="card-title">Science: modelling language learning from children&#x27;s everyday speech in the first 1,000 days</h3>
+          <p class="card-summary">A Science paper models language learning from individual children&#x27;s everyday speech across the first 1,000 days, using real longitudinal recordings rather than laboratory snapshots..</p>
+          <div class="card-actions">
+            <a href="https://www.science.org/doi/10.1126/science.aeh9311" target="_blank" rel="noopener" class="open-btn" style="--c:#059669">Open ↗</a>
+            <button class="read-more-btn" data-article='{&quot;title&quot;: &quot;Science: modelling language learning from children&#x27;s everyday speech in the first 1,000 days&quot;, &quot;summary&quot;: &quot;A Science paper models language learning from individual children&#x27;s everyday speech across the first 1,000 days, using real longitudinal recordings rather than laboratory snapshots.&quot;, &quot;why_it_matters&quot;: &quot;Dense, naturalistic child-language data is the closest thing to a ground truth for sample-efficient learning, and it sets a benchmark that today&#x27;s data-hungry models fail badly.&quot;, &quot;source&quot;: &quot;Science&quot;, &quot;url&quot;: &quot;https://www.science.org/doi/10.1126/science.aeh9311&quot;, &quot;category&quot;: &quot;Research&quot;, &quot;importance&quot;: 8}' style="--c:#059669">Read More</button>
+          </div>
+          <div class="card-meta">Science &middot; Score: 8/10</div>
+        </div>
+      </div>
+      <div class="card spotlight top10" style="--c:#7c3aed" data-article='{&quot;title&quot;: &quot;Baidu releases ERNIE 5.5 Flash Base as a deliberately unfinished open model&quot;, &quot;summary&quot;: &quot;Baidu published ERNIE-5.5-Flash-Base, a 280-billion-parameter mixture-of-experts model with 14 billion active parameters, shipped without fine-tuning or post-training. It was pre-trained on 33.5 trillion tokens with a 128,000-token training context and is designed to support up to one million tokens during fine-tuning and inference. Weights are on Hugging Face in FP8 and BF16, and a post-trained version is expected later.&quot;, &quot;why_it_matters&quot;: &quot;Shipping a base checkpoint asks developers to do the post-training themselves, which is cheap for a well-resourced team and a wall for everyone else. It also signals Baidu competing on openness rather than on a finished product.&quot;, &quot;source&quot;: &quot;The Decoder&quot;, &quot;url&quot;: &quot;https://the-decoder.com/baidu-releases-ernie-5-5-flash-base-with-280-billion-parameters-as-an-open-source-foundation-model/&quot;, &quot;category&quot;: &quot;LLM&quot;, &quot;importance&quot;: 7}'>
+        <div class="rank" style="background:linear-gradient(135deg,#7c3aed,#7c3aed88)">09</div>
+        <div class="card-body">
+          <span class="card-cat" style="background:#7c3aed">LLM</span>
+          <h3 class="card-title">Baidu releases ERNIE 5.5 Flash Base as a deliberately unfinished open model</h3>
+          <p class="card-summary">Baidu published ERNIE-5.5-Flash-Base, a 280-billion-parameter mixture-of-experts model with 14 billion active parameters, shipped without fine-tuning or post-training. It was pre-trained on 33.5 trillion tokens with a 128,000-token training context and is designed to support up to one million tokens during fine-tuning and inference.</p>
+          <div class="card-actions">
+            <a href="https://the-decoder.com/baidu-releases-ernie-5-5-flash-base-with-280-billion-parameters-as-an-open-source-foundation-model/" target="_blank" rel="noopener" class="open-btn" style="--c:#7c3aed">Open ↗</a>
+            <button class="read-more-btn" data-article='{&quot;title&quot;: &quot;Baidu releases ERNIE 5.5 Flash Base as a deliberately unfinished open model&quot;, &quot;summary&quot;: &quot;Baidu published ERNIE-5.5-Flash-Base, a 280-billion-parameter mixture-of-experts model with 14 billion active parameters, shipped without fine-tuning or post-training. It was pre-trained on 33.5 trillion tokens with a 128,000-token training context and is designed to support up to one million tokens during fine-tuning and inference. Weights are on Hugging Face in FP8 and BF16, and a post-trained version is expected later.&quot;, &quot;why_it_matters&quot;: &quot;Shipping a base checkpoint asks developers to do the post-training themselves, which is cheap for a well-resourced team and a wall for everyone else. It also signals Baidu competing on openness rather than on a finished product.&quot;, &quot;source&quot;: &quot;The Decoder&quot;, &quot;url&quot;: &quot;https://the-decoder.com/baidu-releases-ernie-5-5-flash-base-with-280-billion-parameters-as-an-open-source-foundation-model/&quot;, &quot;category&quot;: &quot;LLM&quot;, &quot;importance&quot;: 7}' style="--c:#7c3aed">Read More</button>
+          </div>
+          <div class="card-meta">The Decoder &middot; Score: 7/10</div>
+        </div>
+      </div>
+      <div class="card spotlight top10" style="--c:#7c3aed" data-article='{&quot;title&quot;: &quot;Tencent launches Hy4 with vision and computer use&quot;, &quot;summary&quot;: &quot;Tencent&#x27;s Hy4 model arrives with native vision and computer-use capability, extending the Hunyuan line from text generation into screen-reading, clicking and form-filling agents. The launch places Tencent alongside other Chinese labs shipping agentic, multimodal models rather than pure chatbots.&quot;, &quot;why_it_matters&quot;: &quot;Computer use is the feature that turns a model into a worker on legacy software, and every major Chinese lab now ships it. That pressure will show up in pricing for agentic inference.&quot;, &quot;source&quot;: &quot;LLMs Blog&quot;, &quot;url&quot;: &quot;https://www.llms.blog/posts/tencent-hy4-launch-vision-computer-use&quot;, &quot;category&quot;: &quot;LLM&quot;, &quot;importance&quot;: 7}'>
+        <div class="rank" style="background:linear-gradient(135deg,#7c3aed,#7c3aed88)">10</div>
+        <div class="card-body">
+          <span class="card-cat" style="background:#7c3aed">LLM</span>
+          <h3 class="card-title">Tencent launches Hy4 with vision and computer use</h3>
+          <p class="card-summary">Tencent&#x27;s Hy4 model arrives with native vision and computer-use capability, extending the Hunyuan line from text generation into screen-reading, clicking and form-filling agents. The launch places Tencent alongside other Chinese labs shipping agentic, multimodal models rather than pure chatbots..</p>
+          <div class="card-actions">
+            <a href="https://www.llms.blog/posts/tencent-hy4-launch-vision-computer-use" target="_blank" rel="noopener" class="open-btn" style="--c:#7c3aed">Open ↗</a>
+            <button class="read-more-btn" data-article='{&quot;title&quot;: &quot;Tencent launches Hy4 with vision and computer use&quot;, &quot;summary&quot;: &quot;Tencent&#x27;s Hy4 model arrives with native vision and computer-use capability, extending the Hunyuan line from text generation into screen-reading, clicking and form-filling agents. The launch places Tencent alongside other Chinese labs shipping agentic, multimodal models rather than pure chatbots.&quot;, &quot;why_it_matters&quot;: &quot;Computer use is the feature that turns a model into a worker on legacy software, and every major Chinese lab now ships it. That pressure will show up in pricing for agentic inference.&quot;, &quot;source&quot;: &quot;LLMs Blog&quot;, &quot;url&quot;: &quot;https://www.llms.blog/posts/tencent-hy4-launch-vision-computer-use&quot;, &quot;category&quot;: &quot;LLM&quot;, &quot;importance&quot;: 7}' style="--c:#7c3aed">Read More</button>
+          </div>
+          <div class="card-meta">LLMs Blog &middot; Score: 7/10</div>
+        </div>
+      </div>
+      </div>
+  </div>
+
+  <!-- ALL -->
+  <div class="tab-body" id="all">
+    <h2 class="sec-head">All Articles</h2>
+    <input type="text" class="search" id="searchInput" placeholder="Search articles by title or keyword...">
+    <div class="chips" id="chips"><button class="chip" data-filter="Industry" style="--c:#d97706">Industry</button>
+      <button class="chip" data-filter="LLM" style="--c:#7c3aed">LLM</button>
+      <button class="chip" data-filter="Research" style="--c:#059669">Research</button>
+      <button class="chip" data-filter="Safety" style="--c:#dc2626">Safety</button>
+      <button class="chip" data-filter="Tools" style="--c:#0891b2">Tools</button></div>
+    <div class="grid-cards" id="cardGrid">
+      <div class="card spotlight" data-category="Safety" data-title="openai releases gpt-6 cyber, a security model trained to stay inside scope" style="--c:#dc2626" data-article='{&quot;title&quot;: &quot;OpenAI releases GPT-6 Cyber, a security model trained to stay inside scope&quot;, &quot;summary&quot;: &quot;OpenAI introduced GPT-6 Cyber, a cybersecurity model trained to find and validate exploitable vulnerabilities while remaining within the boundaries a researcher sets. It scores 48.5% on ExploitGym, up from 32.1% for GPT-5.6 Cyber, a 51% relative gain. In a separate alignment evaluation it avoided exploiting out-of-scope services in 99.93% of tests without its deployment prompt and 100% with it. OpenAI says the model has already uncovered and validated thousands of exploits in security-critical codebases including Linux and Firefox.&quot;, &quot;why_it_matters&quot;: &quot;It is the clearest attempt yet to ship a dual-use capability with the containment metric treated as a headline result rather than an appendix. If scope adherence holds outside lab evaluations, automated vulnerability research becomes something enterprises can actually deploy.&quot;, &quot;source&quot;: &quot;OpenAI&quot;, &quot;url&quot;: &quot;https://openai.com/index/introducing-gpt-6-cyber&quot;, &quot;category&quot;: &quot;Safety&quot;, &quot;importance&quot;: 10}'>
+        <span class="card-cat" style="background:#dc2626">Safety</span>
+          <h3 class="card-title">OpenAI releases GPT-6 Cyber, a security model trained to stay inside scope</h3>
+          <p class="card-summary">OpenAI introduced GPT-6 Cyber, a cybersecurity model trained to find and validate exploitable vulnerabilities while remaining within the boundaries a researcher sets. It scores 48.5% on ExploitGym, up from 32.1% for GPT-5.6 Cyber, a 51% relative gain. In a separate alignment evaluation it avoided exploiting out-of-scope services in 99.93% of tests without its deployment prompt and 100% with it. OpenAI says the model has already uncovered and validated thousands of exploits in security-critical codebases including Linux and Firefox.</p>
+          <div class="card-actions">
+            <a href="https://openai.com/index/introducing-gpt-6-cyber" target="_blank" rel="noopener" class="open-btn" style="--c:#dc2626">Open ↗</a>
+            <button class="read-more-btn" data-article='{&quot;title&quot;: &quot;OpenAI releases GPT-6 Cyber, a security model trained to stay inside scope&quot;, &quot;summary&quot;: &quot;OpenAI introduced GPT-6 Cyber, a cybersecurity model trained to find and validate exploitable vulnerabilities while remaining within the boundaries a researcher sets. It scores 48.5% on ExploitGym, up from 32.1% for GPT-5.6 Cyber, a 51% relative gain. In a separate alignment evaluation it avoided exploiting out-of-scope services in 99.93% of tests without its deployment prompt and 100% with it. OpenAI says the model has already uncovered and validated thousands of exploits in security-critical codebases including Linux and Firefox.&quot;, &quot;why_it_matters&quot;: &quot;It is the clearest attempt yet to ship a dual-use capability with the containment metric treated as a headline result rather than an appendix. If scope adherence holds outside lab evaluations, automated vulnerability research becomes something enterprises can actually deploy.&quot;, &quot;source&quot;: &quot;OpenAI&quot;, &quot;url&quot;: &quot;https://openai.com/index/introducing-gpt-6-cyber&quot;, &quot;category&quot;: &quot;Safety&quot;, &quot;importance&quot;: 10}' style="--c:#dc2626">Read More</button>
+          </div>
+          <div class="card-meta">OpenAI &middot; Score: 10/10</div>
+      </div>
+      <div class="card spotlight" data-category="Industry" data-title="wall street&#x27;s ai trade cracks: s&amp;p 500 falls 4.4% in a single session" style="--c:#d97706" data-article='{&quot;title&quot;: &quot;Wall Street&#x27;s AI trade cracks: S&amp;P 500 falls 4.4% in a single session&quot;, &quot;summary&quot;: &quot;A sell-off led by companies tied to the AI data-center buildout erased the market&#x27;s previous gain, its best day in three months. The S&amp;P 500 fell 4.4%, its worst session since the April 2025 tariff shock, the Dow dropped 1,833 points or 3.4%, and the Nasdaq fell 5.5%, leaving it 11.9% below its record high.&quot;, &quot;why_it_matters&quot;: &quot;The market has started pricing AI infrastructure as a political and financing risk rather than a pure growth story. That repricing will decide which data-center projects actually get built.&quot;, &quot;source&quot;: &quot;Associated Press&quot;, &quot;url&quot;: &quot;https://apnews.com/article/stocks-markets-ai-midterm-oil-trump-7ee9c212805aa5e70cf34d25aab7a36e&quot;, &quot;category&quot;: &quot;Industry&quot;, &quot;importance&quot;: 10}'>
+        <span class="card-cat" style="background:#d97706">Industry</span>
+          <h3 class="card-title">Wall Street&#x27;s AI trade cracks: S&amp;P 500 falls 4.4% in a single session</h3>
+          <p class="card-summary">A sell-off led by companies tied to the AI data-center buildout erased the market&#x27;s previous gain, its best day in three months. The S&amp;P 500 fell 4.4%, its worst session since the April 2025 tariff shock, the Dow dropped 1,833 points or 3.4%, and the Nasdaq fell 5.5%, leaving it 11.9% below its record high.</p>
+          <div class="card-actions">
+            <a href="https://apnews.com/article/stocks-markets-ai-midterm-oil-trump-7ee9c212805aa5e70cf34d25aab7a36e" target="_blank" rel="noopener" class="open-btn" style="--c:#d97706">Open ↗</a>
+            <button class="read-more-btn" data-article='{&quot;title&quot;: &quot;Wall Street&#x27;s AI trade cracks: S&amp;P 500 falls 4.4% in a single session&quot;, &quot;summary&quot;: &quot;A sell-off led by companies tied to the AI data-center buildout erased the market&#x27;s previous gain, its best day in three months. The S&amp;P 500 fell 4.4%, its worst session since the April 2025 tariff shock, the Dow dropped 1,833 points or 3.4%, and the Nasdaq fell 5.5%, leaving it 11.9% below its record high.&quot;, &quot;why_it_matters&quot;: &quot;The market has started pricing AI infrastructure as a political and financing risk rather than a pure growth story. That repricing will decide which data-center projects actually get built.&quot;, &quot;source&quot;: &quot;Associated Press&quot;, &quot;url&quot;: &quot;https://apnews.com/article/stocks-markets-ai-midterm-oil-trump-7ee9c212805aa5e70cf34d25aab7a36e&quot;, &quot;category&quot;: &quot;Industry&quot;, &quot;importance&quot;: 10}' style="--c:#d97706">Read More</button>
+          </div>
+          <div class="card-meta">Associated Press &middot; Score: 10/10</div>
+      </div>
+      <div class="card spotlight" data-category="LLM" data-title="thinking machines ships inkling 2 small, a 594b-parameter moe with 17b active" style="--c:#7c3aed" data-article='{&quot;title&quot;: &quot;Thinking Machines ships Inkling 2 Small, a 594B-parameter MoE with 17B active&quot;, &quot;summary&quot;: &quot;Inkling 2 Small is a mixture-of-experts model with 594 billion total parameters and 17 billion active, supporting image inputs and variable effort. It scores 31 on the Artificial Analysis Intelligence Index, with gains concentrated in agentic coding, vision, knowledge work and reasoning. It launches through Tinker with closed weights, and the company says full Apache 2.0 weights follow next week once external safety testing and red-teaming finish.&quot;, &quot;why_it_matters&quot;: &quot;A staged release, closed first and open after third-party testing, is becoming the template for labs that want open weights without shipping them untested. The 17B active footprint also keeps inference costs in a practical band.&quot;, &quot;source&quot;: &quot;Thinking Machines Lab&quot;, &quot;url&quot;: &quot;https://thinkingmachines.ai/news/inkling-2-small/&quot;, &quot;category&quot;: &quot;LLM&quot;, &quot;importance&quot;: 9}'>
+        <span class="card-cat" style="background:#7c3aed">LLM</span>
+          <h3 class="card-title">Thinking Machines ships Inkling 2 Small, a 594B-parameter MoE with 17B active</h3>
+          <p class="card-summary">Inkling 2 Small is a mixture-of-experts model with 594 billion total parameters and 17 billion active, supporting image inputs and variable effort. It scores 31 on the Artificial Analysis Intelligence Index, with gains concentrated in agentic coding, vision, knowledge work and reasoning. It launches through Tinker with closed weights, and the company says full Apache 2.0 weights follow next week once external safety testing and red-teaming finish.</p>
+          <div class="card-actions">
+            <a href="https://thinkingmachines.ai/news/inkling-2-small/" target="_blank" rel="noopener" class="open-btn" style="--c:#7c3aed">Open ↗</a>
+            <button class="read-more-btn" data-article='{&quot;title&quot;: &quot;Thinking Machines ships Inkling 2 Small, a 594B-parameter MoE with 17B active&quot;, &quot;summary&quot;: &quot;Inkling 2 Small is a mixture-of-experts model with 594 billion total parameters and 17 billion active, supporting image inputs and variable effort. It scores 31 on the Artificial Analysis Intelligence Index, with gains concentrated in agentic coding, vision, knowledge work and reasoning. It launches through Tinker with closed weights, and the company says full Apache 2.0 weights follow next week once external safety testing and red-teaming finish.&quot;, &quot;why_it_matters&quot;: &quot;A staged release, closed first and open after third-party testing, is becoming the template for labs that want open weights without shipping them untested. The 17B active footprint also keeps inference costs in a practical band.&quot;, &quot;source&quot;: &quot;Thinking Machines Lab&quot;, &quot;url&quot;: &quot;https://thinkingmachines.ai/news/inkling-2-small/&quot;, &quot;category&quot;: &quot;LLM&quot;, &quot;importance&quot;: 9}' style="--c:#7c3aed">Read More</button>
+          </div>
+          <div class="card-meta">Thinking Machines Lab &middot; Score: 9/10</div>
+      </div>
+      <div class="card spotlight" data-category="Safety" data-title="the verge: gpt-6 cyber&#x27;s selling point is staying out of bounds" style="--c:#dc2626" data-article='{&quot;title&quot;: &quot;The Verge: GPT-6 Cyber&#x27;s selling point is staying out of bounds&quot;, &quot;summary&quot;: &quot;The Verge&#x27;s read on the launch focuses on the guarantee rather than the raw capability: the pitch is that GPT-6 Cyber finds more vulnerabilities without wandering into systems it was not asked to touch. The piece frames the release as a test of whether a frontier lab can sell offensive security tooling responsibly.&quot;, &quot;why_it_matters&quot;: &quot;Coverage that leads with containment rather than benchmark scores is a signal that buyers and regulators now judge cyber models on blast radius first.&quot;, &quot;source&quot;: &quot;The Verge&quot;, &quot;url&quot;: &quot;https://www.theverge.com/ai-artificial-intelligence/1027599/openai-gpt-6-cyber-launch&quot;, &quot;category&quot;: &quot;Safety&quot;, &quot;importance&quot;: 8}'>
+        <span class="card-cat" style="background:#dc2626">Safety</span>
+          <h3 class="card-title">The Verge: GPT-6 Cyber&#x27;s selling point is staying out of bounds</h3>
+          <p class="card-summary">The Verge&#x27;s read on the launch focuses on the guarantee rather than the raw capability: the pitch is that GPT-6 Cyber finds more vulnerabilities without wandering into systems it was not asked to touch. The piece frames the release as a test of whether a frontier lab can sell offensive security tooling responsibly.</p>
+          <div class="card-actions">
+            <a href="https://www.theverge.com/ai-artificial-intelligence/1027599/openai-gpt-6-cyber-launch" target="_blank" rel="noopener" class="open-btn" style="--c:#dc2626">Open ↗</a>
+            <button class="read-more-btn" data-article='{&quot;title&quot;: &quot;The Verge: GPT-6 Cyber&#x27;s selling point is staying out of bounds&quot;, &quot;summary&quot;: &quot;The Verge&#x27;s read on the launch focuses on the guarantee rather than the raw capability: the pitch is that GPT-6 Cyber finds more vulnerabilities without wandering into systems it was not asked to touch. The piece frames the release as a test of whether a frontier lab can sell offensive security tooling responsibly.&quot;, &quot;why_it_matters&quot;: &quot;Coverage that leads with containment rather than benchmark scores is a signal that buyers and regulators now judge cyber models on blast radius first.&quot;, &quot;source&quot;: &quot;The Verge&quot;, &quot;url&quot;: &quot;https://www.theverge.com/ai-artificial-intelligence/1027599/openai-gpt-6-cyber-launch&quot;, &quot;category&quot;: &quot;Safety&quot;, &quot;importance&quot;: 8}' style="--c:#dc2626">Read More</button>
+          </div>
+          <div class="card-meta">The Verge &middot; Score: 8/10</div>
+      </div>
+      <div class="card spotlight" data-category="LLM" data-title="moonshot releases kimi k3.1 pro open weights on hugging face" style="--c:#7c3aed" data-article='{&quot;title&quot;: &quot;Moonshot releases Kimi K3.1 Pro open weights on Hugging Face&quot;, &quot;summary&quot;: &quot;Moonshot AI has published open weights for Kimi K3.1 Pro, described as a one-million-token multimodal agentic model, on Hugging Face. The release puts a long-context Chinese frontier model directly in the hands of anyone who wants to self-host or fine-tune it.&quot;, &quot;why_it_matters&quot;: &quot;Million-token context has until now been an API-only feature of closed models. Open weights at that scale change what long-document and long-horizon agent work costs to run.&quot;, &quot;source&quot;: &quot;Tech AI Latest&quot;, &quot;url&quot;: &quot;https://techailatest.news/open-source-ai/moonshot-kimi-k3-1-pro-open-weights-released&quot;, &quot;category&quot;: &quot;LLM&quot;, &quot;importance&quot;: 8}'>
+        <span class="card-cat" style="background:#7c3aed">LLM</span>
+          <h3 class="card-title">Moonshot releases Kimi K3.1 Pro open weights on Hugging Face</h3>
+          <p class="card-summary">Moonshot AI has published open weights for Kimi K3.1 Pro, described as a one-million-token multimodal agentic model, on Hugging Face. The release puts a long-context Chinese frontier model directly in the hands of anyone who wants to self-host or fine-tune it.</p>
+          <div class="card-actions">
+            <a href="https://techailatest.news/open-source-ai/moonshot-kimi-k3-1-pro-open-weights-released" target="_blank" rel="noopener" class="open-btn" style="--c:#7c3aed">Open ↗</a>
+            <button class="read-more-btn" data-article='{&quot;title&quot;: &quot;Moonshot releases Kimi K3.1 Pro open weights on Hugging Face&quot;, &quot;summary&quot;: &quot;Moonshot AI has published open weights for Kimi K3.1 Pro, described as a one-million-token multimodal agentic model, on Hugging Face. The release puts a long-context Chinese frontier model directly in the hands of anyone who wants to self-host or fine-tune it.&quot;, &quot;why_it_matters&quot;: &quot;Million-token context has until now been an API-only feature of closed models. Open weights at that scale change what long-document and long-horizon agent work costs to run.&quot;, &quot;source&quot;: &quot;Tech AI Latest&quot;, &quot;url&quot;: &quot;https://techailatest.news/open-source-ai/moonshot-kimi-k3-1-pro-open-weights-released&quot;, &quot;category&quot;: &quot;LLM&quot;, &quot;importance&quot;: 8}' style="--c:#7c3aed">Read More</button>
+          </div>
+          <div class="card-meta">Tech AI Latest &middot; Score: 8/10</div>
+      </div>
+      <div class="card spotlight" data-category="Industry" data-title="google agrees to backstop anthropic&#x27;s $19 billion kentucky data center lease" style="--c:#d97706" data-article='{&quot;title&quot;: &quot;Google agrees to backstop Anthropic&#x27;s $19 billion Kentucky data center lease&quot;, &quot;summary&quot;: &quot;Google has agreed to backstop the lease on Anthropic&#x27;s $19 billion Kentucky data-center commitment, according to reporting in DX Today&#x27;s daily roundup. The arrangement shifts part of the balance-sheet risk of Anthropic&#x27;s compute expansion onto its largest strategic investor.&quot;, &quot;why_it_matters&quot;: &quot;When a model lab&#x27;s landlord risk is carried by an investor, the compute race is being financed with vendor balance sheets rather than revenue. That is the structure regulators are now circling.&quot;, &quot;source&quot;: &quot;DX Today&quot;, &quot;url&quot;: &quot;https://dxtoday.com/blog/2026-11-05&quot;, &quot;category&quot;: &quot;Industry&quot;, &quot;importance&quot;: 8}'>
+        <span class="card-cat" style="background:#d97706">Industry</span>
+          <h3 class="card-title">Google agrees to backstop Anthropic&#x27;s $19 billion Kentucky data center lease</h3>
+          <p class="card-summary">Google has agreed to backstop the lease on Anthropic&#x27;s $19 billion Kentucky data-center commitment, according to reporting in DX Today&#x27;s daily roundup. The arrangement shifts part of the balance-sheet risk of Anthropic&#x27;s compute expansion onto its largest strategic investor.</p>
+          <div class="card-actions">
+            <a href="https://dxtoday.com/blog/2026-11-05" target="_blank" rel="noopener" class="open-btn" style="--c:#d97706">Open ↗</a>
+            <button class="read-more-btn" data-article='{&quot;title&quot;: &quot;Google agrees to backstop Anthropic&#x27;s $19 billion Kentucky data center lease&quot;, &quot;summary&quot;: &quot;Google has agreed to backstop the lease on Anthropic&#x27;s $19 billion Kentucky data-center commitment, according to reporting in DX Today&#x27;s daily roundup. The arrangement shifts part of the balance-sheet risk of Anthropic&#x27;s compute expansion onto its largest strategic investor.&quot;, &quot;why_it_matters&quot;: &quot;When a model lab&#x27;s landlord risk is carried by an investor, the compute race is being financed with vendor balance sheets rather than revenue. That is the structure regulators are now circling.&quot;, &quot;source&quot;: &quot;DX Today&quot;, &quot;url&quot;: &quot;https://dxtoday.com/blog/2026-11-05&quot;, &quot;category&quot;: &quot;Industry&quot;, &quot;importance&quot;: 8}' style="--c:#d97706">Read More</button>
+          </div>
+          <div class="card-meta">DX Today &middot; Score: 8/10</div>
+      </div>
+      <div class="card spotlight" data-category="Safety" data-title="democrats pledge ai regulation after midterm wins" style="--c:#dc2626" data-article='{&quot;title&quot;: &quot;Democrats pledge AI regulation after midterm wins&quot;, &quot;summary&quot;: &quot;Following the November 3 midterms, Democratic leaders pledged to pursue AI regulation, while the same briefing notes Anthropic reported a $567 million operating loss. The combination sets up a legislative session where AI spending and AI oversight are argued together.&quot;, &quot;why_it_matters&quot;: &quot;A Congress willing to legislate on AI changes the compliance cost of every data-center build and every model release. The loss figure is the counter-argument the industry will use.&quot;, &quot;source&quot;: &quot;Daily AI Brief&quot;, &quot;url&quot;: &quot;https://dailyaibrief.com/newsletters/daily-ai-brief/2026-11-05-democrats-pledge-ai-regulation-anthropic-reports-a-567-million-operating-loss-and-more-daily-ai-brief-575&quot;, &quot;category&quot;: &quot;Safety&quot;, &quot;importance&quot;: 8}'>
+        <span class="card-cat" style="background:#dc2626">Safety</span>
+          <h3 class="card-title">Democrats pledge AI regulation after midterm wins</h3>
+          <p class="card-summary">Following the November 3 midterms, Democratic leaders pledged to pursue AI regulation, while the same briefing notes Anthropic reported a $567 million operating loss. The combination sets up a legislative session where AI spending and AI oversight are argued together.</p>
+          <div class="card-actions">
+            <a href="https://dailyaibrief.com/newsletters/daily-ai-brief/2026-11-05-democrats-pledge-ai-regulation-anthropic-reports-a-567-million-operating-loss-and-more-daily-ai-brief-575" target="_blank" rel="noopener" class="open-btn" style="--c:#dc2626">Open ↗</a>
+            <button class="read-more-btn" data-article='{&quot;title&quot;: &quot;Democrats pledge AI regulation after midterm wins&quot;, &quot;summary&quot;: &quot;Following the November 3 midterms, Democratic leaders pledged to pursue AI regulation, while the same briefing notes Anthropic reported a $567 million operating loss. The combination sets up a legislative session where AI spending and AI oversight are argued together.&quot;, &quot;why_it_matters&quot;: &quot;A Congress willing to legislate on AI changes the compliance cost of every data-center build and every model release. The loss figure is the counter-argument the industry will use.&quot;, &quot;source&quot;: &quot;Daily AI Brief&quot;, &quot;url&quot;: &quot;https://dailyaibrief.com/newsletters/daily-ai-brief/2026-11-05-democrats-pledge-ai-regulation-anthropic-reports-a-567-million-operating-loss-and-more-daily-ai-brief-575&quot;, &quot;category&quot;: &quot;Safety&quot;, &quot;importance&quot;: 8}' style="--c:#dc2626">Read More</button>
+          </div>
+          <div class="card-meta">Daily AI Brief &middot; Score: 8/10</div>
+      </div>
+      <div class="card spotlight" data-category="Research" data-title="science: modelling language learning from children&#x27;s everyday speech in the first 1,000 days" style="--c:#059669" data-article='{&quot;title&quot;: &quot;Science: modelling language learning from children&#x27;s everyday speech in the first 1,000 days&quot;, &quot;summary&quot;: &quot;A Science paper models language learning from individual children&#x27;s everyday speech across the first 1,000 days, using real longitudinal recordings rather than laboratory snapshots.&quot;, &quot;why_it_matters&quot;: &quot;Dense, naturalistic child-language data is the closest thing to a ground truth for sample-efficient learning, and it sets a benchmark that today&#x27;s data-hungry models fail badly.&quot;, &quot;source&quot;: &quot;Science&quot;, &quot;url&quot;: &quot;https://www.science.org/doi/10.1126/science.aeh9311&quot;, &quot;category&quot;: &quot;Research&quot;, &quot;importance&quot;: 8}'>
+        <span class="card-cat" style="background:#059669">Research</span>
+          <h3 class="card-title">Science: modelling language learning from children&#x27;s everyday speech in the first 1,000 days</h3>
+          <p class="card-summary">A Science paper models language learning from individual children&#x27;s everyday speech across the first 1,000 days, using real longitudinal recordings rather than laboratory snapshots.</p>
+          <div class="card-actions">
+            <a href="https://www.science.org/doi/10.1126/science.aeh9311" target="_blank" rel="noopener" class="open-btn" style="--c:#059669">Open ↗</a>
+            <button class="read-more-btn" data-article='{&quot;title&quot;: &quot;Science: modelling language learning from children&#x27;s everyday speech in the first 1,000 days&quot;, &quot;summary&quot;: &quot;A Science paper models language learning from individual children&#x27;s everyday speech across the first 1,000 days, using real longitudinal recordings rather than laboratory snapshots.&quot;, &quot;why_it_matters&quot;: &quot;Dense, naturalistic child-language data is the closest thing to a ground truth for sample-efficient learning, and it sets a benchmark that today&#x27;s data-hungry models fail badly.&quot;, &quot;source&quot;: &quot;Science&quot;, &quot;url&quot;: &quot;https://www.science.org/doi/10.1126/science.aeh9311&quot;, &quot;category&quot;: &quot;Research&quot;, &quot;importance&quot;: 8}' style="--c:#059669">Read More</button>
+          </div>
+          <div class="card-meta">Science &middot; Score: 8/10</div>
+      </div>
+      <div class="card spotlight" data-category="LLM" data-title="baidu releases ernie 5.5 flash base as a deliberately unfinished open model" style="--c:#7c3aed" data-article='{&quot;title&quot;: &quot;Baidu releases ERNIE 5.5 Flash Base as a deliberately unfinished open model&quot;, &quot;summary&quot;: &quot;Baidu published ERNIE-5.5-Flash-Base, a 280-billion-parameter mixture-of-experts model with 14 billion active parameters, shipped without fine-tuning or post-training. It was pre-trained on 33.5 trillion tokens with a 128,000-token training context and is designed to support up to one million tokens during fine-tuning and inference. Weights are on Hugging Face in FP8 and BF16, and a post-trained version is expected later.&quot;, &quot;why_it_matters&quot;: &quot;Shipping a base checkpoint asks developers to do the post-training themselves, which is cheap for a well-resourced team and a wall for everyone else. It also signals Baidu competing on openness rather than on a finished product.&quot;, &quot;source&quot;: &quot;The Decoder&quot;, &quot;url&quot;: &quot;https://the-decoder.com/baidu-releases-ernie-5-5-flash-base-with-280-billion-parameters-as-an-open-source-foundation-model/&quot;, &quot;category&quot;: &quot;LLM&quot;, &quot;importance&quot;: 7}'>
+        <span class="card-cat" style="background:#7c3aed">LLM</span>
+          <h3 class="card-title">Baidu releases ERNIE 5.5 Flash Base as a deliberately unfinished open model</h3>
+          <p class="card-summary">Baidu published ERNIE-5.5-Flash-Base, a 280-billion-parameter mixture-of-experts model with 14 billion active parameters, shipped without fine-tuning or post-training. It was pre-trained on 33.5 trillion tokens with a 128,000-token training context and is designed to support up to one million tokens during fine-tuning and inference. Weights are on Hugging Face in FP8 and BF16, and a post-trained version is expected later.</p>
+          <div class="card-actions">
+            <a href="https://the-decoder.com/baidu-releases-ernie-5-5-flash-base-with-280-billion-parameters-as-an-open-source-foundation-model/" target="_blank" rel="noopener" class="open-btn" style="--c:#7c3aed">Open ↗</a>
+            <button class="read-more-btn" data-article='{&quot;title&quot;: &quot;Baidu releases ERNIE 5.5 Flash Base as a deliberately unfinished open model&quot;, &quot;summary&quot;: &quot;Baidu published ERNIE-5.5-Flash-Base, a 280-billion-parameter mixture-of-experts model with 14 billion active parameters, shipped without fine-tuning or post-training. It was pre-trained on 33.5 trillion tokens with a 128,000-token training context and is designed to support up to one million tokens during fine-tuning and inference. Weights are on Hugging Face in FP8 and BF16, and a post-trained version is expected later.&quot;, &quot;why_it_matters&quot;: &quot;Shipping a base checkpoint asks developers to do the post-training themselves, which is cheap for a well-resourced team and a wall for everyone else. It also signals Baidu competing on openness rather than on a finished product.&quot;, &quot;source&quot;: &quot;The Decoder&quot;, &quot;url&quot;: &quot;https://the-decoder.com/baidu-releases-ernie-5-5-flash-base-with-280-billion-parameters-as-an-open-source-foundation-model/&quot;, &quot;category&quot;: &quot;LLM&quot;, &quot;importance&quot;: 7}' style="--c:#7c3aed">Read More</button>
+          </div>
+          <div class="card-meta">The Decoder &middot; Score: 7/10</div>
+      </div>
+      <div class="card spotlight" data-category="LLM" data-title="tencent launches hy4 with vision and computer use" style="--c:#7c3aed" data-article='{&quot;title&quot;: &quot;Tencent launches Hy4 with vision and computer use&quot;, &quot;summary&quot;: &quot;Tencent&#x27;s Hy4 model arrives with native vision and computer-use capability, extending the Hunyuan line from text generation into screen-reading, clicking and form-filling agents. The launch places Tencent alongside other Chinese labs shipping agentic, multimodal models rather than pure chatbots.&quot;, &quot;why_it_matters&quot;: &quot;Computer use is the feature that turns a model into a worker on legacy software, and every major Chinese lab now ships it. That pressure will show up in pricing for agentic inference.&quot;, &quot;source&quot;: &quot;LLMs Blog&quot;, &quot;url&quot;: &quot;https://www.llms.blog/posts/tencent-hy4-launch-vision-computer-use&quot;, &quot;category&quot;: &quot;LLM&quot;, &quot;importance&quot;: 7}'>
+        <span class="card-cat" style="background:#7c3aed">LLM</span>
+          <h3 class="card-title">Tencent launches Hy4 with vision and computer use</h3>
+          <p class="card-summary">Tencent&#x27;s Hy4 model arrives with native vision and computer-use capability, extending the Hunyuan line from text generation into screen-reading, clicking and form-filling agents. The launch places Tencent alongside other Chinese labs shipping agentic, multimodal models rather than pure chatbots.</p>
+          <div class="card-actions">
+            <a href="https://www.llms.blog/posts/tencent-hy4-launch-vision-computer-use" target="_blank" rel="noopener" class="open-btn" style="--c:#7c3aed">Open ↗</a>
+            <button class="read-more-btn" data-article='{&quot;title&quot;: &quot;Tencent launches Hy4 with vision and computer use&quot;, &quot;summary&quot;: &quot;Tencent&#x27;s Hy4 model arrives with native vision and computer-use capability, extending the Hunyuan line from text generation into screen-reading, clicking and form-filling agents. The launch places Tencent alongside other Chinese labs shipping agentic, multimodal models rather than pure chatbots.&quot;, &quot;why_it_matters&quot;: &quot;Computer use is the feature that turns a model into a worker on legacy software, and every major Chinese lab now ships it. That pressure will show up in pricing for agentic inference.&quot;, &quot;source&quot;: &quot;LLMs Blog&quot;, &quot;url&quot;: &quot;https://www.llms.blog/posts/tencent-hy4-launch-vision-computer-use&quot;, &quot;category&quot;: &quot;LLM&quot;, &quot;importance&quot;: 7}' style="--c:#7c3aed">Read More</button>
+          </div>
+          <div class="card-meta">LLMs Blog &middot; Score: 7/10</div>
+      </div>
+      <div class="card spotlight" data-category="LLM" data-title="google ships gemini omni 1.2 flash with native video" style="--c:#7c3aed" data-article='{&quot;title&quot;: &quot;Google ships Gemini Omni 1.2 Flash with native video&quot;, &quot;summary&quot;: &quot;Google released Gemini Omni 1.2 Flash with a one-million-token context and native video handling, now generally available in AI Studio. The release continues Google&#x27;s pattern of putting long context and media input into its cheapest tier first.&quot;, &quot;why_it_matters&quot;: &quot;Native video at Flash pricing moves video understanding from a specialist product into a default capability that developers can call per request.&quot;, &quot;source&quot;: &quot;The Decoder&quot;, &quot;url&quot;: &quot;https://the-decoder.com/&quot;, &quot;category&quot;: &quot;LLM&quot;, &quot;importance&quot;: 7}'>
+        <span class="card-cat" style="background:#7c3aed">LLM</span>
+          <h3 class="card-title">Google ships Gemini Omni 1.2 Flash with native video</h3>
+          <p class="card-summary">Google released Gemini Omni 1.2 Flash with a one-million-token context and native video handling, now generally available in AI Studio. The release continues Google&#x27;s pattern of putting long context and media input into its cheapest tier first.</p>
+          <div class="card-actions">
+            <a href="https://the-decoder.com/" target="_blank" rel="noopener" class="open-btn" style="--c:#7c3aed">Open ↗</a>
+            <button class="read-more-btn" data-article='{&quot;title&quot;: &quot;Google ships Gemini Omni 1.2 Flash with native video&quot;, &quot;summary&quot;: &quot;Google released Gemini Omni 1.2 Flash with a one-million-token context and native video handling, now generally available in AI Studio. The release continues Google&#x27;s pattern of putting long context and media input into its cheapest tier first.&quot;, &quot;why_it_matters&quot;: &quot;Native video at Flash pricing moves video understanding from a specialist product into a default capability that developers can call per request.&quot;, &quot;source&quot;: &quot;The Decoder&quot;, &quot;url&quot;: &quot;https://the-decoder.com/&quot;, &quot;category&quot;: &quot;LLM&quot;, &quot;importance&quot;: 7}' style="--c:#7c3aed">Read More</button>
+          </div>
+          <div class="card-meta">The Decoder &middot; Score: 7/10</div>
+      </div>
+      <div class="card spotlight" data-category="Research" data-title="nature machine intelligence: reading model behaviour through fractal basin geometry" style="--c:#059669" data-article='{&quot;title&quot;: &quot;Nature Machine Intelligence: reading model behaviour through fractal basin geometry&quot;, &quot;summary&quot;: &quot;The paper analyses the fractal geometry of basins in trained networks, using the structure of decision basins to explain why similar inputs can produce sharply different model behaviour.&quot;, &quot;why_it_matters&quot;: &quot;If instability has a measurable geometric signature, robustness testing stops being a hunt for adversarial examples and becomes a property you can estimate.&quot;, &quot;source&quot;: &quot;Nature Machine Intelligence&quot;, &quot;url&quot;: &quot;https://www.nature.com/articles/s42256-026-01336-3&quot;, &quot;category&quot;: &quot;Research&quot;, &quot;importance&quot;: 7}'>
+        <span class="card-cat" style="background:#059669">Research</span>
+          <h3 class="card-title">Nature Machine Intelligence: reading model behaviour through fractal basin geometry</h3>
+          <p class="card-summary">The paper analyses the fractal geometry of basins in trained networks, using the structure of decision basins to explain why similar inputs can produce sharply different model behaviour.</p>
+          <div class="card-actions">
+            <a href="https://www.nature.com/articles/s42256-026-01336-3" target="_blank" rel="noopener" class="open-btn" style="--c:#059669">Open ↗</a>
+            <button class="read-more-btn" data-article='{&quot;title&quot;: &quot;Nature Machine Intelligence: reading model behaviour through fractal basin geometry&quot;, &quot;summary&quot;: &quot;The paper analyses the fractal geometry of basins in trained networks, using the structure of decision basins to explain why similar inputs can produce sharply different model behaviour.&quot;, &quot;why_it_matters&quot;: &quot;If instability has a measurable geometric signature, robustness testing stops being a hunt for adversarial examples and becomes a property you can estimate.&quot;, &quot;source&quot;: &quot;Nature Machine Intelligence&quot;, &quot;url&quot;: &quot;https://www.nature.com/articles/s42256-026-01336-3&quot;, &quot;category&quot;: &quot;Research&quot;, &quot;importance&quot;: 7}' style="--c:#059669">Read More</button>
+          </div>
+          <div class="card-meta">Nature Machine Intelligence &middot; Score: 7/10</div>
+      </div>
+      <div class="card spotlight" data-category="LLM" data-title="ant ling releases ling-3.2-flash, a 560b/25b native multimodal moe" style="--c:#7c3aed" data-article='{&quot;title&quot;: &quot;Ant Ling releases Ling-3.2-flash, a 560B/25B native multimodal MoE&quot;, &quot;summary&quot;: &quot;Ling-3.2-flash is a 560-billion-parameter mixture-of-experts model with 25 billion active parameters, natively multimodal across image, text and video, with a one-million-token context and an API-first release.&quot;, &quot;why_it_matters&quot;: &quot;Another very large sparse model with a small active slice confirms the industry&#x27;s bet that parameter count should grow while per-token compute stays flat.&quot;, &quot;source&quot;: &quot;AGI Pulse&quot;, &quot;url&quot;: &quot;https://agipulse.org/e/1092&quot;, &quot;category&quot;: &quot;LLM&quot;, &quot;importance&quot;: 6}'>
+        <span class="card-cat" style="background:#7c3aed">LLM</span>
+          <h3 class="card-title">Ant Ling releases Ling-3.2-flash, a 560B/25B native multimodal MoE</h3>
+          <p class="card-summary">Ling-3.2-flash is a 560-billion-parameter mixture-of-experts model with 25 billion active parameters, natively multimodal across image, text and video, with a one-million-token context and an API-first release.</p>
+          <div class="card-actions">
+            <a href="https://agipulse.org/e/1092" target="_blank" rel="noopener" class="open-btn" style="--c:#7c3aed">Open ↗</a>
+            <button class="read-more-btn" data-article='{&quot;title&quot;: &quot;Ant Ling releases Ling-3.2-flash, a 560B/25B native multimodal MoE&quot;, &quot;summary&quot;: &quot;Ling-3.2-flash is a 560-billion-parameter mixture-of-experts model with 25 billion active parameters, natively multimodal across image, text and video, with a one-million-token context and an API-first release.&quot;, &quot;why_it_matters&quot;: &quot;Another very large sparse model with a small active slice confirms the industry&#x27;s bet that parameter count should grow while per-token compute stays flat.&quot;, &quot;source&quot;: &quot;AGI Pulse&quot;, &quot;url&quot;: &quot;https://agipulse.org/e/1092&quot;, &quot;category&quot;: &quot;LLM&quot;, &quot;importance&quot;: 6}' style="--c:#7c3aed">Read More</button>
+          </div>
+          <div class="card-meta">AGI Pulse &middot; Score: 6/10</div>
+      </div>
+      <div class="card spotlight" data-category="LLM" data-title="ripple-65b preview ships as a cheaper open-weight coding model" style="--c:#7c3aed" data-article='{&quot;title&quot;: &quot;Ripple-65B Preview ships as a cheaper open-weight coding model&quot;, &quot;summary&quot;: &quot;Ripple-65B Preview is positioned as a lower-cost open-weight model aimed at coding workloads, trading absolute benchmark leadership for inference economics.&quot;, &quot;why_it_matters&quot;: &quot;Most production coding agents are cost-bound, not capability-bound. A credible 65B option narrows the gap between self-hosted and frontier API economics.&quot;, &quot;source&quot;: &quot;AI Agents Listing&quot;, &quot;url&quot;: &quot;https://aiagentslisting.com/news/ripple-65b-preview-ships-as-a-cheaper-open-weight-coding-model&quot;, &quot;category&quot;: &quot;LLM&quot;, &quot;importance&quot;: 6}'>
+        <span class="card-cat" style="background:#7c3aed">LLM</span>
+          <h3 class="card-title">Ripple-65B Preview ships as a cheaper open-weight coding model</h3>
+          <p class="card-summary">Ripple-65B Preview is positioned as a lower-cost open-weight model aimed at coding workloads, trading absolute benchmark leadership for inference economics.</p>
+          <div class="card-actions">
+            <a href="https://aiagentslisting.com/news/ripple-65b-preview-ships-as-a-cheaper-open-weight-coding-model" target="_blank" rel="noopener" class="open-btn" style="--c:#7c3aed">Open ↗</a>
+            <button class="read-more-btn" data-article='{&quot;title&quot;: &quot;Ripple-65B Preview ships as a cheaper open-weight coding model&quot;, &quot;summary&quot;: &quot;Ripple-65B Preview is positioned as a lower-cost open-weight model aimed at coding workloads, trading absolute benchmark leadership for inference economics.&quot;, &quot;why_it_matters&quot;: &quot;Most production coding agents are cost-bound, not capability-bound. A credible 65B option narrows the gap between self-hosted and frontier API economics.&quot;, &quot;source&quot;: &quot;AI Agents Listing&quot;, &quot;url&quot;: &quot;https://aiagentslisting.com/news/ripple-65b-preview-ships-as-a-cheaper-open-weight-coding-model&quot;, &quot;category&quot;: &quot;LLM&quot;, &quot;importance&quot;: 6}' style="--c:#7c3aed">Read More</button>
+          </div>
+          <div class="card-meta">AI Agents Listing &middot; Score: 6/10</div>
+      </div>
+      <div class="card spotlight" data-category="Industry" data-title="meta acquires conductor to shore up its model pipeline" style="--c:#d97706" data-article='{&quot;title&quot;: &quot;Meta acquires Conductor to shore up its model pipeline&quot;, &quot;summary&quot;: &quot;Meta has bought Conductor for its model pipeline, the latest in a run of small AI acquisitions since China blocked its bid for Manus. The deal is a talent and tooling purchase rather than a product line.&quot;, &quot;why_it_matters&quot;: &quot;Meta is assembling capability through acqui-hires while its largest deal is blocked abroad, a pattern that keeps antitrust exposure low but integration debt high.&quot;, &quot;source&quot;: &quot;DEV Community digest&quot;, &quot;url&quot;: &quot;https://dev.to/hiroki-ii-ai/ai-daily-digest-november-6-2026-openai-ships-gpt-6-cyber-meta-buys-conductor-anthropic-locks-1jij&quot;, &quot;category&quot;: &quot;Industry&quot;, &quot;importance&quot;: 6}'>
+        <span class="card-cat" style="background:#d97706">Industry</span>
+          <h3 class="card-title">Meta acquires Conductor to shore up its model pipeline</h3>
+          <p class="card-summary">Meta has bought Conductor for its model pipeline, the latest in a run of small AI acquisitions since China blocked its bid for Manus. The deal is a talent and tooling purchase rather than a product line.</p>
+          <div class="card-actions">
+            <a href="https://dev.to/hiroki-ii-ai/ai-daily-digest-november-6-2026-openai-ships-gpt-6-cyber-meta-buys-conductor-anthropic-locks-1jij" target="_blank" rel="noopener" class="open-btn" style="--c:#d97706">Open ↗</a>
+            <button class="read-more-btn" data-article='{&quot;title&quot;: &quot;Meta acquires Conductor to shore up its model pipeline&quot;, &quot;summary&quot;: &quot;Meta has bought Conductor for its model pipeline, the latest in a run of small AI acquisitions since China blocked its bid for Manus. The deal is a talent and tooling purchase rather than a product line.&quot;, &quot;why_it_matters&quot;: &quot;Meta is assembling capability through acqui-hires while its largest deal is blocked abroad, a pattern that keeps antitrust exposure low but integration debt high.&quot;, &quot;source&quot;: &quot;DEV Community digest&quot;, &quot;url&quot;: &quot;https://dev.to/hiroki-ii-ai/ai-daily-digest-november-6-2026-openai-ships-gpt-6-cyber-meta-buys-conductor-anthropic-locks-1jij&quot;, &quot;category&quot;: &quot;Industry&quot;, &quot;importance&quot;: 6}' style="--c:#d97706">Read More</button>
+          </div>
+          <div class="card-meta">DEV Community digest &middot; Score: 6/10</div>
+      </div>
+      <div class="card spotlight" data-category="Tools" data-title="launch hn: rivet orchestrates agents on s3 with the actor model" style="--c:#0891b2" data-article='{&quot;title&quot;: &quot;Launch HN: Rivet orchestrates agents on S3 with the actor model&quot;, &quot;summary&quot;: &quot;Rivet, a YC W23 company, launched an open-source orchestrator that gives each agent a lightweight actor backed by S3 instead of a heavyweight sandbox. Actors provide a long-lived process for long turns, in-memory context, a WebSocket server for multiplayer, durable SQLite on S3 and hibernation when idle. Self-hosting needs one Rust binary and an S3 bucket.&quot;, &quot;why_it_matters&quot;: &quot;Agent infrastructure is converging on durable, cheap-to-park execution. That is what makes long-running agents affordable at scale rather than a per-sandbox tax.&quot;, &quot;source&quot;: &quot;Hacker News&quot;, &quot;url&quot;: &quot;https://news.ycombinator.com/item?id=50381687&quot;, &quot;category&quot;: &quot;Tools&quot;, &quot;importance&quot;: 6}'>
+        <span class="card-cat" style="background:#0891b2">Tools</span>
+          <h3 class="card-title">Launch HN: Rivet orchestrates agents on S3 with the actor model</h3>
+          <p class="card-summary">Rivet, a YC W23 company, launched an open-source orchestrator that gives each agent a lightweight actor backed by S3 instead of a heavyweight sandbox. Actors provide a long-lived process for long turns, in-memory context, a WebSocket server for multiplayer, durable SQLite on S3 and hibernation when idle. Self-hosting needs one Rust binary and an S3 bucket.</p>
+          <div class="card-actions">
+            <a href="https://news.ycombinator.com/item?id=50381687" target="_blank" rel="noopener" class="open-btn" style="--c:#0891b2">Open ↗</a>
+            <button class="read-more-btn" data-article='{&quot;title&quot;: &quot;Launch HN: Rivet orchestrates agents on S3 with the actor model&quot;, &quot;summary&quot;: &quot;Rivet, a YC W23 company, launched an open-source orchestrator that gives each agent a lightweight actor backed by S3 instead of a heavyweight sandbox. Actors provide a long-lived process for long turns, in-memory context, a WebSocket server for multiplayer, durable SQLite on S3 and hibernation when idle. Self-hosting needs one Rust binary and an S3 bucket.&quot;, &quot;why_it_matters&quot;: &quot;Agent infrastructure is converging on durable, cheap-to-park execution. That is what makes long-running agents affordable at scale rather than a per-sandbox tax.&quot;, &quot;source&quot;: &quot;Hacker News&quot;, &quot;url&quot;: &quot;https://news.ycombinator.com/item?id=50381687&quot;, &quot;category&quot;: &quot;Tools&quot;, &quot;importance&quot;: 6}' style="--c:#0891b2">Read More</button>
+          </div>
+          <div class="card-meta">Hacker News &middot; Score: 6/10</div>
+      </div>
+      <div class="card spotlight" data-category="Tools" data-title="show hn: a text-to-image model trained for about $20k, apache 2.0 weights" style="--c:#0891b2" data-article='{&quot;title&quot;: &quot;Show HN: a text-to-image model trained for about $20K, Apache 2.0 weights&quot;, &quot;summary&quot;: &quot;A developer released a text-to-image model trained for roughly $20,000 and published the weights under Apache 2.0, arguing the result is usable rather than state of the art.&quot;, &quot;why_it_matters&quot;: &quot;The cost of a credible image model has fallen to a rounding error for a small team. That resets expectations for what a startup can build without a cloud budget.&quot;, &quot;source&quot;: &quot;Hacker News&quot;, &quot;url&quot;: &quot;https://news.ycombinator.com/item?id=50368208&quot;, &quot;category&quot;: &quot;Tools&quot;, &quot;importance&quot;: 6}'>
+        <span class="card-cat" style="background:#0891b2">Tools</span>
+          <h3 class="card-title">Show HN: a text-to-image model trained for about $20K, Apache 2.0 weights</h3>
+          <p class="card-summary">A developer released a text-to-image model trained for roughly $20,000 and published the weights under Apache 2.0, arguing the result is usable rather than state of the art.</p>
+          <div class="card-actions">
+            <a href="https://news.ycombinator.com/item?id=50368208" target="_blank" rel="noopener" class="open-btn" style="--c:#0891b2">Open ↗</a>
+            <button class="read-more-btn" data-article='{&quot;title&quot;: &quot;Show HN: a text-to-image model trained for about $20K, Apache 2.0 weights&quot;, &quot;summary&quot;: &quot;A developer released a text-to-image model trained for roughly $20,000 and published the weights under Apache 2.0, arguing the result is usable rather than state of the art.&quot;, &quot;why_it_matters&quot;: &quot;The cost of a credible image model has fallen to a rounding error for a small team. That resets expectations for what a startup can build without a cloud budget.&quot;, &quot;source&quot;: &quot;Hacker News&quot;, &quot;url&quot;: &quot;https://news.ycombinator.com/item?id=50368208&quot;, &quot;category&quot;: &quot;Tools&quot;, &quot;importance&quot;: 6}' style="--c:#0891b2">Read More</button>
+          </div>
+          <div class="card-meta">Hacker News &middot; Score: 6/10</div>
+      </div>
+      <div class="card spotlight" data-category="Research" data-title="anthropic: how researchers actually use claude" style="--c:#059669" data-article='{&quot;title&quot;: &quot;Anthropic: how researchers actually use Claude&quot;, &quot;summary&quot;: &quot;Anthropic published an analysis of how working scientists use Claude in their research, covering the tasks where the model helps and where researchers still route around it.&quot;, &quot;why_it_matters&quot;: &quot;Vendor-reported usage patterns are thin evidence, but they are the only public signal on where AI is genuinely embedded in scientific work rather than demoed.&quot;, &quot;source&quot;: &quot;Anthropic&quot;, &quot;url&quot;: &quot;https://www.anthropic.com/research/how-researchers-use-claude&quot;, &quot;category&quot;: &quot;Research&quot;, &quot;importance&quot;: 6}'>
+        <span class="card-cat" style="background:#059669">Research</span>
+          <h3 class="card-title">Anthropic: how researchers actually use Claude</h3>
+          <p class="card-summary">Anthropic published an analysis of how working scientists use Claude in their research, covering the tasks where the model helps and where researchers still route around it.</p>
+          <div class="card-actions">
+            <a href="https://www.anthropic.com/research/how-researchers-use-claude" target="_blank" rel="noopener" class="open-btn" style="--c:#059669">Open ↗</a>
+            <button class="read-more-btn" data-article='{&quot;title&quot;: &quot;Anthropic: how researchers actually use Claude&quot;, &quot;summary&quot;: &quot;Anthropic published an analysis of how working scientists use Claude in their research, covering the tasks where the model helps and where researchers still route around it.&quot;, &quot;why_it_matters&quot;: &quot;Vendor-reported usage patterns are thin evidence, but they are the only public signal on where AI is genuinely embedded in scientific work rather than demoed.&quot;, &quot;source&quot;: &quot;Anthropic&quot;, &quot;url&quot;: &quot;https://www.anthropic.com/research/how-researchers-use-claude&quot;, &quot;category&quot;: &quot;Research&quot;, &quot;importance&quot;: 6}' style="--c:#059669">Read More</button>
+          </div>
+          <div class="card-meta">Anthropic &middot; Score: 6/10</div>
+      </div>
+      <div class="card spotlight" data-category="Research" data-title="adammad swaps squared gradients for mean absolute deviation to calm training" style="--c:#059669" data-article='{&quot;title&quot;: &quot;AdamMAD swaps squared gradients for mean absolute deviation to calm training&quot;, &quot;summary&quot;: &quot;A new optimizer, AdamMAD, replaces the squared-gradient term in Adam&#x27;s second moment with mean absolute deviation, which the authors report cuts training oscillations.&quot;, &quot;why_it_matters&quot;: &quot;Optimizer changes are the cheapest lever on training cost. Even a modest stability gain compounds across a full pre-training run.&quot;, &quot;source&quot;: &quot;Bioengineer.org&quot;, &quot;url&quot;: &quot;https://bioengineer.org/new-adammad-optimizer-swaps-squared-gradients-for-mean-absolute-deviation-to-cut-training-oscillations/&quot;, &quot;category&quot;: &quot;Research&quot;, &quot;importance&quot;: 6}'>
+        <span class="card-cat" style="background:#059669">Research</span>
+          <h3 class="card-title">AdamMAD swaps squared gradients for mean absolute deviation to calm training</h3>
+          <p class="card-summary">A new optimizer, AdamMAD, replaces the squared-gradient term in Adam&#x27;s second moment with mean absolute deviation, which the authors report cuts training oscillations.</p>
+          <div class="card-actions">
+            <a href="https://bioengineer.org/new-adammad-optimizer-swaps-squared-gradients-for-mean-absolute-deviation-to-cut-training-oscillations/" target="_blank" rel="noopener" class="open-btn" style="--c:#059669">Open ↗</a>
+            <button class="read-more-btn" data-article='{&quot;title&quot;: &quot;AdamMAD swaps squared gradients for mean absolute deviation to calm training&quot;, &quot;summary&quot;: &quot;A new optimizer, AdamMAD, replaces the squared-gradient term in Adam&#x27;s second moment with mean absolute deviation, which the authors report cuts training oscillations.&quot;, &quot;why_it_matters&quot;: &quot;Optimizer changes are the cheapest lever on training cost. Even a modest stability gain compounds across a full pre-training run.&quot;, &quot;source&quot;: &quot;Bioengineer.org&quot;, &quot;url&quot;: &quot;https://bioengineer.org/new-adammad-optimizer-swaps-squared-gradients-for-mean-absolute-deviation-to-cut-training-oscillations/&quot;, &quot;category&quot;: &quot;Research&quot;, &quot;importance&quot;: 6}' style="--c:#059669">Read More</button>
+          </div>
+          <div class="card-meta">Bioengineer.org &middot; Score: 6/10</div>
+      </div>
+      <div class="card spotlight" data-category="Research" data-title="agents, think only when it helps: adaptive reasoning for agentic models" style="--c:#059669" data-article='{&quot;title&quot;: &quot;Agents, think only when it helps: adaptive reasoning for agentic models&quot;, &quot;summary&quot;: &quot;A new arXiv paper argues agents should allocate reasoning effort adaptively, thinking longer only where it measurably improves the outcome and answering directly elsewhere.&quot;, &quot;why_it_matters&quot;: &quot;Most agent cost is wasted deliberation. Making effort a decision rather than a default is the difference between an agent that is affordable to run all day and one that is not.&quot;, &quot;source&quot;: &quot;Newsference&quot;, &quot;url&quot;: &quot;https://newsference.com/c/arxiv-agents-think-only-when-it-helps-24180009&quot;, &quot;category&quot;: &quot;Research&quot;, &quot;importance&quot;: 6}'>
+        <span class="card-cat" style="background:#059669">Research</span>
+          <h3 class="card-title">Agents, think only when it helps: adaptive reasoning for agentic models</h3>
+          <p class="card-summary">A new arXiv paper argues agents should allocate reasoning effort adaptively, thinking longer only where it measurably improves the outcome and answering directly elsewhere.</p>
+          <div class="card-actions">
+            <a href="https://newsference.com/c/arxiv-agents-think-only-when-it-helps-24180009" target="_blank" rel="noopener" class="open-btn" style="--c:#059669">Open ↗</a>
+            <button class="read-more-btn" data-article='{&quot;title&quot;: &quot;Agents, think only when it helps: adaptive reasoning for agentic models&quot;, &quot;summary&quot;: &quot;A new arXiv paper argues agents should allocate reasoning effort adaptively, thinking longer only where it measurably improves the outcome and answering directly elsewhere.&quot;, &quot;why_it_matters&quot;: &quot;Most agent cost is wasted deliberation. Making effort a decision rather than a default is the difference between an agent that is affordable to run all day and one that is not.&quot;, &quot;source&quot;: &quot;Newsference&quot;, &quot;url&quot;: &quot;https://newsference.com/c/arxiv-agents-think-only-when-it-helps-24180009&quot;, &quot;category&quot;: &quot;Research&quot;, &quot;importance&quot;: 6}' style="--c:#059669">Read More</button>
+          </div>
+          <div class="card-meta">Newsference &middot; Score: 6/10</div>
+      </div>
+      <div class="card spotlight" data-category="Industry" data-title="usa today co. leans on ai for advertising video" style="--c:#d97706" data-article='{&quot;title&quot;: &quot;USA Today Co. leans on AI for advertising video&quot;, &quot;summary&quot;: &quot;Poynter reports on how Gannett&#x27;s USA Today Co. is using AI in advertising video production, part of a wider push by news publishers to turn editorial and commercial workflows over to generated media.&quot;, &quot;why_it_matters&quot;: &quot;Advertising, not journalism, is where publisher AI adoption is fastest, because the output is commercial and the disclosure expectations are thinner.&quot;, &quot;source&quot;: &quot;Poynter&quot;, &quot;url&quot;: &quot;https://www.poynter.org/business-work/2026/usa-today-co-ai-use-advertising-video/&quot;, &quot;category&quot;: &quot;Industry&quot;, &quot;importance&quot;: 5}'>
+        <span class="card-cat" style="background:#d97706">Industry</span>
+          <h3 class="card-title">USA Today Co. leans on AI for advertising video</h3>
+          <p class="card-summary">Poynter reports on how Gannett&#x27;s USA Today Co. is using AI in advertising video production, part of a wider push by news publishers to turn editorial and commercial workflows over to generated media.</p>
+          <div class="card-actions">
+            <a href="https://www.poynter.org/business-work/2026/usa-today-co-ai-use-advertising-video/" target="_blank" rel="noopener" class="open-btn" style="--c:#d97706">Open ↗</a>
+            <button class="read-more-btn" data-article='{&quot;title&quot;: &quot;USA Today Co. leans on AI for advertising video&quot;, &quot;summary&quot;: &quot;Poynter reports on how Gannett&#x27;s USA Today Co. is using AI in advertising video production, part of a wider push by news publishers to turn editorial and commercial workflows over to generated media.&quot;, &quot;why_it_matters&quot;: &quot;Advertising, not journalism, is where publisher AI adoption is fastest, because the output is commercial and the disclosure expectations are thinner.&quot;, &quot;source&quot;: &quot;Poynter&quot;, &quot;url&quot;: &quot;https://www.poynter.org/business-work/2026/usa-today-co-ai-use-advertising-video/&quot;, &quot;category&quot;: &quot;Industry&quot;, &quot;importance&quot;: 5}' style="--c:#d97706">Read More</button>
+          </div>
+          <div class="card-meta">Poynter &middot; Score: 5/10</div>
+      </div>
+      <div class="card spotlight" data-category="Tools" data-title="gauge: an open-source cli that tests your docs against coding agents" style="--c:#0891b2" data-article='{&quot;title&quot;: &quot;Gauge: an open-source CLI that tests your docs against coding agents&quot;, &quot;summary&quot;: &quot;Gauge is an open-source command-line tool that runs a project&#x27;s documentation and skill files past coding agents to check whether the instructions actually produce working results.&quot;, &quot;why_it_matters&quot;: &quot;As agents consume documentation instead of humans, docs become executable specification. Testing them is the obvious next step and almost nobody does it yet.&quot;, &quot;source&quot;: &quot;Models at Work&quot;, &quot;url&quot;: &quot;https://modelsatwork.news/article/gauge-open-source-cli-test-docs-skills-with-coding-agents-show-hn&quot;, &quot;category&quot;: &quot;Tools&quot;, &quot;importance&quot;: 5}'>
+        <span class="card-cat" style="background:#0891b2">Tools</span>
+          <h3 class="card-title">Gauge: an open-source CLI that tests your docs against coding agents</h3>
+          <p class="card-summary">Gauge is an open-source command-line tool that runs a project&#x27;s documentation and skill files past coding agents to check whether the instructions actually produce working results.</p>
+          <div class="card-actions">
+            <a href="https://modelsatwork.news/article/gauge-open-source-cli-test-docs-skills-with-coding-agents-show-hn" target="_blank" rel="noopener" class="open-btn" style="--c:#0891b2">Open ↗</a>
+            <button class="read-more-btn" data-article='{&quot;title&quot;: &quot;Gauge: an open-source CLI that tests your docs against coding agents&quot;, &quot;summary&quot;: &quot;Gauge is an open-source command-line tool that runs a project&#x27;s documentation and skill files past coding agents to check whether the instructions actually produce working results.&quot;, &quot;why_it_matters&quot;: &quot;As agents consume documentation instead of humans, docs become executable specification. Testing them is the obvious next step and almost nobody does it yet.&quot;, &quot;source&quot;: &quot;Models at Work&quot;, &quot;url&quot;: &quot;https://modelsatwork.news/article/gauge-open-source-cli-test-docs-skills-with-coding-agents-show-hn&quot;, &quot;category&quot;: &quot;Tools&quot;, &quot;importance&quot;: 5}' style="--c:#0891b2">Read More</button>
+          </div>
+          <div class="card-meta">Models at Work &middot; Score: 5/10</div>
+      </div>
+      <div class="card spotlight" data-category="Research" data-title="self-supervised learning of universal latent spaces for operator learning" style="--c:#059669" data-article='{&quot;title&quot;: &quot;Self-supervised learning of universal latent spaces for operator learning&quot;, &quot;summary&quot;: &quot;The paper proposes a self-supervised route to latent representations that transfer across operator-learning tasks, instead of training a separate surrogate model per physical system.&quot;, &quot;why_it_matters&quot;: &quot;Reusable latent spaces would cut the data cost of scientific machine learning, where every new system currently means a new dataset and a new model.&quot;, &quot;source&quot;: &quot;ArXivSignals&quot;, &quot;url&quot;: &quot;https://arxivsignals.io/papers/2611.05735&quot;, &quot;category&quot;: &quot;Research&quot;, &quot;importance&quot;: 5}'>
+        <span class="card-cat" style="background:#059669">Research</span>
+          <h3 class="card-title">Self-supervised learning of universal latent spaces for operator learning</h3>
+          <p class="card-summary">The paper proposes a self-supervised route to latent representations that transfer across operator-learning tasks, instead of training a separate surrogate model per physical system.</p>
+          <div class="card-actions">
+            <a href="https://arxivsignals.io/papers/2611.05735" target="_blank" rel="noopener" class="open-btn" style="--c:#059669">Open ↗</a>
+            <button class="read-more-btn" data-article='{&quot;title&quot;: &quot;Self-supervised learning of universal latent spaces for operator learning&quot;, &quot;summary&quot;: &quot;The paper proposes a self-supervised route to latent representations that transfer across operator-learning tasks, instead of training a separate surrogate model per physical system.&quot;, &quot;why_it_matters&quot;: &quot;Reusable latent spaces would cut the data cost of scientific machine learning, where every new system currently means a new dataset and a new model.&quot;, &quot;source&quot;: &quot;ArXivSignals&quot;, &quot;url&quot;: &quot;https://arxivsignals.io/papers/2611.05735&quot;, &quot;category&quot;: &quot;Research&quot;, &quot;importance&quot;: 5}' style="--c:#059669">Read More</button>
+          </div>
+          <div class="card-meta">ArXivSignals &middot; Score: 5/10</div>
+      </div>
+      <div class="card spotlight" data-category="Research" data-title="context enrichment helps llm social agents, but robustness gains plateau" style="--c:#059669" data-article='{&quot;title&quot;: &quot;Context enrichment helps LLM social agents, but robustness gains plateau&quot;, &quot;summary&quot;: &quot;A study of LLM social agents finds that enriching context reduces brittleness, but the robustness improvement plateaus rather than scaling with more context. The authors tie this to open questions about the reliability of agent-based social simulation.&quot;, &quot;why_it_matters&quot;: &quot;A lot of policy and market research now leans on simulated populations. A plateau in robustness means those simulations carry error bars nobody is reporting.&quot;, &quot;source&quot;: &quot;AI.Wire&quot;, &quot;url&quot;: &quot;https://thewire.ink/category/academic&quot;, &quot;category&quot;: &quot;Research&quot;, &quot;importance&quot;: 5}'>
+        <span class="card-cat" style="background:#059669">Research</span>
+          <h3 class="card-title">Context enrichment helps LLM social agents, but robustness gains plateau</h3>
+          <p class="card-summary">A study of LLM social agents finds that enriching context reduces brittleness, but the robustness improvement plateaus rather than scaling with more context. The authors tie this to open questions about the reliability of agent-based social simulation.</p>
+          <div class="card-actions">
+            <a href="https://thewire.ink/category/academic" target="_blank" rel="noopener" class="open-btn" style="--c:#059669">Open ↗</a>
+            <button class="read-more-btn" data-article='{&quot;title&quot;: &quot;Context enrichment helps LLM social agents, but robustness gains plateau&quot;, &quot;summary&quot;: &quot;A study of LLM social agents finds that enriching context reduces brittleness, but the robustness improvement plateaus rather than scaling with more context. The authors tie this to open questions about the reliability of agent-based social simulation.&quot;, &quot;why_it_matters&quot;: &quot;A lot of policy and market research now leans on simulated populations. A plateau in robustness means those simulations carry error bars nobody is reporting.&quot;, &quot;source&quot;: &quot;AI.Wire&quot;, &quot;url&quot;: &quot;https://thewire.ink/category/academic&quot;, &quot;category&quot;: &quot;Research&quot;, &quot;importance&quot;: 5}' style="--c:#059669">Read More</button>
+          </div>
+          <div class="card-meta">AI.Wire &middot; Score: 5/10</div>
+      </div>
+    </div>
+    <div class="no-res" id="noRes" style="display:none">No articles match your search.</div>
+  </div>
+</div>
+
+<!-- MODAL -->
+<div class="modal-overlay" id="modal">
+  <div class="modal-card" id="modalCard">
+    <button class="modal-close" type="button" aria-label="Close">&times;</button>
+    <div id="modalContent"></div>
+  </div>
+</div>
+
+<footer>AI News Daily &bull; Generated by <b>Sarvam AI</b> News Curator &bull; Web Search &bull; arXiv &bull; Hacker News &bull; RSS</footer>
+
+<!-- THREE.JS MORPHING PARTICLE SHAPES -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js" integrity="sha384-CI3ELBVUz9XQO+97x6nwMDPosPR5XvsxW2ua7N1Xeygeh1IxtgqtCkGfQY9WWdHu" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script>
+(function(){
+  const canvas=document.getElementById('bg-canvas');
+  if(!canvas||typeof THREE==='undefined')return;
+  const scene=new THREE.Scene();
+  const camera=new THREE.PerspectiveCamera(60,innerWidth/innerHeight,0.1,1000);
+  const renderer=new THREE.WebGLRenderer({canvas:canvas,alpha:true,antialias:true});
+  renderer.setSize(innerWidth,innerHeight);
+  renderer.setPixelRatio(Math.min(devicePixelRatio,2));
+
+  // ── PARTICLE COUNT ──
+  const PC=innerWidth<640?2500:5000;
+
+  // ── CREATE MORPH SHAPES (hidden geometries to sample vertex positions) ──
+  const shapes=[
+    new THREE.SphereGeometry(120,64,64),
+    new THREE.TorusKnotGeometry(80,28,128,32,2,3),
+    new THREE.IcosahedronGeometry(120,4),
+    new THREE.TorusGeometry(80,30,32,100),
+    new THREE.DodecahedronGeometry(120,3)
+  ];
+
+  // Sample positions from each shape
+  function getShapePositions(geo,count){
+    const pos=geo.attributes.position;
+    const arr=new Float32Array(count*3);
+    for(let i=0;i<count;i++){
+      const idx=Math.floor(Math.random()*pos.count);
+      arr[i*3]=pos.getX(idx);
+      arr[i*3+1]=pos.getY(idx);
+      arr[i*3+2]=pos.getZ(idx);
+    }
+    return arr;
+  }
+
+  // Current and target positions
+  const positions=new Float32Array(PC*3);
+  const current=new Float32Array(PC*3);
+  const targets=shapes.map(s=>getShapePositions(s,PC));
+  let curShape=0,nextShape=1,morphProgress=0;
+  for(let i=0;i<PC*3;i++)current[i]=targets[0][i];
+
+  // Colors — violet, cyan, pink mix
+  const colors=new Float32Array(PC*3);
+  const palette=[[0.49,0.23,0.93],[0.03,0.71,0.93],[0.86,0.15,0.47]];
+  for(let i=0;i<PC;i++){
+    const c=palette[Math.floor(Math.random()*3)];
+    colors[i*3]=c[0];colors[i*3+1]=c[1];colors[i*3+2]=c[2];
+  }
+
+  const geo=new THREE.BufferGeometry();
+  geo.setAttribute('position',new THREE.BufferAttribute(positions,3));
+  geo.setAttribute('color',new THREE.BufferAttribute(colors,3));
+
+  const mat=new THREE.PointsMaterial({
+    size:2.2,vertexColors:true,transparent:true,opacity:.6,
+    blending:THREE.AdditiveBlending,sizeAttenuation:true,depthWrite:false
+  });
+
+  const points=new THREE.Points(geo,mat);
+  scene.add(points);
+
+  // Lines between close particles
+  const lineGeo=new THREE.BufferGeometry();
+  const linePositions=new Float32Array(PC*10*6); // limit connections
+  lineGeo.setAttribute('position',new THREE.BufferAttribute(linePositions,3));
+  const lineMat=new THREE.LineBasicMaterial({color:0x7c3aed,transparent:true,opacity:.04,blending:THREE.AdditiveBlending});
+  const lines=new THREE.LineSegments(lineGeo,lineMat);
+  scene.add(lines);
+
+  camera.position.z=300;
+  let mx=0,my=0,rx=0,ry=0;
+  document.addEventListener('mousemove',e=>{
+    mx=(e.clientX/innerWidth-.5)*2;
+    my=-(e.clientY/innerHeight-.5)*2;
+  });
+
+  let lastTime=performance.now();
+  function animate(){
+    requestAnimationFrame(animate);
+    const now=performance.now();
+    const dt=(now-lastTime)/1000;
+    lastTime=now;
+
+    // Morph progress
+    morphProgress+=dt*0.15;
+    if(morphProgress>=1){
+      morphProgress=0;
+      curShape=nextShape;
+      nextShape=(nextShape+1)%shapes.length;
+      // Copy current target as new current
+      for(let i=0;i<PC*3;i++)current[i]=targets[curShape][i];
+    }
+
+    // Lerp positions between current and next shape
+    const ease=morphProgress*morphProgress*(3-2*morphProgress); // smoothstep
+    for(let i=0;i<PC*3;i++){
+      positions[i]=current[i]+(targets[nextShape][i]-current[i])*ease;
+    }
+    geo.attributes.position.needsUpdate=true;
+
+    // Update lines (limited connections for performance)
+    let li=0;
+    const maxConn=PC*10;
+    for(let i=0;i<PC&&li<maxConn;i++){
+      for(let j=i+1;j<PC&&li<maxConn;j++){
+        const dx=positions[i*3]-positions[j*3];
+        const dy=positions[i*3+1]-positions[j*3+1];
+        const dz=positions[i*3+2]-positions[j*3+2];
+        const d2=dx*dx+dy*dy+dz*dz;
+        if(d2<900){
+          linePositions[li*6]=positions[i*3];
+          linePositions[li*6+1]=positions[i*3+1];
+          linePositions[li*6+2]=positions[i*3+2];
+          linePositions[li*6+3]=positions[j*3];
+          linePositions[li*6+4]=positions[j*3+1];
+          linePositions[li*6+5]=positions[j*3+2];
+          li++;
+        }
+      }
+    }
+    // Zero out remaining
+    for(let k=li*6;k<linePositions.length;k++)linePositions[k]=0;
+    lineGeo.attributes.position.needsUpdate=true;
+
+    // Rotation — smooth follow mouse
+    ry+=(mx*0.5-ry)*0.03;
+    rx+=(my*0.3-rx)*0.03;
+    points.rotation.y=ry+now*0.0001;
+    points.rotation.x=rx*0.5;
+    lines.rotation.y=points.rotation.y;
+    lines.rotation.x=points.rotation.x;
+
+    renderer.render(scene,camera);
+  }
+  animate();
+
+  addEventListener('resize',()=>{
+    camera.aspect=innerWidth/innerHeight;
+    camera.updateProjectionMatrix();
+    renderer.setSize(innerWidth,innerHeight);
+  });
+})();
+</script>
+
+<script>
+// THEME TOGGLE
+function toggleTheme(){
+  const cur=document.documentElement.getAttribute('data-theme');
+  const next=cur==='light'?'dark':'light';
+  document.documentElement.setAttribute('data-theme',next==='dark'?'':'light');
+  document.getElementById('themeLabel').textContent=next==='light'?'Light':'Dark';
+  document.querySelector('.theme-toggle .icon').textContent=next==='light'?'☀️':'🌙';
+  localStorage.setItem('theme',next);
+}
+(function(){const t=localStorage.getItem('theme');if(t==='light'){document.documentElement.setAttribute('data-theme','light');document.getElementById('themeLabel').textContent='Light';document.querySelector('.theme-toggle .icon').textContent='☀️'}})();
+
+// TABS
+document.querySelectorAll('.tab-btn').forEach(b=>{
+  b.addEventListener('click',()=>{
+    document.querySelectorAll('.tab-btn').forEach(x=>x.classList.remove('active'));
+    document.querySelectorAll('.tab-body').forEach(x=>x.classList.remove('active'));
+    b.classList.add('active');
+    document.getElementById(b.dataset.tab).classList.add('active');
+    setTimeout(initReveal,50);
+  });
+});
+
+// MODAL
+function safeUrl(u){
+  try{const x=new URL(String(u),location.href);return(x.protocol==='https:'||x.protocol==='http:')?x.href:'#'}catch(e){return'#'}
+}
+function mk(tag,cls,text){
+  const e=document.createElement(tag);
+  if(cls)e.className=cls;
+  if(text!==undefined)e.textContent=String(text);
+  return e;
+}
+function openModal(data){
+  const c=catColors[data.category]||'#64748b';
+  const cat=mk('span','modal-cat',data.category);
+  cat.style.background=c;
+  const why=mk('div','modal-why');
+  why.append(mk('div','modal-why-label','\u26A1 Why it matters'),mk('p','modal-why-text',data.why_it_matters));
+  const link=mk('a','modal-open-btn','Open Full Article \u2197');
+  link.href=safeUrl(data.url);
+  link.target='_blank';
+  link.rel='noopener noreferrer';
+  document.getElementById('modalContent').replaceChildren(
+    cat,
+    mk('h2','modal-title',data.title),
+    mk('div','modal-score','Importance: '+data.importance+'/10 \u2022 Source: '+data.source),
+    mk('p','modal-summary',data.summary),
+    why,
+    link
+  );
+  document.getElementById('modal').classList.add('active');
+  document.body.style.overflow='hidden';
+}
+function closeModal(){
+  document.getElementById('modal').classList.remove('active');
+  document.body.style.overflow='';
+}
+document.addEventListener('keydown',e=>{if(e.key==='Escape')closeModal()});
+document.getElementById('themeToggle').addEventListener('click',toggleTheme);
+document.querySelector('.modal-close').addEventListener('click',closeModal);
+document.getElementById('modal').addEventListener('click',function(e){if(e.target===this)closeModal()});
+document.addEventListener('click',function(e){
+  const h=e.target.closest('.trend-header');
+  if(h)h.parentElement.classList.toggle('expanded');
+});
+
+var catColors={"LLM":"#7c3aed","Research":"#059669","Safety":"#dc2626","Industry":"#d97706","Tools":"#0891b2","Robotics":"#db2777","Computer Vision":"#9333ea","NLP":"#2563eb"};
+
+// CLICK HANDLERS FOR BRIEFS AND CARDS
+document.querySelectorAll('[data-article]').forEach(el=>{
+  el.addEventListener('click',function(e){
+    if(e.target.closest('a,button'))return;
+    try{
+      const data=JSON.parse(this.dataset.article);
+      openModal(data);
+    }catch(err){console.error(err)}
+  });
+});
+
+// READ MORE BUTTONS
+document.querySelectorAll('.read-more-btn').forEach(btn=>{
+  btn.addEventListener('click',function(e){
+    e.stopPropagation();
+    try{
+      const data=JSON.parse(this.dataset.article);
+      openModal(data);
+    }catch(err){console.error(err)}
+  });
+});
+
+// ANIMATED COUNTERS
+function animateCounters(){
+  document.querySelectorAll('[data-count]').forEach(el=>{
+    const t=parseInt(el.dataset.count),dur=1000,s=performance.now();
+    function u(n){
+      const p=Math.min((n-s)/dur,1),e=1-Math.pow(1-p,3);
+      el.textContent=Math.floor(t*e);
+      if(p<1)requestAnimationFrame(u);else el.textContent=t;
+    }
+    requestAnimationFrame(u);
+  });
+}
+
+// SCROLL REVEAL
+const ro=new IntersectionObserver(es=>{
+  es.forEach(e=>{if(e.isIntersecting)e.target.classList.add('in')})
+},{threshold:.08,rootMargin:'0px 0px -40px 0px'});
+function initReveal(){document.querySelectorAll('.reveal:not(.in)').forEach(e=>ro.observe(e))}
+
+// SPOTLIGHT MOUSE
+document.querySelectorAll('.spotlight').forEach(card=>{
+  card.addEventListener('mousemove',e=>{
+    const r=card.getBoundingClientRect();
+    card.style.setProperty('--mx',(e.clientX-r.left)+'px');
+    card.style.setProperty('--my',(e.clientY-r.top)+'px');
+  });
+});
+
+// SEARCH & FILTER
+const si=document.getElementById('searchInput'),cg=document.getElementById('cardGrid'),
+      nr=document.getElementById('noRes'),chips=document.getElementById('chips');
+let af=null;
+if(si)si.addEventListener('input',()=>fa(si.value.toLowerCase(),af));
+if(chips)chips.querySelectorAll('.chip').forEach(c=>{
+  c.addEventListener('click',()=>{
+    const f=c.dataset.filter;
+    if(af===f){af=null;c.classList.remove('active')}else{
+      af=f;chips.querySelectorAll('.chip').forEach(x=>x.classList.remove('active'));c.classList.add('active');
+    }
+    fa(si?si.value.toLowerCase():'',af);
+  });
+});
+function fa(q,cat){
+  let v=0;if(!cg)return;
+  cg.querySelectorAll('.card').forEach(card=>{
+    const t=card.dataset.title||'',cc=card.dataset.category||'';
+    const mq=!q||t.includes(q),mc=!cat||cc===cat;
+    if(mq&&mc){card.style.display='';v++}else{card.style.display='none'}
+  });
+  if(nr)nr.style.display=v===0?'block':'none';
+}
+
+// INIT
+window.addEventListener('load',()=>{animateCounters();initReveal()});
+</script>
+</body>
+</html>
