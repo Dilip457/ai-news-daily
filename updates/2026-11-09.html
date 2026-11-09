@@ -1,0 +1,1303 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'sha256-23tjFHEnlXtpz9ysPEVP6j+pdH61Fr8aChGZeUKTC9g=' 'sha256-0RWbezySHZqSCOad8Z3uysucrZTDGS18mg6lzhKCC80=' https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js; style-src 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src data:; connect-src 'none'; object-src 'none'; base-uri 'none'; form-action 'none'">
+<meta name="referrer" content="no-referrer">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI News Daily — 2026-11-09</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+
+/* ── DARK THEME (default) ── */
+:root{
+  --bg:#070710;--bg2:#0c0c18;
+  --surface:rgba(255,255,255,.025);--surface-h:rgba(255,255,255,.055);
+  --border:rgba(255,255,255,.06);--border-h:rgba(255,255,255,.14);
+  --text:#edecf5;--muted:#8389a3;--dim:#4a4f64;
+  --accent:#7c3aed;--accent2:#0891b2;--accent3:#db2777;
+  --modal-bg:rgba(7,7,16,.95);--modal-card:#0c0c18;
+  --shadow:0 20px 60px rgba(0,0,0,.5);
+}
+
+/* ── LIGHT THEME ── */
+[data-theme="light"]{
+  --bg:#f8f9fc;--bg2:#eef0f6;
+  --surface:rgba(0,0,0,.02);--surface-h:rgba(0,0,0,.04);
+  --border:rgba(0,0,0,.08);--border-h:rgba(0,0,0,.15);
+  --text:#1a1a2e;--muted:#555b6e;--dim:#8a92a6;
+  --accent:#6d28d9;--accent2:#0e7490;--accent3:#be185d;
+  --modal-bg:rgba(0,0,0,.3);--modal-card:#fff;
+  --shadow:0 20px 60px rgba(0,0,0,.15);
+}
+
+--radius:18px;
+html{scroll-behavior:smooth}
+body{
+  font-family:'Inter',system-ui,-apple-system,sans-serif;
+  background:var(--bg);color:var(--text);
+  line-height:1.6;overflow-x:hidden;
+  -webkit-font-smoothing:antialiased;
+  transition:background .3s,color .3s;
+}
+
+/* AURORA */
+.aurora{position:fixed;inset:0;z-index:0;pointer-events:none;overflow:hidden}
+.aurora::before,.aurora::after{content:'';position:absolute;width:70vw;height:70vw;border-radius:50%;filter:blur(120px);opacity:.3;animation:drift 22s ease-in-out infinite alternate}
+.aurora::before{background:radial-gradient(circle,#4338ca,transparent 70%);top:-20%;left:-15%}
+.aurora::after{background:radial-gradient(circle,#0e7490,transparent 70%);bottom:-25%;right:-15%;animation-delay:-8s}
+[data-theme="light"] .aurora::before,[data-theme="light"] .aurora::after{opacity:.08}
+@keyframes drift{from{transform:translate(0,0) scale(1)}to{transform:translate(60px,-40px) scale(1.15)}}
+
+/* NOISE + GRID */
+.noise{position:fixed;inset:0;z-index:1;pointer-events:none;opacity:.03;background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='200' height='200'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>")}
+[data-theme="light"] .noise{opacity:.01}
+.grid-bg{position:fixed;inset:0;z-index:0;pointer-events:none;background-image:linear-gradient(rgba(128,128,128,.02) 1px,transparent 1px),linear-gradient(90deg,rgba(128,128,128,.02) 1px,transparent 1px);background-size:50px 50px;mask-image:radial-gradient(ellipse 80% 60% at 50% 0%,#000,transparent);-webkit-mask-image:radial-gradient(ellipse 80% 60% at 50% 0%,#000,transparent)}
+
+.wrap{position:relative;z-index:2;max-width:1080px;margin:0 auto;padding:24px}
+
+/* HEADER */
+header{padding:50px 0 36px;border-bottom:1px solid var(--border);margin-bottom:32px;display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:20px}
+.header-left{flex:1;min-width:280px}
+.kicker{display:inline-flex;align-items:center;gap:8px;font-size:.72em;font-weight:600;color:var(--accent);letter-spacing:.1em;text-transform:uppercase;background:rgba(124,58,237,.08);padding:5px 14px;border-radius:100px;border:1px solid rgba(124,58,237,.15);margin-bottom:20px}
+[data-theme="light"] .kicker{background:rgba(109,40,217,.06);border-color:rgba(109,40,217,.12)}
+.kicker .live{width:6px;height:6px;border-radius:50%;background:var(--accent);box-shadow:0 0 10px var(--accent);animation:blink 1.8s ease-in-out infinite}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.3}}
+h1.title{font-size:2.8em;font-weight:800;line-height:.95;letter-spacing:-.03em;background:linear-gradient(135deg,#7c3aed,#0891b2,#db2777);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:8px}
+.subtitle{color:var(--muted);font-size:.95em;max-width:540px;margin-bottom:12px}
+.meta-row{display:flex;gap:16px;flex-wrap:wrap;font-size:.75em;color:var(--dim)}
+.meta-row span{display:flex;align-items:center;gap:5px}
+.meta-row .sep{width:3px;height:3px;border-radius:50%;background:var(--dim)}
+
+/* THEME TOGGLE */
+.theme-toggle{display:flex;align-items:center;gap:10px;background:var(--surface);border:1px solid var(--border);border-radius:100px;padding:6px 16px;cursor:pointer;font-family:inherit;font-size:.82em;color:var(--muted);transition:all .25s}
+.theme-toggle:hover{border-color:var(--accent);color:var(--text)}
+.theme-toggle .icon{font-size:1.2em}
+
+/* TABS */
+.tabs{display:flex;gap:4px;margin-bottom:32px;position:sticky;top:0;z-index:100;background:color-mix(in srgb,var(--bg) 85%,transparent);backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);padding:10px;border-radius:18px;border:1px solid var(--border)}
+.tab-btn{flex:1;padding:10px 16px;background:none;border:none;color:var(--muted);cursor:pointer;font-family:inherit;font-size:.85em;font-weight:500;border-radius:12px;transition:all .25s;white-space:nowrap}
+.tab-btn:hover{color:var(--text);background:var(--surface)}
+.tab-btn.active{color:var(--text);background:linear-gradient(135deg,rgba(124,58,237,.15),rgba(8,145,178,.08));box-shadow:inset 0 0 0 1px rgba(124,58,237,.2)}
+.tab-body{display:none;animation:fadeUp .4s ease}
+.tab-body.active{display:block}
+@keyframes fadeUp{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+
+/* BENTO */
+.bento{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:32px}
+.bento>*{border-radius:18px}
+.bento-why{grid-column:span 3;background:var(--surface);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border:1px solid var(--border);padding:24px;position:relative;overflow:hidden}
+.bento-why::before{content:'';position:absolute;inset:0;background:radial-gradient(circle at 80% 50%,rgba(124,58,237,.06),transparent 60%)}
+.bento-why p{position:relative;color:var(--text);font-size:1em;line-height:1.7}
+.bento-why .label{font-size:.7em;color:var(--accent);text-transform:uppercase;letter-spacing:.1em;margin-bottom:10px;display:block;font-weight:600}
+.bento-stat{background:var(--surface);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border:1px solid var(--border);padding:18px 14px;text-align:center;position:relative;overflow:hidden;transition:border-color .3s}
+.bento-stat:hover{border-color:var(--accent)}
+.bento-stat::after{content:'';position:absolute;bottom:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,var(--accent),transparent);opacity:.4}
+.bento-stat .num{font-size:1.8em;font-weight:800;line-height:1;font-variant-numeric:tabular-nums;background:linear-gradient(135deg,var(--accent),var(--accent2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.bento-stat .lbl{font-size:.62em;color:var(--muted);text-transform:uppercase;letter-spacing:.1em;margin-top:6px}
+
+/* SECTION HEADERS */
+.sec-head{font-size:1.25em;font-weight:700;margin-bottom:18px;display:flex;align-items:center;gap:12px;letter-spacing:-.02em}
+.sec-head::before{content:'';width:5px;height:22px;border-radius:3px;background:linear-gradient(180deg,var(--accent),var(--accent2));box-shadow:0 0 10px rgba(124,58,237,.3)}
+.sec-head .count{font-size:.6em;color:var(--dim);background:var(--surface);padding:3px 10px;border-radius:100px;border:1px solid var(--border)}
+.divider{border:none;border-top:1px solid var(--border);margin:36px 0 28px;position:relative}
+.divider::after{content:'';position:absolute;top:-1px;left:50%;transform:translateX(-50%);width:80px;height:2px;border-radius:2px;background:linear-gradient(90deg,transparent,var(--accent),transparent)}
+
+/* NEWS BRIEFS — clickable, wrapping text */
+.brief-list{display:flex;flex-direction:column;gap:6px;margin-bottom:32px}
+.brief-item{display:flex;align-items:flex-start;gap:14px;padding:14px 18px;background:color-mix(in srgb,var(--bg) 75%,transparent);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border:1px solid var(--border);border-radius:14px;transition:all .25s;position:relative;overflow:hidden;cursor:pointer}
+.brief-item:hover{background:color-mix(in srgb,var(--bg) 85%,transparent);border-color:var(--border-h);transform:translateX(4px)}
+.brief-item:hover .brief-num{color:var(--c,var(--accent))}
+.brief-num{font-size:.9em;font-weight:700;color:var(--dim);min-width:28px;transition:color .25s;flex-shrink:0;margin-top:2px}
+.brief-tag{padding:2px 10px;border-radius:100px;font-size:.65em;font-weight:600;color:#fff;white-space:nowrap;flex-shrink:0;margin-top:2px}
+.brief-body{flex:1;min-width:0}
+.brief-title{font-size:.88em;font-weight:600;color:var(--text);margin-bottom:4px}
+.brief-text{font-size:.8em;color:var(--muted);line-height:1.5}
+.brief-score{font-size:1em;font-weight:700;color:var(--c,var(--accent));min-width:36px;text-align:right;flex-shrink:0;margin-top:2px}
+.brief-score small{font-size:.5em;color:var(--dim);font-weight:400}
+
+/* CONCEPT */
+.concept{background:linear-gradient(135deg,color-mix(in srgb,var(--bg2) 90%,transparent),var(--bg));border:1px solid rgba(124,58,237,.12);border-radius:20px;padding:30px;margin-bottom:32px;position:relative;overflow:hidden}
+.concept::before{content:'';position:absolute;top:-40%;right:-10%;width:350px;height:350px;border-radius:50%;background:radial-gradient(circle,rgba(124,58,237,.06),transparent 70%);animation:drift 15s ease-in-out infinite alternate}
+.concept-label{display:inline-flex;align-items:center;gap:6px;font-size:.68em;font-weight:600;color:var(--accent);letter-spacing:.1em;text-transform:uppercase;background:rgba(124,58,237,.1);padding:5px 14px;border-radius:100px;border:1px solid rgba(124,58,237,.15);margin-bottom:16px;position:relative}
+.concept h2{font-size:1.6em;font-weight:700;letter-spacing:-.03em;margin-bottom:6px;position:relative;line-height:1.2}
+.concept h2 em{font-style:italic;font-weight:500;color:var(--accent)}
+.concept .sub{font-style:italic;font-size:1.05em;color:var(--muted);margin-bottom:24px;position:relative}
+.concept p{margin-bottom:14px;color:var(--text);line-height:1.8;font-size:.92em;position:relative}
+.concept p:last-child{margin-bottom:0}
+.concept em{color:var(--accent);font-style:italic;font-weight:500}
+
+/* BRIEFING */
+.briefing-box{background:var(--surface);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border:1px solid var(--border);border-radius:20px;padding:28px;margin-bottom:32px}
+.briefing-box h2{font-size:1.4em;font-weight:700;letter-spacing:-.03em;margin-bottom:18px;background:linear-gradient(135deg,var(--accent),var(--accent2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.briefing-box h2 em{font-style:italic;font-weight:500}
+.briefing-box p{margin-bottom:14px;color:var(--text);line-height:1.75;font-size:.92em}
+.briefing-box p:last-child{margin-bottom:0}
+
+/* SPOTLIGHT CARDS */
+.card{background:var(--surface);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border:1px solid var(--border);border-radius:18px;padding:22px;transition:all .3s cubic-bezier(.4,0,.2,1);position:relative;overflow:hidden}
+.spotlight::before{content:'';position:absolute;inset:0;border-radius:18px;background:radial-gradient(circle 250px at var(--mx,50%) var(--my,50%),rgba(124,58,237,.04),transparent 60%);opacity:0;transition:opacity .3s;pointer-events:none}
+.spotlight:hover::before{opacity:1}
+.spotlight:hover{border-color:color-mix(in srgb,var(--c,var(--accent)) 30%,transparent);background:var(--surface-h);transform:translateY(-2px);box-shadow:var(--shadow)}
+
+/* CARD CONTENT */
+.card-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px}
+.cat-pill{padding:4px 12px;border-radius:100px;font-size:.68em;font-weight:600;color:#fff}
+.cat-pill.small{padding:2px 8px;font-size:.6em}
+.card-score{font-size:1.1em;font-weight:700;color:var(--c,var(--accent));font-variant-numeric:tabular-nums}
+.card-score small{font-size:.5em;color:var(--dim);font-weight:400}
+.card-h{font-size:1.05em;font-weight:600;margin-bottom:10px;line-height:1.35;letter-spacing:-.01em}
+.card-sum{font-size:.87em;color:var(--muted);margin-bottom:14px;line-height:1.6}
+.card-why{background:rgba(124,58,237,.03);border-radius:12px;padding:14px;margin-bottom:14px;border-left:2px solid var(--c,var(--accent))}
+.card-why p{font-size:.85em;color:var(--text);margin-top:6px;line-height:1.6}
+.why-tag{font-size:.65em;color:var(--c,var(--accent));text-transform:uppercase;letter-spacing:.1em;font-weight:600}
+.card-bot{display:flex;justify-content:space-between;align-items:center}
+.src{font-size:.75em;color:var(--dim)}
+.card-actions{display:flex;gap:8px;align-items:center}
+.read-more-btn{padding:7px 14px;background:var(--surface);border:1px solid var(--border);border-radius:10px;color:var(--accent);cursor:pointer;font-family:inherit;font-size:.78em;font-weight:500;transition:all .25s}
+.read-more-btn:hover{background:var(--accent);color:#fff;border-color:var(--accent)}
+.open-link-btn{padding:7px 14px;background:var(--accent);border:1px solid var(--accent);border-radius:10px;color:#fff!important;text-decoration:none;font-size:.78em;font-weight:500;transition:all .25s;display:inline-block}
+.open-link-btn:hover{opacity:.85;transform:translateY(-1px)}
+.open-link-btn.small{padding:4px 10px;font-size:.72em}
+
+/* TOP 10 */
+.top10{display:flex;gap:18px}
+.rank{font-size:1.3em;font-weight:800;min-width:46px;height:46px;border-radius:12px;display:flex;align-items:center;justify-content:center;color:#fff;font-variant-numeric:tabular-nums;flex-shrink:0}
+.top10-body{flex:1;min-width:0}
+.top10-body .card-top{margin-bottom:10px}
+
+/* TRENDS — expandable */
+.trend{display:flex;flex-direction:column;gap:0}
+.trend-header{display:flex;gap:16px;align-items:flex-start;cursor:pointer;user-select:none}
+.trend-emoji{font-size:1.8em;min-width:48px;text-align:center;filter:drop-shadow(0 0 8px rgba(124,58,237,.2))}
+.trend-info{flex:1}
+.trend-h{font-size:1.05em;color:var(--accent);margin-bottom:8px;font-weight:600}
+.trend-d{font-size:.86em;color:var(--muted);margin-bottom:8px;line-height:1.6}
+.trend-n{font-size:.72em;color:var(--muted);background:var(--surface);padding:3px 10px;border-radius:100px;border:1px solid var(--border)}
+.trend-expand{font-size:.8em;color:var(--dim);transition:transform .3s;flex-shrink:0;margin-top:8px}
+.trend.expanded .trend-expand{transform:rotate(180deg)}
+.trend-stories{max-height:0;overflow:hidden;transition:max-height .4s ease;margin-top:0}
+.trend.expanded .trend-stories{max-height:600px;margin-top:16px}
+.trend-stories-label{font-size:.72em;color:var(--dim);text-transform:uppercase;letter-spacing:.08em;font-weight:600;margin-bottom:10px}
+.related-story{display:flex;align-items:center;gap:10px;padding:8px 12px;background:var(--surface);border:1px solid var(--border);border-left:2px solid var(--c,var(--accent));border-radius:10px;margin-bottom:6px;transition:all .2s}
+.related-story:hover{background:var(--surface-h)}
+.related-title{flex:1;font-size:.85em;color:var(--text);font-weight:500}
+.related-score{font-size:.75em;color:var(--dim);font-weight:600}
+
+/* MODAL */
+.modal-overlay{position:fixed;inset:0;z-index:1000;background:var(--modal-bg);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);display:none;align-items:center;justify-content:center;padding:20px;animation:fadeIn .2s ease}
+.modal-overlay.active{display:flex}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+.modal-card{background:var(--modal-card);border:1px solid var(--border);border-radius:20px;padding:32px;max-width:600px;width:100%;max-height:80vh;overflow-y:auto;box-shadow:var(--shadow);animation:slideUp .3s ease}
+@keyframes slideUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+.modal-close{position:absolute;top:16px;right:16px;width:36px;height:36px;border-radius:50%;background:var(--surface);border:1px solid var(--border);color:var(--text);cursor:pointer;font-size:1.2em;display:flex;align-items:center;justify-content:center;transition:all .2s}
+.modal-close:hover{background:var(--accent);color:#fff;border-color:var(--accent)}
+.modal-cat{display:inline-block;padding:4px 12px;border-radius:100px;font-size:.7em;font-weight:600;color:#fff;margin-bottom:12px}
+.modal-title{font-size:1.3em;font-weight:700;margin-bottom:12px;line-height:1.3;letter-spacing:-.02em;padding-right:40px}
+.modal-score{font-size:.85em;color:var(--accent);font-weight:600;margin-bottom:16px}
+.modal-summary{font-size:.92em;color:var(--text);line-height:1.7;margin-bottom:20px}
+.modal-why{background:rgba(124,58,237,.04);border-radius:12px;padding:16px;margin-bottom:20px;border-left:3px solid var(--accent)}
+.modal-why-label{font-size:.7em;color:var(--accent);text-transform:uppercase;letter-spacing:.1em;font-weight:600;margin-bottom:8px}
+.modal-why-text{font-size:.88em;color:var(--text);line-height:1.6}
+.modal-source{font-size:.8em;color:var(--dim);margin-bottom:16px}
+.modal-open-btn{display:inline-block;padding:10px 24px;background:var(--accent);color:#fff!important;text-decoration:none;border-radius:12px;font-size:.88em;font-weight:600;transition:all .25s}
+.modal-open-btn:hover{opacity:.85;transform:translateY(-1px)}
+
+/* SEARCH */
+.search{width:100%;padding:14px 20px;background:var(--surface);border:1px solid var(--border);border-radius:14px;color:var(--text);font-family:inherit;font-size:.9em;margin-bottom:18px;transition:all .25s}
+.search::placeholder{color:var(--dim)}
+.search:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 3px rgba(124,58,237,.1)}
+.chips{display:flex;gap:8px;margin-bottom:22px;flex-wrap:wrap}
+.chip{padding:7px 16px;background:var(--surface);border:1px solid var(--border);border-left:3px solid var(--c,var(--accent));border-radius:100px;color:var(--muted);cursor:pointer;font-family:inherit;font-size:.8em;font-weight:500;transition:all .25s}
+.chip:hover{color:var(--text);border-color:var(--c,var(--accent))}
+.chip.active{background:rgba(124,58,237,.12);color:var(--text);border-color:var(--accent)}
+
+.grid-cards{display:grid;gap:14px}
+.no-res{text-align:center;padding:50px;color:var(--dim);font-size:.9em}
+
+/* SCROLLBAR */
+::-webkit-scrollbar{width:6px}
+::-webkit-scrollbar-track{background:var(--bg)}
+::-webkit-scrollbar-thumb{background:var(--border);border-radius:3px}
+::-webkit-scrollbar-thumb:hover{background:var(--accent)}
+
+/* REVEAL */
+.reveal{opacity:0;transform:translateY(16px);transition:all .5s cubic-bezier(.4,0,.2,1)}
+.reveal.in{opacity:1;transform:translateY(0)}
+
+/* FOOTER */
+footer{text-align:center;padding:40px 20px;border-top:1px solid var(--border);margin-top:50px;color:var(--dim);font-size:.8em}
+footer b{color:var(--accent);font-weight:500}
+
+/* MOBILE */
+@media(max-width:768px){.bento{grid-template-columns:1fr 1fr}.bento-why{grid-column:span 2}.bento-stat{grid-column:span 1}}
+@media(max-width:520px){h1.title{font-size:2em}.bento{grid-template-columns:1fr}.bento-why,.bento-stat{grid-column:span 1}.top10{flex-direction:column;gap:10px}.concept,.briefing-box{padding:22px}.tabs{flex-wrap:wrap}.tab-btn{flex:none;font-size:.78em}.brief-item{flex-wrap:wrap;gap:8px}.brief-body{flex:1 1 100%;order:-1}}
+</style>
+</head>
+<body>
+
+<div class="aurora"></div>
+<canvas id="bg-canvas" style="position:fixed;top:0;left:0;width:100%;height:100%;z-index:0;pointer-events:none;"></canvas>
+<div class="grid-bg"></div>
+<div class="noise"></div>
+
+<div class="wrap">
+  <header>
+    <div class="header-left">
+      <div class="kicker"><span class="live"></span> Daily Briefing</div>
+      <h1 class="title">AI News Daily</h1>
+      <p class="subtitle">Fresh AI, LLM & agentic intelligence — fetched, deduplicated, and ranked by importance. Updated every morning at 9 AM IST.</p>
+      <div class="meta-row"><span>2026-11-09 09:00 IST</span><span class="sep"></span><span>2026-11-09</span><span class="sep"></span><span>25 stories</span><span class="sep"></span><span>4 trends</span></div>
+    </div>
+    <button class="theme-toggle" id="themeToggle"><span class="icon">🌙</span><span id="themeLabel">Dark</span></button>
+  </header>
+
+  <div class="tabs">
+    <button class="tab-btn active" data-tab="home">Home</button>
+    <button class="tab-btn" data-tab="trends">Trends (4)</button>
+    <button class="tab-btn" data-tab="top10">Top 10</button>
+    <button class="tab-btn" data-tab="all">All (25)</button>
+  </div>
+
+  <!-- HOME -->
+  <div class="tab-body active" id="home">
+    <div class="bento">
+      <div class="bento-why reveal"><span class="label">Why Read This Today</span><p>Three labs published machine-checkable results in the same week while their valuations were being marked down, and the gap between what AI can prove and what it can be trusted with has never been easier to see.</p></div>
+      <div class="bento-stat reveal"><div class="num" data-count="118">0</div><div class="lbl">Collected</div></div>
+      <div class="bento-stat reveal"><div class="num" data-count="25">0</div><div class="lbl">After Dedup</div></div>
+      <div class="bento-stat reveal"><div class="num" data-count="25">0</div><div class="lbl">Published</div></div>
+      <div class="bento-stat reveal"><div class="num" data-count="5">0</div><div class="lbl">Trends</div></div>
+    </div>
+
+    <h2 class="sec-head">Today's News at a Glance <span class="count">25 stories — click any to read more</span></h2>
+    <div class="brief-list">
+      <div class="brief-item spotlight" style="--c:#d97706" data-article='{&quot;title&quot;: &quot;Nvidia board opens independent investigation into CEO Jensen Huang&#x27;s ties to Megaspeed executive&quot;, &quot;summary&quot;: &quot;Nvidia&#x27;s board said it has begun an independent review, overseen by a committee of independent directors and outside counsel, of CEO Jensen Huang&#x27;s relationship with Alice Huang, an executive at Nvidia customer Megaspeed whom US officials reportedly assessed as working for Chinese intelligence. Huang acknowledged the relationship to staff and said he will cooperate; the board said it has no reason to believe company secrets or national security were compromised.&quot;, &quot;why_it_matters&quot;: &quot;The review puts the board of the AI boom&#x27;s central chip supplier between a national-security inquiry and the CEO who built the company, weeks before earnings and a requested congressional briefing.&quot;, &quot;source&quot;: &quot;Kill The AI&quot;, &quot;url&quot;: &quot;https://killtheai.com/news/top-10-ai-news-today-november-9-2026/&quot;, &quot;category&quot;: &quot;Industry&quot;, &quot;importance&quot;: 9}'>
+        <span class="brief-num">01</span>
+        <span class="brief-tag" style="background:#d97706">Industry</span>
+        <div class="brief-body">
+          <div class="brief-title">Nvidia board opens independent investigation into CEO Jensen Huang&#x27;s ties to Megaspeed executive</div>
+          <div class="brief-text">Nvidia&#x27;s board said it has begun an independent review, overseen by a committee of independent directors and outside counsel, of CEO Jensen Huang&#x27;s relationship with Alice Huang...</div>
+        </div>
+        <span class="brief-score" style="--c:#d97706">9<small>/10</small></span>
+      </div>
+      <div class="brief-item spotlight" style="--c:#d97706" data-article='{&quot;title&quot;: &quot;OpenAI closes about $11 billion at a $1.25 trillion valuation, short of its target&quot;, &quot;summary&quot;: &quot;Bloomberg reported, and Reuters and TechCrunch relayed, that OpenAI completed roughly $11 billion of a new round valuing it near $1.25 trillion. The round has not closed and may total about $20 billion, against the $30 billion OpenAI had sought at a higher valuation.&quot;, &quot;why_it_matters&quot;: &quot;The gap between the original ask and cash actually closed is the clearest signal yet that investors are repricing AI growth while the labs keep spending.&quot;, &quot;source&quot;: &quot;PoYo / Bloomberg&quot;, &quot;url&quot;: &quot;https://poyo.ai/hub/2026-11-08-ai-news&quot;, &quot;category&quot;: &quot;Industry&quot;, &quot;importance&quot;: 9}'>
+        <span class="brief-num">02</span>
+        <span class="brief-tag" style="background:#d97706">Industry</span>
+        <div class="brief-body">
+          <div class="brief-title">OpenAI closes about $11 billion at a $1.25 trillion valuation, short of its target</div>
+          <div class="brief-text">Bloomberg reported, and Reuters and TechCrunch relayed, that OpenAI completed roughly $11 billion of a new round valuing it near $1.25 trillion. The round has not closed and may...</div>
+        </div>
+        <span class="brief-score" style="--c:#d97706">9<small>/10</small></span>
+      </div>
+      <div class="brief-item spotlight" style="--c:#7c3aed" data-article='{&quot;title&quot;: &quot;Mistral releases the full weights of Mistral Large 4, a 1T-parameter open model&quot;, &quot;summary&quot;: &quot;Mistral published Mistral Large 4 weights on Hugging Face: a natively multimodal mixture-of-experts with roughly 1 trillion total and 50 billion active parameters, a 1M-token context, and a modified-MIT licence that requires a separate commercial agreement for model-as-a-service resale. It scores 41% on Terminal-Bench 4.0 and posts 96.6% refusal on malicious-request suites.&quot;, &quot;why_it_matters&quot;: &quot;Enterprises that wanted self-hosted frontier-grade coding and security agents now have a European option, and the licence text rather than the benchmark table will decide adoption.&quot;, &quot;source&quot;: &quot;DEV Community&quot;, &quot;url&quot;: &quot;https://dev.to/hiroki-ii-ai/ai-daily-digest-november-9-2026-mistral-opens-le-chonk-weights-grok-api-watermarks-by-default-2gdm&quot;, &quot;category&quot;: &quot;LLM&quot;, &quot;importance&quot;: 9}'>
+        <span class="brief-num">03</span>
+        <span class="brief-tag" style="background:#7c3aed">LLM</span>
+        <div class="brief-body">
+          <div class="brief-title">Mistral releases the full weights of Mistral Large 4, a 1T-parameter open model</div>
+          <div class="brief-text">Mistral published Mistral Large 4 weights on Hugging Face: a natively multimodal mixture-of-experts with roughly 1 trillion total and 50 billion active parameters, a 1M-token co...</div>
+        </div>
+        <span class="brief-score" style="--c:#7c3aed">9<small>/10</small></span>
+      </div>
+      <div class="brief-item spotlight" style="--c:#dc2626" data-article='{&quot;title&quot;: &quot;METR audit finds Anthropic&#x27;s research velocity roughly doubled, mostly from AI automation&quot;, &quot;summary&quot;: &quot;An 11-week evaluation by the nonprofit METR, run inside Anthropic between August and late October, found capability growth on well-specified tasks at about 1.9 times the earlier rate, with roughly 80% of the acceleration attributed to internal AI systems automating research and engineering rather than added compute. Anthropic redacted substantial supporting technical evidence before publication, citing proprietary and safety concerns.&quot;, &quot;why_it_matters&quot;: &quot;This is the first third-party measurement of a lab speeding itself up, and the redactions mean the most consequential number in AI cannot yet be independently checked.&quot;, &quot;source&quot;: &quot;PiBrief Tech&quot;, &quot;url&quot;: &quot;https://tech.pibrief.com/editions/2026-11-08&quot;, &quot;category&quot;: &quot;Safety&quot;, &quot;importance&quot;: 9}'>
+        <span class="brief-num">04</span>
+        <span class="brief-tag" style="background:#dc2626">Safety</span>
+        <div class="brief-body">
+          <div class="brief-title">METR audit finds Anthropic&#x27;s research velocity roughly doubled, mostly from AI automation</div>
+          <div class="brief-text">An 11-week evaluation by the nonprofit METR, run inside Anthropic between August and late October, found capability growth on well-specified tasks at about 1.9 times the earlier...</div>
+        </div>
+        <span class="brief-score" style="--c:#dc2626">9<small>/10</small></span>
+      </div>
+      <div class="brief-item spotlight" style="--c:#d97706" data-article='{&quot;title&quot;: &quot;Anthropic pushes toward a mid-November Nasdaq debut at a lower valuation&quot;, &quot;summary&quot;: &quot;Anthropic is reportedly targeting a Nasdaq listing as soon as mid-November, with investor accounts putting the valuation at roughly $1 trillion to $1.5 trillion, down from earlier talk of about $2 trillion. Its amended filing disclosed purchase commitments and leases of about $895 billion, substantially all for compute and infrastructure.&quot;, &quot;why_it_matters&quot;: &quot;A listed Anthropic would publish quarterly numbers, giving enterprises that depend on Claude visibility into a supplier&#x27;s finances for the first time.&quot;, &quot;source&quot;: &quot;EmberSeed / CNBC&quot;, &quot;url&quot;: &quot;https://news.emberseedautomation.com.au/&quot;, &quot;category&quot;: &quot;Industry&quot;, &quot;importance&quot;: 8}'>
+        <span class="brief-num">05</span>
+        <span class="brief-tag" style="background:#d97706">Industry</span>
+        <div class="brief-body">
+          <div class="brief-title">Anthropic pushes toward a mid-November Nasdaq debut at a lower valuation</div>
+          <div class="brief-text">Anthropic is reportedly targeting a Nasdaq listing as soon as mid-November, with investor accounts putting the valuation at roughly $1 trillion to $1.5 trillion, down from earli...</div>
+        </div>
+        <span class="brief-score" style="--c:#d97706">8<small>/10</small></span>
+      </div>
+      <div class="brief-item spotlight" style="--c:#7c3aed" data-article='{&quot;title&quot;: &quot;Thinking Machines releases Inkling 2 Small, a 594B MoE pretrained in 68 hours&quot;, &quot;summary&quot;: &quot;Inkling 2 Small is a multimodal mixture-of-experts with 594B total and 17B active parameters and a 1M-token context. Pretraining took 68 hours on GB300 systems in NVFP4, and its Artificial Analysis score rose from 13 to 31. Apache 2.0 weights are promised after external safety testing; Tinker pricing is $0.30 per million input and $1.00 per million output tokens.&quot;, &quot;why_it_matters&quot;: &quot;A strong open-weight-adjacent model trained outside the Chinese labs in under three days changes the arithmetic on who can compete at the frontier.&quot;, &quot;source&quot;: &quot;Hamidun News / Latent Space&quot;, &quot;url&quot;: &quot;https://news.hamidun.com/en/news/15189/thinking-machines-releases-inkling-2-small-a-594b-moe-traine&quot;, &quot;category&quot;: &quot;LLM&quot;, &quot;importance&quot;: 8}'>
+        <span class="brief-num">06</span>
+        <span class="brief-tag" style="background:#7c3aed">LLM</span>
+        <div class="brief-body">
+          <div class="brief-title">Thinking Machines releases Inkling 2 Small, a 594B MoE pretrained in 68 hours</div>
+          <div class="brief-text">Inkling 2 Small is a multimodal mixture-of-experts with 594B total and 17B active parameters and a 1M-token context. Pretraining took 68 hours on GB300 systems in NVFP4, and its...</div>
+        </div>
+        <span class="brief-score" style="--c:#7c3aed">8<small>/10</small></span>
+      </div>
+      <div class="brief-item spotlight" style="--c:#7c3aed" data-article='{&quot;title&quot;: &quot;Anthropic launches Claude Sonnet 5.5 with faster generation and cheaper caching&quot;, &quot;summary&quot;: &quot;Anthropic released Claude Sonnet 5.5, which it says runs over 30% faster than Sonnet 5, halves cache-read pricing and cuts task cost by up to 30% through shorter outputs. It scores 70.6% on Terminal-Bench 4.0, against 10.3% for Sonnet 5 and 66.4% for Opus 5.5, with Claude Haiku 5.5 due in the coming weeks.&quot;, &quot;why_it_matters&quot;: &quot;Mid-tier models that beat last generation&#x27;s flagship on agentic coding are what actually reset production budgets.&quot;, &quot;source&quot;: &quot;Tech Bytes / Anthropic&quot;, &quot;url&quot;: &quot;https://techbytes.app/posts/introducing-claude-sonnet-55/&quot;, &quot;category&quot;: &quot;LLM&quot;, &quot;importance&quot;: 8}'>
+        <span class="brief-num">07</span>
+        <span class="brief-tag" style="background:#7c3aed">LLM</span>
+        <div class="brief-body">
+          <div class="brief-title">Anthropic launches Claude Sonnet 5.5 with faster generation and cheaper caching</div>
+          <div class="brief-text">Anthropic released Claude Sonnet 5.5, which it says runs over 30% faster than Sonnet 5, halves cache-read pricing and cuts task cost by up to 30% through shorter outputs. It sco...</div>
+        </div>
+        <span class="brief-score" style="--c:#7c3aed">8<small>/10</small></span>
+      </div>
+      <div class="brief-item spotlight" style="--c:#059669" data-article='{&quot;title&quot;: &quot;An AI system produces a Lean-checked proof of a conjecture open since 2008&quot;, &quot;summary&quot;: &quot;Physical Superintelligence said an AI system using a non-public Anthropic model produced a complete proof of the Aaronson-Ambainis conjecture, with every step accepted by the Lean proof assistant, on the third day of a single run. The result has not been peer reviewed, the model behind it is not public, and independent mathematicians have not yet assessed it.&quot;, &quot;why_it_matters&quot;: &quot;Machine-checked proofs are the strongest evidence AI can contribute to mathematics, but a Lean-verified formal statement still has to be shown to match the problem as mathematicians posed it.&quot;, &quot;source&quot;: &quot;Aivio News&quot;, &quot;url&quot;: &quot;https://aivio.news/research/&quot;, &quot;category&quot;: &quot;Research&quot;, &quot;importance&quot;: 8}'>
+        <span class="brief-num">08</span>
+        <span class="brief-tag" style="background:#059669">Research</span>
+        <div class="brief-body">
+          <div class="brief-title">An AI system produces a Lean-checked proof of a conjecture open since 2008</div>
+          <div class="brief-text">Physical Superintelligence said an AI system using a non-public Anthropic model produced a complete proof of the Aaronson-Ambainis conjecture, with every step accepted by the Le...</div>
+        </div>
+        <span class="brief-score" style="--c:#059669">8<small>/10</small></span>
+      </div>
+      <div class="brief-item spotlight" style="--c:#dc2626" data-article='{&quot;title&quot;: &quot;Google DeepMind says AI agents found two ways to weaken legacy 1024-bit RSA&quot;, &quot;summary&quot;: &quot;DeepMind reported that human-supervised reasoning agents surfaced a signature-forgery technique against short-digest 1024-bit keys and an improved batch factoring algorithm, cutting the marginal cost of factoring related keys by roughly 30 times. In a sandbox it reproduced an earlier benchmark result with 3.5 times less CPU time; the company said 2048-bit keys are not affected.&quot;, &quot;why_it_matters&quot;: &quot;AI compressing years of cryptanalytic research into weeks forces a recalibration of how long legacy algorithm choices can be assumed safe.&quot;, &quot;source&quot;: &quot;The AI Chapter&quot;, &quot;url&quot;: &quot;https://theaichapter.beehiiv.com/p/new-post-1ab4&quot;, &quot;category&quot;: &quot;Safety&quot;, &quot;importance&quot;: 8}'>
+        <span class="brief-num">09</span>
+        <span class="brief-tag" style="background:#dc2626">Safety</span>
+        <div class="brief-body">
+          <div class="brief-title">Google DeepMind says AI agents found two ways to weaken legacy 1024-bit RSA</div>
+          <div class="brief-text">DeepMind reported that human-supervised reasoning agents surfaced a signature-forgery technique against short-digest 1024-bit keys and an improved batch factoring algorithm, cut...</div>
+        </div>
+        <span class="brief-score" style="--c:#dc2626">8<small>/10</small></span>
+      </div>
+      <div class="brief-item spotlight" style="--c:#dc2626" data-article='{&quot;title&quot;: &quot;OpenAI&#x27;s GPT-6 Cyber is rated Critical and has already swept the Linux kernel&quot;, &quot;summary&quot;: &quot;OpenAI released GPT-6 Cyber, the first model it has rated Critical for cyber capability under its own preparedness framework, built to find exploitable vulnerabilities, develop working exploits and generate fixes. OpenAI says an autonomous pipeline using the model found, verified and patched 948 Linux kernel privilege-escalation flaws in a single run at about $1,000 per vulnerability, and reported 81 previously unknown Firefox flaws; access is limited to vetted Daybreak Red customers.&quot;, &quot;why_it_matters&quot;: &quot;A defensive tool that can also find and weaponise flaws at machine speed makes the offence-defence boundary a governance question, not just a product one.&quot;, &quot;source&quot;: &quot;Models at Work&quot;, &quot;url&quot;: &quot;https://modelsatwork.news/&quot;, &quot;category&quot;: &quot;Safety&quot;, &quot;importance&quot;: 8}'>
+        <span class="brief-num">10</span>
+        <span class="brief-tag" style="background:#dc2626">Safety</span>
+        <div class="brief-body">
+          <div class="brief-title">OpenAI&#x27;s GPT-6 Cyber is rated Critical and has already swept the Linux kernel</div>
+          <div class="brief-text">OpenAI released GPT-6 Cyber, the first model it has rated Critical for cyber capability under its own preparedness framework, built to find exploitable vulnerabilities, develop ...</div>
+        </div>
+        <span class="brief-score" style="--c:#dc2626">8<small>/10</small></span>
+      </div>
+      <div class="brief-item spotlight" style="--c:#d97706" data-article='{&quot;title&quot;: &quot;Anthropic agrees to pay $3.4 billion for gas-fired generators for its data centres&quot;, &quot;summary&quot;: &quot;The FT reported that Anthropic committed $3.4 billion to OnePWR Solutions for about 1.7 gigawatts of heavy-duty gas-fired generators, described as the largest known single purchase of power-generation equipment by an AI lab.&quot;, &quot;why_it_matters&quot;: &quot;Labs are now buying power hardware directly rather than waiting on utilities, which shifts both their cost structure and their exposure to local opposition.&quot;, &quot;source&quot;: &quot;AI Affairs / FT&quot;, &quot;url&quot;: &quot;https://www.aiaffairs.com/&quot;, &quot;category&quot;: &quot;Industry&quot;, &quot;importance&quot;: 7}'>
+        <span class="brief-num">11</span>
+        <span class="brief-tag" style="background:#d97706">Industry</span>
+        <div class="brief-body">
+          <div class="brief-title">Anthropic agrees to pay $3.4 billion for gas-fired generators for its data centres</div>
+          <div class="brief-text">The FT reported that Anthropic committed $3.4 billion to OnePWR Solutions for about 1.7 gigawatts of heavy-duty gas-fired generators, described as the largest known single purch...</div>
+        </div>
+        <span class="brief-score" style="--c:#d97706">7<small>/10</small></span>
+      </div>
+      <div class="brief-item spotlight" style="--c:#7c3aed" data-article='{&quot;title&quot;: &quot;Baidu releases ERNIE 5.5 Flash Base, a 280B open MoE pretrained on 33.5T tokens&quot;, &quot;summary&quot;: &quot;Baidu published ERNIE 5.5 Flash Base, a 280B mixture-of-experts activating 14B parameters per token, pretrained from scratch on 33.5 trillion tokens and shipped without mid- or post-training. It uses a tiered KV-cache strategy to hold a 1M-token context, and weights are on Hugging Face in FP8 and BF16 with a licence that excludes the EU, UK and South Korea.&quot;, &quot;why_it_matters&quot;: &quot;Base-only releases target labs that want to do their own post-training, and the geographic licence carve-outs are becoming a routine part of Chinese model releases.&quot;, &quot;source&quot;: &quot;TheNextGenTechInsider&quot;, &quot;url&quot;: &quot;https://thenextgentechinsider.com/pulse/baidu-launches-ernie-55-flash-base-280b-parameter-moe-model&quot;, &quot;category&quot;: &quot;LLM&quot;, &quot;importance&quot;: 7}'>
+        <span class="brief-num">12</span>
+        <span class="brief-tag" style="background:#7c3aed">LLM</span>
+        <div class="brief-body">
+          <div class="brief-title">Baidu releases ERNIE 5.5 Flash Base, a 280B open MoE pretrained on 33.5T tokens</div>
+          <div class="brief-text">Baidu published ERNIE 5.5 Flash Base, a 280B mixture-of-experts activating 14B parameters per token, pretrained from scratch on 33.5 trillion tokens and shipped without mid- or ...</div>
+        </div>
+        <span class="brief-score" style="--c:#7c3aed">7<small>/10</small></span>
+      </div>
+      <div class="brief-item spotlight" style="--c:#0891b2" data-article='{&quot;title&quot;: &quot;Kimi K3.1 Pro gets day-zero vLLM support, so teams can self-host immediately&quot;, &quot;summary&quot;: &quot;Moonshot AI released Kimi K3.1 Pro and the vLLM project added support on launch day, with a 1M-token context and a reported 65.7% on Terminal-Bench 4.0 using the Claude Code harness. Model-card details list 2.8 trillion total and 104 billion activated parameters across 896 experts under a custom licence.&quot;, &quot;why_it_matters&quot;: &quot;Inference-stack support on day one is what separates a model people can actually run from one they only read about.&quot;, &quot;source&quot;: &quot;Hamidun News / vLLM&quot;, &quot;url&quot;: &quot;https://news.hamidun.com/en/news/15273/kimi-k3-1-pro-works-in-vllm-from-day-one-1m-tokens-and-65-7&quot;, &quot;category&quot;: &quot;Tools&quot;, &quot;importance&quot;: 7}'>
+        <span class="brief-num">13</span>
+        <span class="brief-tag" style="background:#0891b2">Tools</span>
+        <div class="brief-body">
+          <div class="brief-title">Kimi K3.1 Pro gets day-zero vLLM support, so teams can self-host immediately</div>
+          <div class="brief-text">Moonshot AI released Kimi K3.1 Pro and the vLLM project added support on launch day, with a 1M-token context and a reported 65.7% on Terminal-Bench 4.0 using the Claude Code har...</div>
+        </div>
+        <span class="brief-score" style="--c:#0891b2">7<small>/10</small></span>
+      </div>
+      <div class="brief-item spotlight" style="--c:#059669" data-article='{&quot;title&quot;: &quot;Darwin-180B-RSI-R3 shows recursive self-improvement lifting an open model&#x27;s maths score&quot;, &quot;summary&quot;: &quot;Korean startup VIDRAFT published Darwin-180B-RSI-R3, a 180B mixture-of-experts activating about 3B parameters per token, built from a Qwen3.8 checkpoint and refined through three rounds of training only on self-generated solutions that could be verified programmatically. Reported SuperCLUE maths and science scores rose from 57.89 for the base model to 73.68, with weights and a 4-bit GGUF on Hugging Face.&quot;, &quot;why_it_matters&quot;: &quot;Verified-answer self-training needs no human annotation, which makes it the cheapest known path to reasoning gains and the hardest to audit.&quot;, &quot;source&quot;: &quot;Deniz Genc / dev.to&quot;, &quot;url&quot;: &quot;https://deniz.in/vidraft-open-releases-darwin-180b-rsi-r3-a-recursively-self-improved-moe-reasoni&quot;, &quot;category&quot;: &quot;Research&quot;, &quot;importance&quot;: 7}'>
+        <span class="brief-num">14</span>
+        <span class="brief-tag" style="background:#059669">Research</span>
+        <div class="brief-body">
+          <div class="brief-title">Darwin-180B-RSI-R3 shows recursive self-improvement lifting an open model&#x27;s maths score</div>
+          <div class="brief-text">Korean startup VIDRAFT published Darwin-180B-RSI-R3, a 180B mixture-of-experts activating about 3B parameters per token, built from a Qwen3.8 checkpoint and refined through thre...</div>
+        </div>
+        <span class="brief-score" style="--c:#059669">7<small>/10</small></span>
+      </div>
+      <div class="brief-item spotlight" style="--c:#dc2626" data-article='{&quot;title&quot;: &quot;OpenAI, Anthropic and Google DeepMind confirm weeks of joint work on frontier safety standards&quot;, &quot;summary&quot;: &quot;The three labs confirmed they have been coordinating for several weeks on cybersecurity-focused models, safeguards and access programmes, following a July 2026 proposal by DeepMind&#x27;s Demis Hassabis for an industry standards body. The reported pillars are shared technical evaluations, independent pre-release audits, standardised safety protocols and support for related US legislation; all three declined to join Nvidia&#x27;s rival alliance.&quot;, &quot;why_it_matters&quot;: &quot;Rivals agreeing on shared pre-release audits is the first concrete move from each lab setting its own rules toward an industry norm.&quot;, &quot;source&quot;: &quot;AI Road&quot;, &quot;url&quot;: &quot;https://digest.viaai.si/en/openai-anthropic-deepmind-ai&quot;, &quot;category&quot;: &quot;Safety&quot;, &quot;importance&quot;: 7}'>
+        <span class="brief-num">15</span>
+        <span class="brief-tag" style="background:#dc2626">Safety</span>
+        <div class="brief-body">
+          <div class="brief-title">OpenAI, Anthropic and Google DeepMind confirm weeks of joint work on frontier safety standards</div>
+          <div class="brief-text">The three labs confirmed they have been coordinating for several weeks on cybersecurity-focused models, safeguards and access programmes, following a July 2026 proposal by DeepM...</div>
+        </div>
+        <span class="brief-score" style="--c:#dc2626">7<small>/10</small></span>
+      </div>
+      <div class="brief-item spotlight" style="--c:#dc2626" data-article='{&quot;title&quot;: &quot;MemHarmBench shows cross-session prompt injection persisting in memory-equipped agents&quot;, &quot;summary&quot;: &quot;A new benchmark of 288 cases across four agent configurations found conditional attack success rates of 59% to 76% for indirect prompt injection, with 55.71% of successful episodes stealthy: the task completed, the goal was adopted and no trajectory anomaly appeared. Injection through images on a webpage produced 52.5% retention and 40% adoption, against 2.5% for clean inputs.&quot;, &quot;why_it_matters&quot;: &quot;Persistent memory turns a single poisoned page into a long-lived instruction, so the security model for agents has to span sessions, not just one conversation.&quot;, &quot;source&quot;: &quot;Research Radar&quot;, &quot;url&quot;: &quot;https://gussand.github.io/radar/2026-11-08/&quot;, &quot;category&quot;: &quot;Safety&quot;, &quot;importance&quot;: 7}'>
+        <span class="brief-num">16</span>
+        <span class="brief-tag" style="background:#dc2626">Safety</span>
+        <div class="brief-body">
+          <div class="brief-title">MemHarmBench shows cross-session prompt injection persisting in memory-equipped agents</div>
+          <div class="brief-text">A new benchmark of 288 cases across four agent configurations found conditional attack success rates of 59% to 76% for indirect prompt injection, with 55.71% of successful episo...</div>
+        </div>
+        <span class="brief-score" style="--c:#dc2626">7<small>/10</small></span>
+      </div>
+      <div class="brief-item spotlight" style="--c:#0891b2" data-article='{&quot;title&quot;: &quot;Cactus ships a 30 MB binary that runs chat, speech and tool calls on phones&quot;, &quot;summary&quot;: &quot;Cactus is an open-source single binary of 8 to 29 MB that runs a language model, a speech-to-text model and embeddings on phones, wearables and micro-controllers, can call functions the developer exposes and extracts structured data, all without sending data to the cloud. It was among the week&#x27;s fastest-rising repositories, alongside local agent tools Orkas and agent-autoloop.&quot;, &quot;why_it_matters&quot;: &quot;Small enough to run offline on a microcontroller, these runtimes make private on-device assistants practical rather than a demo.&quot;, &quot;source&quot;: &quot;Early Signal&quot;, &quot;url&quot;: &quot;https://earlysignal.news/weekly/2026-w45&quot;, &quot;category&quot;: &quot;Tools&quot;, &quot;importance&quot;: 7}'>
+        <span class="brief-num">17</span>
+        <span class="brief-tag" style="background:#0891b2">Tools</span>
+        <div class="brief-body">
+          <div class="brief-title">Cactus ships a 30 MB binary that runs chat, speech and tool calls on phones</div>
+          <div class="brief-text">Cactus is an open-source single binary of 8 to 29 MB that runs a language model, a speech-to-text model and embeddings on phones, wearables and micro-controllers, can call funct...</div>
+        </div>
+        <span class="brief-score" style="--c:#0891b2">7<small>/10</small></span>
+      </div>
+      <div class="brief-item spotlight" style="--c:#059669" data-article='{&quot;title&quot;: &quot;Alibaba&#x27;s Co-Design Bench finds the best coding agent fully solves 26.4% of real tasks&quot;, &quot;summary&quot;: &quot;Co-Design Bench drew on 37,463 queries from 26,314 real coding sessions and tests agents on requests that had already tripped them up. GPT-6 Astra met 69.9% of requirements per task on average but fully solved only 26.4%, while the same models score above 99% on older benchmarks the authors call saturated; more tokens did not help, and the harness changed results substantially.&quot;, &quot;why_it_matters&quot;: &quot;The distance between vendor leaderboards and end-to-end reliability is the number teams should budget against, and it is much larger than headline scores suggest.&quot;, &quot;source&quot;: &quot;The Decoder&quot;, &quot;url&quot;: &quot;https://the-decoder.com/artificial-intelligence-news/&quot;, &quot;category&quot;: &quot;Research&quot;, &quot;importance&quot;: 7}'>
+        <span class="brief-num">18</span>
+        <span class="brief-tag" style="background:#059669">Research</span>
+        <div class="brief-body">
+          <div class="brief-title">Alibaba&#x27;s Co-Design Bench finds the best coding agent fully solves 26.4% of real tasks</div>
+          <div class="brief-text">Co-Design Bench drew on 37,463 queries from 26,314 real coding sessions and tests agents on requests that had already tripped them up. GPT-6 Astra met 69.9% of requirements per ...</div>
+        </div>
+        <span class="brief-score" style="--c:#059669">7<small>/10</small></span>
+      </div>
+      <div class="brief-item spotlight" style="--c:#7c3aed" data-article='{&quot;title&quot;: &quot;Ant Ling releases Ling-3.2-flash, a 560B multimodal MoE with 1M context&quot;, &quot;summary&quot;: &quot;Ant Ling released Ling-3.2-flash, a native multimodal mixture-of-experts with 560B total and 25B active parameters, handling text, image and video input over a 1M-token context. It exposes both OpenAI-compatible and Anthropic-compatible APIs and is demonstrated on PDF-to-code, GUI operation and multi-agent tasks.&quot;, &quot;why_it_matters&quot;: &quot;Supporting both major API dialects lowers switching cost for teams that already have agent code written against one provider.&quot;, &quot;source&quot;: &quot;TheNextGenTechInsider&quot;, &quot;url&quot;: &quot;https://thenextgentechinsider.com/pulse/ant-ling-unveils-ling-32-flash-multimodal-moe-model-with-1m-context-window&quot;, &quot;category&quot;: &quot;LLM&quot;, &quot;importance&quot;: 6}'>
+        <span class="brief-num">19</span>
+        <span class="brief-tag" style="background:#7c3aed">LLM</span>
+        <div class="brief-body">
+          <div class="brief-title">Ant Ling releases Ling-3.2-flash, a 560B multimodal MoE with 1M context</div>
+          <div class="brief-text">Ant Ling released Ling-3.2-flash, a native multimodal mixture-of-experts with 560B total and 25B active parameters, handling text, image and video input over a 1M-token context....</div>
+        </div>
+        <span class="brief-score" style="--c:#7c3aed">6<small>/10</small></span>
+      </div>
+      <div class="brief-item spotlight" style="--c:#059669" data-article='{&quot;title&quot;: &quot;Salesforce finds merging per-domain RL experts matches joint training with 42% fewer FLOPs&quot;, &quot;summary&quot;: &quot;A Salesforce AI Research preprint trained one reinforcement-learning expert per domain and distilled them into a single model, matching joint training on maths and code with 42% fewer total FLOPs on two domains and 31.6% on four. The same paper reports that distilling from large external teachers generally lost to plain RL per training FLOP, with a 32B teacher peaking at 28.7% on code after 68.7 EFLOP against RL&#x27;s 46.4% at 0.6 EFLOP.&quot;, &quot;why_it_matters&quot;: &quot;If the result holds, post-training budgets can be restructured around cheap domain experts rather than one large joint run.&quot;, &quot;source&quot;: &quot;FourWeekMBA&quot;, &quot;url&quot;: &quot;https://fourweekmba.com/ai-salesforce-merging-rl-experts-cut-training-compute-by-42/&quot;, &quot;category&quot;: &quot;Research&quot;, &quot;importance&quot;: 6}'>
+        <span class="brief-num">20</span>
+        <span class="brief-tag" style="background:#059669">Research</span>
+        <div class="brief-body">
+          <div class="brief-title">Salesforce finds merging per-domain RL experts matches joint training with 42% fewer FLOPs</div>
+          <div class="brief-text">A Salesforce AI Research preprint trained one reinforcement-learning expert per domain and distilled them into a single model, matching joint training on maths and code with 42%...</div>
+        </div>
+        <span class="brief-score" style="--c:#059669">6<small>/10</small></span>
+      </div>
+      <div class="brief-item spotlight" style="--c:#0891b2" data-article='{&quot;title&quot;: &quot;A developer&#x27;s switch from Claude Code to the MIT-licensed Pi harness tops Hacker News&quot;, &quot;summary&quot;: &quot;A developer&#x27;s post arguing that 244 Claude Code releases this year, most of which changed the system prompt or tool descriptions, made the tool unpredictable reached the Hacker News front page. The author moved to Pi, a minimal MIT-licensed agent harness with 120.7k GitHub stars that skips sub-agents and plan mode, supports 15+ providers and relies on a minimal system prompt plus AGENTS.md files.&quot;, &quot;why_it_matters&quot;: &quot;Harness churn is now a real operational cost for teams, and it is pushing some of them toward smaller, more inspectable tools.&quot;, &quot;source&quot;: &quot;FourWeekMBA&quot;, &quot;url&quot;: &quot;https://fourweekmba.com/ai-developer-quits-claude-code-for-pi-citing-244-releases/&quot;, &quot;category&quot;: &quot;Tools&quot;, &quot;importance&quot;: 6}'>
+        <span class="brief-num">21</span>
+        <span class="brief-tag" style="background:#0891b2">Tools</span>
+        <div class="brief-body">
+          <div class="brief-title">A developer&#x27;s switch from Claude Code to the MIT-licensed Pi harness tops Hacker News</div>
+          <div class="brief-text">A developer&#x27;s post arguing that 244 Claude Code releases this year, most of which changed the system prompt or tool descriptions, made the tool unpredictable reached the Hacker ...</div>
+        </div>
+        <span class="brief-score" style="--c:#0891b2">6<small>/10</small></span>
+      </div>
+      <div class="brief-item spotlight" style="--c:#059669" data-article='{&quot;title&quot;: &quot;ProQuant trains multimodal models at 4-bit while holding image understanding&quot;, &quot;summary&quot;: &quot;ProQuant combines a self-relabelling step with progressive block activation, using a vision-sensitivity vector to decide which layers quantise first and keeping early text layers at full precision until visual grounding recovers. On Qwen-VL-2B-Instruct it reaches 1,830 average accuracy at W4A8 and 1,611 at the aggressive W4A4 setting, where post-training methods collapse to near zero.&quot;, &quot;why_it_matters&quot;: &quot;Cheap multimodal inference depends on quantisation that does not destroy vision, and this shows the schedule matters more than the bit width.&quot;, &quot;source&quot;: &quot;arXiv News&quot;, &quot;url&quot;: &quot;https://www.arxivnews.org/en/articles/9d443005-87fb-43cb-b0ef-e1a877a2c5d4&quot;, &quot;category&quot;: &quot;Research&quot;, &quot;importance&quot;: 6}'>
+        <span class="brief-num">22</span>
+        <span class="brief-tag" style="background:#059669">Research</span>
+        <div class="brief-body">
+          <div class="brief-title">ProQuant trains multimodal models at 4-bit while holding image understanding</div>
+          <div class="brief-text">ProQuant combines a self-relabelling step with progressive block activation, using a vision-sensitivity vector to decide which layers quantise first and keeping early text layer...</div>
+        </div>
+        <span class="brief-score" style="--c:#059669">6<small>/10</small></span>
+      </div>
+      <div class="brief-item spotlight" style="--c:#059669" data-article='{&quot;title&quot;: &quot;A 56-task physics benchmark finds no model passes 30% of real research tasks&quot;, &quot;summary&quot;: &quot;FrontierPhysics, built with 42 physicists across nine areas, asks agents to read the literature, plan, run the work and write a paper on their own research, judged by automatic tests and expert rubrics. Across 22 models and three attempts per task, Claude Opus 5.5 in Claude Code led at 27.4% and GPT-6 Astra followed at 23.2%; reviewers blamed weak rigorous reasoning in 48% of runs and poor physical intuition in 34%, not missing knowledge.&quot;, &quot;why_it_matters&quot;: &quot;AI knows a lot of physics but still cannot turn that into trustworthy research, which is exactly the gap the science-acceleration claims depend on.&quot;, &quot;source&quot;: &quot;Signal Drifts&quot;, &quot;url&quot;: &quot;https://signaldrifts.substack.com/p/ai-research-papers-of-the-week3&quot;, &quot;category&quot;: &quot;Research&quot;, &quot;importance&quot;: 6}'>
+        <span class="brief-num">23</span>
+        <span class="brief-tag" style="background:#059669">Research</span>
+        <div class="brief-body">
+          <div class="brief-title">A 56-task physics benchmark finds no model passes 30% of real research tasks</div>
+          <div class="brief-text">FrontierPhysics, built with 42 physicists across nine areas, asks agents to read the literature, plan, run the work and write a paper on their own research, judged by automatic ...</div>
+        </div>
+        <span class="brief-score" style="--c:#059669">6<small>/10</small></span>
+      </div>
+      <div class="brief-item spotlight" style="--c:#0891b2" data-article='{&quot;title&quot;: &quot;DeepSeek Harness passes 1.5 million daily users and plans a plugin marketplace&quot;, &quot;summary&quot;: &quot;DeepSeek said its open-source Harness agent platform had 1.54 million daily active users consuming about 92 trillion tokens a day as of November 4, plus 5.48 million monthly users through official API channels, with users having built roughly 35,000 third-party plugins. An official marketplace with creator token incentives is planned.&quot;, &quot;why_it_matters&quot;: &quot;A desktop agent platform at that scale with a plugin economy is where tool ecosystems, and their security surface, get decided.&quot;, &quot;source&quot;: &quot;AI Briefing&quot;, &quot;url&quot;: &quot;https://aibriefing.dev/&quot;, &quot;category&quot;: &quot;Tools&quot;, &quot;importance&quot;: 6}'>
+        <span class="brief-num">24</span>
+        <span class="brief-tag" style="background:#0891b2">Tools</span>
+        <div class="brief-body">
+          <div class="brief-title">DeepSeek Harness passes 1.5 million daily users and plans a plugin marketplace</div>
+          <div class="brief-text">DeepSeek said its open-source Harness agent platform had 1.54 million daily active users consuming about 92 trillion tokens a day as of November 4, plus 5.48 million monthly use...</div>
+        </div>
+        <span class="brief-score" style="--c:#0891b2">6<small>/10</small></span>
+      </div>
+      <div class="brief-item spotlight" style="--c:#dc2626" data-article='{&quot;title&quot;: &quot;Tencent&#x27;s chief AI scientist warns models will soon pose biology risks&quot;, &quot;summary&quot;: &quot;Tencent chief AI scientist Yao Shunyu said models&#x27; cyber capabilities, and soon their biology capabilities, will reach a threshold where harm is possible, speaking days after Tencent launched its Hy4 flagship model. The same week, Huawei&#x27;s Ascend team reported validating LoRA fine-tuning of Kimi K3.1 Pro on a 128-card Atlas 950 SuperPoD.&quot;, &quot;why_it_matters&quot;: &quot;A lab leader naming biology as the next threshold is a signal about where evaluation capacity, and regulation, will be pushed next.&quot;, &quot;source&quot;: &quot;TPS Report / SCMP&quot;, &quot;url&quot;: &quot;https://tpsreport.news/news&quot;, &quot;category&quot;: &quot;Safety&quot;, &quot;importance&quot;: 6}'>
+        <span class="brief-num">25</span>
+        <span class="brief-tag" style="background:#dc2626">Safety</span>
+        <div class="brief-body">
+          <div class="brief-title">Tencent&#x27;s chief AI scientist warns models will soon pose biology risks</div>
+          <div class="brief-text">Tencent chief AI scientist Yao Shunyu said models&#x27; cyber capabilities, and soon their biology capabilities, will reach a threshold where harm is possible, speaking days after Te...</div>
+        </div>
+        <span class="brief-score" style="--c:#dc2626">6<small>/10</small></span>
+      </div>
+    </div>
+
+    <hr class="divider">
+
+    <div class="concept reveal">
+      <span class="concept-label">Concept of the Day</span>
+      <h2>The Verification Turn</h2>
+      <p class="sub">Why checked claims are replacing impressive ones</p>
+      <p>Something changed in how AI results are being announced this week. A startup published a proof of a conjecture open since 2008 and pointed at <em>Lean</em>, the proof assistant, as the witness. Alibaba published a coding benchmark built from real user sessions that had already defeated agents, and reported that the best model fully solves <em>26.4%</em> of them. METR published an eleven-week audit of a lab&#x27;s internal research velocity. In each case the claim arrives with a mechanism that can say no.</p>
+<p>That is a different posture from the benchmark table. Vendor tables are chosen by the vendor, on tasks the vendor found tractable, and they saturate: the same models that score above 99% on older coding benchmarks finish roughly one task in four on Co-Design Bench. A number that cannot fail is not a measurement, it is marketing with decimals.</p>
+<p>Verification has a cost, and the cost is where the interesting failures live. METR&#x27;s audit found Anthropic&#x27;s capability growth running at about <em>1.9 times</em> its earlier rate, with roughly 80% attributed to internal AI automating research, and then much of the supporting evidence was redacted before publication. A Lean proof can be checked line by line, but someone still has to confirm the formal statement matches the informal problem. GPT-6 Cyber&#x27;s 948 kernel vulnerabilities are real patches, but the same model finds exploits.</p>
+<p>So the honest reading is narrower than the headlines. Machine-checkable results are the strongest evidence we have that AI is contributing to hard technical work, and they are also the easiest to over-read. A proof of one conjecture is not a method for proving conjectures. A benchmark showing 26.4% is not a forecast of next year.</p>
+<p>What to watch is whether verification becomes routine or stays ceremonial. If pre-release audits by independent evaluators, as the three big labs now say they are coordinating on, produce published evidence rather than joint press releases, the gap between claim and check narrows. If they produce statements of intent, we will keep getting the same trade: louder numbers, thinner proof.</p>
+    </div>
+
+    <hr class="divider">
+
+    <div class="briefing-box reveal">
+      <h2>The State of AI <em>2026-11-09</em></h2>
+      <p>The week&#x27;s most consequential story is not a model release. Nvidia&#x27;s board opened an independent investigation into CEO Jensen Huang&#x27;s relationship with a Megaspeed executive whom US officials reportedly assessed as working for Chinese intelligence, with a committee of independent directors and outside counsel overseeing the review. The board says it has no reason to believe secrets were compromised; Huang has said he will cooperate. Three House committee chairs have asked him to brief Congress on 18 November, a day after earnings.</p>
+<p>Money moved in the opposite direction from capability. OpenAI closed about $11 billion of a round valuing it near $1.25 trillion, well short of the $30 billion it sought, and Anthropic&#x27;s expected IPO valuation has slid from around $2 trillion toward $1 trillion to $1.5 trillion ahead of a mid-November Nasdaq debut, with its amended filing disclosing about $895 billion in compute and infrastructure commitments. Anthropic also agreed to pay $3.4 billion for 1.7 gigawatts of gas-fired generators, the largest known single power-equipment purchase by an AI lab.</p>
+<p>On the model side the open-weight frontier got crowded in a few days. Mistral published full Mistral Large 4 weights: a 1T-parameter multimodal mixture-of-experts with 1M context, 41% on Terminal-Bench 4.0 and a modified-MIT licence that requires a commercial agreement for model-as-a-service resale. Thinking Machines released Inkling 2 Small, a 594B MoE pretrained in 68 hours in NVFP4 with Apache 2.0 weights promised after safety testing. Anthropic shipped Claude Sonnet 5.5 at 70.6% on Terminal-Bench 4.0, ahead of Opus 5.5.</p>
+<p>Safety research produced the week&#x27;s sharpest numbers. METR&#x27;s audit put Anthropic&#x27;s capability growth at about 1.9 times its prior rate, roughly 80% from internal AI automating research, with substantial evidence redacted. Physical Superintelligence reported a Lean-checked proof of the Aaronson-Ambainis conjecture, open since 2008, from a non-public Anthropic model, not yet peer reviewed. DeepMind said AI agents found two ways to weaken legacy 1024-bit RSA, and OpenAI&#x27;s GPT-6 Cyber, its first model rated Critical for cyber capability, swept 948 Linux kernel flaws in one run.</p>
+<p>For builders, the practical signal is in the benchmarks that refused to flatter. Co-Design Bench, drawn from 37,463 real coding queries, found the best agent fully solves 26.4% of tasks while the same models clear 99% on older suites. MemHarmBench found 59% to 76% attack success for cross-session prompt injection, with most successful attacks leaving no trajectory anomaly. Budget for the gap, not the leaderboard.</p>
+    </div>
+  </div>
+
+  <!-- TRENDS -->
+  <div class="tab-body" id="trends">
+    <h2 class="sec-head">Emerging Trends <span class="count">Click to expand</span></h2>
+    <div class="grid-cards">
+      <div class="card spotlight trend" style="--c:var(--accent)" data-trend="0">
+        <div class="trend-header">
+          <div class="trend-emoji">🔥</div>
+          <div class="trend-info">
+            <h3 class="trend-h">Open weights close the gap, and licences become the real gate</h3>
+            <p class="trend-d">Mistral&#x27;s 1T-parameter release, Kimi K3.1 Pro&#x27;s day-zero vLLM support, Baidu&#x27;s base-only ERNIE and Thinking Machines&#x27; promised Apache 2.0 weights all landed within days. The differentiator is no longer benchmark parity but licence terms: modified-MIT with a resale clause, custom Chinese licences with geographic carve-outs, and weights withheld until safety testing finishes.</p>
+            <span class="trend-n">4 stories</span>
+          </div>
+          <span class="trend-expand">▼</span>
+        </div>
+        <div class="trend-stories">
+          <div class="trend-stories-label">Related stories (4)</div>
+          <div class="trend-story-list"><div class="trend-story">Mistral releases the full weights of Mistral Large 4, a 1T-parameter open model</div><div class="trend-story">Thinking Machines releases Inkling 2 Small, a 594B MoE pretrained in 68 hours</div><div class="trend-story">Baidu releases ERNIE 5.5 Flash Base, a 280B open MoE pretrained on 33.5T tokens</div><div class="trend-story">Kimi K3.1 Pro gets day-zero vLLM support, so teams can self-host immediately</div></div>
+        </div>
+      </div>
+      <div class="card spotlight trend" style="--c:var(--accent)" data-trend="1">
+        <div class="trend-header">
+          <div class="trend-emoji">🚀</div>
+          <div class="trend-info">
+            <h3 class="trend-h">Verification is becoming the unit of AI progress</h3>
+            <p class="trend-d">A Lean-checked proof, a METR audit of a lab&#x27;s own research velocity, a 56-task physics benchmark with expert rubrics and a 26.4% real-world coding score all measure the same thing: whether a claim survives a check. Where verification is absent, as with redacted audit evidence or self-reported benchmark tables, the claims get louder and the evidence thinner.</p>
+            <span class="trend-n">2 stories</span>
+          </div>
+          <span class="trend-expand">▼</span>
+        </div>
+        <div class="trend-stories">
+          <div class="trend-stories-label">Related stories (2)</div>
+          <div class="trend-story-list"><div class="trend-story">METR audit finds Anthropic&#x27;s research velocity roughly doubled, mostly from AI automation</div><div class="trend-story">Alibaba&#x27;s Co-Design Bench finds the best coding agent fully solves 26.4% of real tasks</div></div>
+        </div>
+      </div>
+      <div class="card spotlight trend" style="--c:var(--accent)" data-trend="2">
+        <div class="trend-header">
+          <div class="trend-emoji">🧠</div>
+          <div class="trend-info">
+            <h3 class="trend-h">The market reprices while the labs keep shipping</h3>
+            <p class="trend-d">OpenAI closed $11 billion against a $30 billion target, Anthropic&#x27;s IPO valuation talk slid from $2 trillion toward $1 trillion to $1.5 trillion, and data-centre ballot measures failed almost everywhere. In the same week Mistral opened a trillion-parameter model and DeepMind published cryptanalytic results, so capability and capital are now moving on different clocks.</p>
+            <span class="trend-n">1 stories</span>
+          </div>
+          <span class="trend-expand">▼</span>
+        </div>
+        <div class="trend-stories">
+          <div class="trend-stories-label">Related stories (1)</div>
+          <div class="trend-story-list"><div class="trend-story">Mistral releases the full weights of Mistral Large 4, a 1T-parameter open model</div></div>
+        </div>
+      </div>
+      <div class="card spotlight trend" style="--c:var(--accent)" data-trend="3">
+        <div class="trend-header">
+          <div class="trend-emoji">⚠️</div>
+          <div class="trend-info">
+            <h3 class="trend-h">Agent security moves from prompts to persistence</h3>
+            <p class="trend-d">MemHarmBench found most cross-session injection attacks complete without any trajectory anomaly, while GPT-6 Cyber and DeepMind&#x27;s RSA work show offensive capability arriving at machine speed. The defensive story is shifting from filtering inputs to containing what an agent retains and what it is allowed to reach.</p>
+            <span class="trend-n">2 stories</span>
+          </div>
+          <span class="trend-expand">▼</span>
+        </div>
+        <div class="trend-stories">
+          <div class="trend-stories-label">Related stories (2)</div>
+          <div class="trend-story-list"><div class="trend-story">OpenAI&#x27;s GPT-6 Cyber is rated Critical and has already swept the Linux kernel</div><div class="trend-story">MemHarmBench shows cross-session prompt injection persisting in memory-equipped agents</div></div>
+        </div>
+      </div>
+      </div>
+  </div>
+
+  <!-- TOP 10 -->
+  <div class="tab-body" id="top10">
+    <h2 class="sec-head">Top 10 Ranked Updates</h2>
+    <p style="color:var(--muted);font-size:.85em;margin-bottom:22px">Click "Open" to read the full article in a new tab, or "Read More" for details.</p>
+    <div class="grid-cards">
+      <div class="card spotlight top10" style="--c:#d97706" data-article='{&quot;title&quot;: &quot;Nvidia board opens independent investigation into CEO Jensen Huang&#x27;s ties to Megaspeed executive&quot;, &quot;summary&quot;: &quot;Nvidia&#x27;s board said it has begun an independent review, overseen by a committee of independent directors and outside counsel, of CEO Jensen Huang&#x27;s relationship with Alice Huang, an executive at Nvidia customer Megaspeed whom US officials reportedly assessed as working for Chinese intelligence. Huang acknowledged the relationship to staff and said he will cooperate; the board said it has no reason to believe company secrets or national security were compromised.&quot;, &quot;why_it_matters&quot;: &quot;The review puts the board of the AI boom&#x27;s central chip supplier between a national-security inquiry and the CEO who built the company, weeks before earnings and a requested congressional briefing.&quot;, &quot;source&quot;: &quot;Kill The AI&quot;, &quot;url&quot;: &quot;https://killtheai.com/news/top-10-ai-news-today-november-9-2026/&quot;, &quot;category&quot;: &quot;Industry&quot;, &quot;importance&quot;: 9}'>
+        <div class="rank" style="background:linear-gradient(135deg,#d97706,#d9770688)">01</div>
+        <div class="card-body">
+          <span class="card-cat" style="background:#d97706">Industry</span>
+          <h3 class="card-title">Nvidia board opens independent investigation into CEO Jensen Huang&#x27;s ties to Megaspeed executive</h3>
+          <p class="card-summary">Nvidia&#x27;s board said it has begun an independent review, overseen by a committee of independent directors and outside counsel, of CEO Jensen Huang&#x27;s relationship with Alice Huang, an executive at Nvidia customer Megaspeed whom US officials reportedly assessed as working for Chinese intelligence. Huang acknowledged the relationship to staff and said he will cooperate; the board said it has no reason to believe company secrets or national security were compromised..</p>
+          <div class="card-actions">
+            <a href="https://killtheai.com/news/top-10-ai-news-today-november-9-2026/" target="_blank" rel="noopener" class="open-btn" style="--c:#d97706">Open ↗</a>
+            <button class="read-more-btn" data-article='{&quot;title&quot;: &quot;Nvidia board opens independent investigation into CEO Jensen Huang&#x27;s ties to Megaspeed executive&quot;, &quot;summary&quot;: &quot;Nvidia&#x27;s board said it has begun an independent review, overseen by a committee of independent directors and outside counsel, of CEO Jensen Huang&#x27;s relationship with Alice Huang, an executive at Nvidia customer Megaspeed whom US officials reportedly assessed as working for Chinese intelligence. Huang acknowledged the relationship to staff and said he will cooperate; the board said it has no reason to believe company secrets or national security were compromised.&quot;, &quot;why_it_matters&quot;: &quot;The review puts the board of the AI boom&#x27;s central chip supplier between a national-security inquiry and the CEO who built the company, weeks before earnings and a requested congressional briefing.&quot;, &quot;source&quot;: &quot;Kill The AI&quot;, &quot;url&quot;: &quot;https://killtheai.com/news/top-10-ai-news-today-november-9-2026/&quot;, &quot;category&quot;: &quot;Industry&quot;, &quot;importance&quot;: 9}' style="--c:#d97706">Read More</button>
+          </div>
+          <div class="card-meta">Kill The AI &middot; Score: 9/10</div>
+        </div>
+      </div>
+      <div class="card spotlight top10" style="--c:#d97706" data-article='{&quot;title&quot;: &quot;OpenAI closes about $11 billion at a $1.25 trillion valuation, short of its target&quot;, &quot;summary&quot;: &quot;Bloomberg reported, and Reuters and TechCrunch relayed, that OpenAI completed roughly $11 billion of a new round valuing it near $1.25 trillion. The round has not closed and may total about $20 billion, against the $30 billion OpenAI had sought at a higher valuation.&quot;, &quot;why_it_matters&quot;: &quot;The gap between the original ask and cash actually closed is the clearest signal yet that investors are repricing AI growth while the labs keep spending.&quot;, &quot;source&quot;: &quot;PoYo / Bloomberg&quot;, &quot;url&quot;: &quot;https://poyo.ai/hub/2026-11-08-ai-news&quot;, &quot;category&quot;: &quot;Industry&quot;, &quot;importance&quot;: 9}'>
+        <div class="rank" style="background:linear-gradient(135deg,#d97706,#d9770688)">02</div>
+        <div class="card-body">
+          <span class="card-cat" style="background:#d97706">Industry</span>
+          <h3 class="card-title">OpenAI closes about $11 billion at a $1.25 trillion valuation, short of its target</h3>
+          <p class="card-summary">Bloomberg reported, and Reuters and TechCrunch relayed, that OpenAI completed roughly $11 billion of a new round valuing it near $1.25 trillion. The round has not closed and may total about $20 billion, against the $30 billion OpenAI had sought at a higher valuation..</p>
+          <div class="card-actions">
+            <a href="https://poyo.ai/hub/2026-11-08-ai-news" target="_blank" rel="noopener" class="open-btn" style="--c:#d97706">Open ↗</a>
+            <button class="read-more-btn" data-article='{&quot;title&quot;: &quot;OpenAI closes about $11 billion at a $1.25 trillion valuation, short of its target&quot;, &quot;summary&quot;: &quot;Bloomberg reported, and Reuters and TechCrunch relayed, that OpenAI completed roughly $11 billion of a new round valuing it near $1.25 trillion. The round has not closed and may total about $20 billion, against the $30 billion OpenAI had sought at a higher valuation.&quot;, &quot;why_it_matters&quot;: &quot;The gap between the original ask and cash actually closed is the clearest signal yet that investors are repricing AI growth while the labs keep spending.&quot;, &quot;source&quot;: &quot;PoYo / Bloomberg&quot;, &quot;url&quot;: &quot;https://poyo.ai/hub/2026-11-08-ai-news&quot;, &quot;category&quot;: &quot;Industry&quot;, &quot;importance&quot;: 9}' style="--c:#d97706">Read More</button>
+          </div>
+          <div class="card-meta">PoYo / Bloomberg &middot; Score: 9/10</div>
+        </div>
+      </div>
+      <div class="card spotlight top10" style="--c:#7c3aed" data-article='{&quot;title&quot;: &quot;Mistral releases the full weights of Mistral Large 4, a 1T-parameter open model&quot;, &quot;summary&quot;: &quot;Mistral published Mistral Large 4 weights on Hugging Face: a natively multimodal mixture-of-experts with roughly 1 trillion total and 50 billion active parameters, a 1M-token context, and a modified-MIT licence that requires a separate commercial agreement for model-as-a-service resale. It scores 41% on Terminal-Bench 4.0 and posts 96.6% refusal on malicious-request suites.&quot;, &quot;why_it_matters&quot;: &quot;Enterprises that wanted self-hosted frontier-grade coding and security agents now have a European option, and the licence text rather than the benchmark table will decide adoption.&quot;, &quot;source&quot;: &quot;DEV Community&quot;, &quot;url&quot;: &quot;https://dev.to/hiroki-ii-ai/ai-daily-digest-november-9-2026-mistral-opens-le-chonk-weights-grok-api-watermarks-by-default-2gdm&quot;, &quot;category&quot;: &quot;LLM&quot;, &quot;importance&quot;: 9}'>
+        <div class="rank" style="background:linear-gradient(135deg,#7c3aed,#7c3aed88)">03</div>
+        <div class="card-body">
+          <span class="card-cat" style="background:#7c3aed">LLM</span>
+          <h3 class="card-title">Mistral releases the full weights of Mistral Large 4, a 1T-parameter open model</h3>
+          <p class="card-summary">Mistral published Mistral Large 4 weights on Hugging Face: a natively multimodal mixture-of-experts with roughly 1 trillion total and 50 billion active parameters, a 1M-token context, and a modified-MIT licence that requires a separate commercial agreement for model-as-a-service resale. It scores 41% on Terminal-Bench 4.0 and posts 96.6% refusal on malicious-request suites..</p>
+          <div class="card-actions">
+            <a href="https://dev.to/hiroki-ii-ai/ai-daily-digest-november-9-2026-mistral-opens-le-chonk-weights-grok-api-watermarks-by-default-2gdm" target="_blank" rel="noopener" class="open-btn" style="--c:#7c3aed">Open ↗</a>
+            <button class="read-more-btn" data-article='{&quot;title&quot;: &quot;Mistral releases the full weights of Mistral Large 4, a 1T-parameter open model&quot;, &quot;summary&quot;: &quot;Mistral published Mistral Large 4 weights on Hugging Face: a natively multimodal mixture-of-experts with roughly 1 trillion total and 50 billion active parameters, a 1M-token context, and a modified-MIT licence that requires a separate commercial agreement for model-as-a-service resale. It scores 41% on Terminal-Bench 4.0 and posts 96.6% refusal on malicious-request suites.&quot;, &quot;why_it_matters&quot;: &quot;Enterprises that wanted self-hosted frontier-grade coding and security agents now have a European option, and the licence text rather than the benchmark table will decide adoption.&quot;, &quot;source&quot;: &quot;DEV Community&quot;, &quot;url&quot;: &quot;https://dev.to/hiroki-ii-ai/ai-daily-digest-november-9-2026-mistral-opens-le-chonk-weights-grok-api-watermarks-by-default-2gdm&quot;, &quot;category&quot;: &quot;LLM&quot;, &quot;importance&quot;: 9}' style="--c:#7c3aed">Read More</button>
+          </div>
+          <div class="card-meta">DEV Community &middot; Score: 9/10</div>
+        </div>
+      </div>
+      <div class="card spotlight top10" style="--c:#dc2626" data-article='{&quot;title&quot;: &quot;METR audit finds Anthropic&#x27;s research velocity roughly doubled, mostly from AI automation&quot;, &quot;summary&quot;: &quot;An 11-week evaluation by the nonprofit METR, run inside Anthropic between August and late October, found capability growth on well-specified tasks at about 1.9 times the earlier rate, with roughly 80% of the acceleration attributed to internal AI systems automating research and engineering rather than added compute. Anthropic redacted substantial supporting technical evidence before publication, citing proprietary and safety concerns.&quot;, &quot;why_it_matters&quot;: &quot;This is the first third-party measurement of a lab speeding itself up, and the redactions mean the most consequential number in AI cannot yet be independently checked.&quot;, &quot;source&quot;: &quot;PiBrief Tech&quot;, &quot;url&quot;: &quot;https://tech.pibrief.com/editions/2026-11-08&quot;, &quot;category&quot;: &quot;Safety&quot;, &quot;importance&quot;: 9}'>
+        <div class="rank" style="background:linear-gradient(135deg,#dc2626,#dc262688)">04</div>
+        <div class="card-body">
+          <span class="card-cat" style="background:#dc2626">Safety</span>
+          <h3 class="card-title">METR audit finds Anthropic&#x27;s research velocity roughly doubled, mostly from AI automation</h3>
+          <p class="card-summary">An 11-week evaluation by the nonprofit METR, run inside Anthropic between August and late October, found capability growth on well-specified tasks at about 1.9 times the earlier rate, with roughly 80% of the acceleration attributed to internal AI systems automating research and engineering rather than added compute. Anthropic redacted substantial supporting technical evidence before publication, citing proprietary and safety concerns..</p>
+          <div class="card-actions">
+            <a href="https://tech.pibrief.com/editions/2026-11-08" target="_blank" rel="noopener" class="open-btn" style="--c:#dc2626">Open ↗</a>
+            <button class="read-more-btn" data-article='{&quot;title&quot;: &quot;METR audit finds Anthropic&#x27;s research velocity roughly doubled, mostly from AI automation&quot;, &quot;summary&quot;: &quot;An 11-week evaluation by the nonprofit METR, run inside Anthropic between August and late October, found capability growth on well-specified tasks at about 1.9 times the earlier rate, with roughly 80% of the acceleration attributed to internal AI systems automating research and engineering rather than added compute. Anthropic redacted substantial supporting technical evidence before publication, citing proprietary and safety concerns.&quot;, &quot;why_it_matters&quot;: &quot;This is the first third-party measurement of a lab speeding itself up, and the redactions mean the most consequential number in AI cannot yet be independently checked.&quot;, &quot;source&quot;: &quot;PiBrief Tech&quot;, &quot;url&quot;: &quot;https://tech.pibrief.com/editions/2026-11-08&quot;, &quot;category&quot;: &quot;Safety&quot;, &quot;importance&quot;: 9}' style="--c:#dc2626">Read More</button>
+          </div>
+          <div class="card-meta">PiBrief Tech &middot; Score: 9/10</div>
+        </div>
+      </div>
+      <div class="card spotlight top10" style="--c:#d97706" data-article='{&quot;title&quot;: &quot;Anthropic pushes toward a mid-November Nasdaq debut at a lower valuation&quot;, &quot;summary&quot;: &quot;Anthropic is reportedly targeting a Nasdaq listing as soon as mid-November, with investor accounts putting the valuation at roughly $1 trillion to $1.5 trillion, down from earlier talk of about $2 trillion. Its amended filing disclosed purchase commitments and leases of about $895 billion, substantially all for compute and infrastructure.&quot;, &quot;why_it_matters&quot;: &quot;A listed Anthropic would publish quarterly numbers, giving enterprises that depend on Claude visibility into a supplier&#x27;s finances for the first time.&quot;, &quot;source&quot;: &quot;EmberSeed / CNBC&quot;, &quot;url&quot;: &quot;https://news.emberseedautomation.com.au/&quot;, &quot;category&quot;: &quot;Industry&quot;, &quot;importance&quot;: 8}'>
+        <div class="rank" style="background:linear-gradient(135deg,#d97706,#d9770688)">05</div>
+        <div class="card-body">
+          <span class="card-cat" style="background:#d97706">Industry</span>
+          <h3 class="card-title">Anthropic pushes toward a mid-November Nasdaq debut at a lower valuation</h3>
+          <p class="card-summary">Anthropic is reportedly targeting a Nasdaq listing as soon as mid-November, with investor accounts putting the valuation at roughly $1 trillion to $1.5 trillion, down from earlier talk of about $2 trillion. Its amended filing disclosed purchase commitments and leases of about $895 billion, substantially all for compute and infrastructure..</p>
+          <div class="card-actions">
+            <a href="https://news.emberseedautomation.com.au/" target="_blank" rel="noopener" class="open-btn" style="--c:#d97706">Open ↗</a>
+            <button class="read-more-btn" data-article='{&quot;title&quot;: &quot;Anthropic pushes toward a mid-November Nasdaq debut at a lower valuation&quot;, &quot;summary&quot;: &quot;Anthropic is reportedly targeting a Nasdaq listing as soon as mid-November, with investor accounts putting the valuation at roughly $1 trillion to $1.5 trillion, down from earlier talk of about $2 trillion. Its amended filing disclosed purchase commitments and leases of about $895 billion, substantially all for compute and infrastructure.&quot;, &quot;why_it_matters&quot;: &quot;A listed Anthropic would publish quarterly numbers, giving enterprises that depend on Claude visibility into a supplier&#x27;s finances for the first time.&quot;, &quot;source&quot;: &quot;EmberSeed / CNBC&quot;, &quot;url&quot;: &quot;https://news.emberseedautomation.com.au/&quot;, &quot;category&quot;: &quot;Industry&quot;, &quot;importance&quot;: 8}' style="--c:#d97706">Read More</button>
+          </div>
+          <div class="card-meta">EmberSeed / CNBC &middot; Score: 8/10</div>
+        </div>
+      </div>
+      <div class="card spotlight top10" style="--c:#7c3aed" data-article='{&quot;title&quot;: &quot;Thinking Machines releases Inkling 2 Small, a 594B MoE pretrained in 68 hours&quot;, &quot;summary&quot;: &quot;Inkling 2 Small is a multimodal mixture-of-experts with 594B total and 17B active parameters and a 1M-token context. Pretraining took 68 hours on GB300 systems in NVFP4, and its Artificial Analysis score rose from 13 to 31. Apache 2.0 weights are promised after external safety testing; Tinker pricing is $0.30 per million input and $1.00 per million output tokens.&quot;, &quot;why_it_matters&quot;: &quot;A strong open-weight-adjacent model trained outside the Chinese labs in under three days changes the arithmetic on who can compete at the frontier.&quot;, &quot;source&quot;: &quot;Hamidun News / Latent Space&quot;, &quot;url&quot;: &quot;https://news.hamidun.com/en/news/15189/thinking-machines-releases-inkling-2-small-a-594b-moe-traine&quot;, &quot;category&quot;: &quot;LLM&quot;, &quot;importance&quot;: 8}'>
+        <div class="rank" style="background:linear-gradient(135deg,#7c3aed,#7c3aed88)">06</div>
+        <div class="card-body">
+          <span class="card-cat" style="background:#7c3aed">LLM</span>
+          <h3 class="card-title">Thinking Machines releases Inkling 2 Small, a 594B MoE pretrained in 68 hours</h3>
+          <p class="card-summary">Inkling 2 Small is a multimodal mixture-of-experts with 594B total and 17B active parameters and a 1M-token context. Pretraining took 68 hours on GB300 systems in NVFP4, and its Artificial Analysis score rose from 13 to 31.</p>
+          <div class="card-actions">
+            <a href="https://news.hamidun.com/en/news/15189/thinking-machines-releases-inkling-2-small-a-594b-moe-traine" target="_blank" rel="noopener" class="open-btn" style="--c:#7c3aed">Open ↗</a>
+            <button class="read-more-btn" data-article='{&quot;title&quot;: &quot;Thinking Machines releases Inkling 2 Small, a 594B MoE pretrained in 68 hours&quot;, &quot;summary&quot;: &quot;Inkling 2 Small is a multimodal mixture-of-experts with 594B total and 17B active parameters and a 1M-token context. Pretraining took 68 hours on GB300 systems in NVFP4, and its Artificial Analysis score rose from 13 to 31. Apache 2.0 weights are promised after external safety testing; Tinker pricing is $0.30 per million input and $1.00 per million output tokens.&quot;, &quot;why_it_matters&quot;: &quot;A strong open-weight-adjacent model trained outside the Chinese labs in under three days changes the arithmetic on who can compete at the frontier.&quot;, &quot;source&quot;: &quot;Hamidun News / Latent Space&quot;, &quot;url&quot;: &quot;https://news.hamidun.com/en/news/15189/thinking-machines-releases-inkling-2-small-a-594b-moe-traine&quot;, &quot;category&quot;: &quot;LLM&quot;, &quot;importance&quot;: 8}' style="--c:#7c3aed">Read More</button>
+          </div>
+          <div class="card-meta">Hamidun News / Latent Space &middot; Score: 8/10</div>
+        </div>
+      </div>
+      <div class="card spotlight top10" style="--c:#7c3aed" data-article='{&quot;title&quot;: &quot;Anthropic launches Claude Sonnet 5.5 with faster generation and cheaper caching&quot;, &quot;summary&quot;: &quot;Anthropic released Claude Sonnet 5.5, which it says runs over 30% faster than Sonnet 5, halves cache-read pricing and cuts task cost by up to 30% through shorter outputs. It scores 70.6% on Terminal-Bench 4.0, against 10.3% for Sonnet 5 and 66.4% for Opus 5.5, with Claude Haiku 5.5 due in the coming weeks.&quot;, &quot;why_it_matters&quot;: &quot;Mid-tier models that beat last generation&#x27;s flagship on agentic coding are what actually reset production budgets.&quot;, &quot;source&quot;: &quot;Tech Bytes / Anthropic&quot;, &quot;url&quot;: &quot;https://techbytes.app/posts/introducing-claude-sonnet-55/&quot;, &quot;category&quot;: &quot;LLM&quot;, &quot;importance&quot;: 8}'>
+        <div class="rank" style="background:linear-gradient(135deg,#7c3aed,#7c3aed88)">07</div>
+        <div class="card-body">
+          <span class="card-cat" style="background:#7c3aed">LLM</span>
+          <h3 class="card-title">Anthropic launches Claude Sonnet 5.5 with faster generation and cheaper caching</h3>
+          <p class="card-summary">Anthropic released Claude Sonnet 5.5, which it says runs over 30% faster than Sonnet 5, halves cache-read pricing and cuts task cost by up to 30% through shorter outputs. It scores 70.6% on Terminal-Bench 4.0, against 10.3% for Sonnet 5 and 66.4% for Opus 5.5, with Claude Haiku 5.5 due in the coming weeks..</p>
+          <div class="card-actions">
+            <a href="https://techbytes.app/posts/introducing-claude-sonnet-55/" target="_blank" rel="noopener" class="open-btn" style="--c:#7c3aed">Open ↗</a>
+            <button class="read-more-btn" data-article='{&quot;title&quot;: &quot;Anthropic launches Claude Sonnet 5.5 with faster generation and cheaper caching&quot;, &quot;summary&quot;: &quot;Anthropic released Claude Sonnet 5.5, which it says runs over 30% faster than Sonnet 5, halves cache-read pricing and cuts task cost by up to 30% through shorter outputs. It scores 70.6% on Terminal-Bench 4.0, against 10.3% for Sonnet 5 and 66.4% for Opus 5.5, with Claude Haiku 5.5 due in the coming weeks.&quot;, &quot;why_it_matters&quot;: &quot;Mid-tier models that beat last generation&#x27;s flagship on agentic coding are what actually reset production budgets.&quot;, &quot;source&quot;: &quot;Tech Bytes / Anthropic&quot;, &quot;url&quot;: &quot;https://techbytes.app/posts/introducing-claude-sonnet-55/&quot;, &quot;category&quot;: &quot;LLM&quot;, &quot;importance&quot;: 8}' style="--c:#7c3aed">Read More</button>
+          </div>
+          <div class="card-meta">Tech Bytes / Anthropic &middot; Score: 8/10</div>
+        </div>
+      </div>
+      <div class="card spotlight top10" style="--c:#059669" data-article='{&quot;title&quot;: &quot;An AI system produces a Lean-checked proof of a conjecture open since 2008&quot;, &quot;summary&quot;: &quot;Physical Superintelligence said an AI system using a non-public Anthropic model produced a complete proof of the Aaronson-Ambainis conjecture, with every step accepted by the Lean proof assistant, on the third day of a single run. The result has not been peer reviewed, the model behind it is not public, and independent mathematicians have not yet assessed it.&quot;, &quot;why_it_matters&quot;: &quot;Machine-checked proofs are the strongest evidence AI can contribute to mathematics, but a Lean-verified formal statement still has to be shown to match the problem as mathematicians posed it.&quot;, &quot;source&quot;: &quot;Aivio News&quot;, &quot;url&quot;: &quot;https://aivio.news/research/&quot;, &quot;category&quot;: &quot;Research&quot;, &quot;importance&quot;: 8}'>
+        <div class="rank" style="background:linear-gradient(135deg,#059669,#05966988)">08</div>
+        <div class="card-body">
+          <span class="card-cat" style="background:#059669">Research</span>
+          <h3 class="card-title">An AI system produces a Lean-checked proof of a conjecture open since 2008</h3>
+          <p class="card-summary">Physical Superintelligence said an AI system using a non-public Anthropic model produced a complete proof of the Aaronson-Ambainis conjecture, with every step accepted by the Lean proof assistant, on the third day of a single run. The result has not been peer reviewed, the model behind it is not public, and independent mathematicians have not yet assessed it..</p>
+          <div class="card-actions">
+            <a href="https://aivio.news/research/" target="_blank" rel="noopener" class="open-btn" style="--c:#059669">Open ↗</a>
+            <button class="read-more-btn" data-article='{&quot;title&quot;: &quot;An AI system produces a Lean-checked proof of a conjecture open since 2008&quot;, &quot;summary&quot;: &quot;Physical Superintelligence said an AI system using a non-public Anthropic model produced a complete proof of the Aaronson-Ambainis conjecture, with every step accepted by the Lean proof assistant, on the third day of a single run. The result has not been peer reviewed, the model behind it is not public, and independent mathematicians have not yet assessed it.&quot;, &quot;why_it_matters&quot;: &quot;Machine-checked proofs are the strongest evidence AI can contribute to mathematics, but a Lean-verified formal statement still has to be shown to match the problem as mathematicians posed it.&quot;, &quot;source&quot;: &quot;Aivio News&quot;, &quot;url&quot;: &quot;https://aivio.news/research/&quot;, &quot;category&quot;: &quot;Research&quot;, &quot;importance&quot;: 8}' style="--c:#059669">Read More</button>
+          </div>
+          <div class="card-meta">Aivio News &middot; Score: 8/10</div>
+        </div>
+      </div>
+      <div class="card spotlight top10" style="--c:#dc2626" data-article='{&quot;title&quot;: &quot;Google DeepMind says AI agents found two ways to weaken legacy 1024-bit RSA&quot;, &quot;summary&quot;: &quot;DeepMind reported that human-supervised reasoning agents surfaced a signature-forgery technique against short-digest 1024-bit keys and an improved batch factoring algorithm, cutting the marginal cost of factoring related keys by roughly 30 times. In a sandbox it reproduced an earlier benchmark result with 3.5 times less CPU time; the company said 2048-bit keys are not affected.&quot;, &quot;why_it_matters&quot;: &quot;AI compressing years of cryptanalytic research into weeks forces a recalibration of how long legacy algorithm choices can be assumed safe.&quot;, &quot;source&quot;: &quot;The AI Chapter&quot;, &quot;url&quot;: &quot;https://theaichapter.beehiiv.com/p/new-post-1ab4&quot;, &quot;category&quot;: &quot;Safety&quot;, &quot;importance&quot;: 8}'>
+        <div class="rank" style="background:linear-gradient(135deg,#dc2626,#dc262688)">09</div>
+        <div class="card-body">
+          <span class="card-cat" style="background:#dc2626">Safety</span>
+          <h3 class="card-title">Google DeepMind says AI agents found two ways to weaken legacy 1024-bit RSA</h3>
+          <p class="card-summary">DeepMind reported that human-supervised reasoning agents surfaced a signature-forgery technique against short-digest 1024-bit keys and an improved batch factoring algorithm, cutting the marginal cost of factoring related keys by roughly 30 times. In a sandbox it reproduced an earlier benchmark result with 3.5 times less CPU time; the company said 2048-bit keys are not affected..</p>
+          <div class="card-actions">
+            <a href="https://theaichapter.beehiiv.com/p/new-post-1ab4" target="_blank" rel="noopener" class="open-btn" style="--c:#dc2626">Open ↗</a>
+            <button class="read-more-btn" data-article='{&quot;title&quot;: &quot;Google DeepMind says AI agents found two ways to weaken legacy 1024-bit RSA&quot;, &quot;summary&quot;: &quot;DeepMind reported that human-supervised reasoning agents surfaced a signature-forgery technique against short-digest 1024-bit keys and an improved batch factoring algorithm, cutting the marginal cost of factoring related keys by roughly 30 times. In a sandbox it reproduced an earlier benchmark result with 3.5 times less CPU time; the company said 2048-bit keys are not affected.&quot;, &quot;why_it_matters&quot;: &quot;AI compressing years of cryptanalytic research into weeks forces a recalibration of how long legacy algorithm choices can be assumed safe.&quot;, &quot;source&quot;: &quot;The AI Chapter&quot;, &quot;url&quot;: &quot;https://theaichapter.beehiiv.com/p/new-post-1ab4&quot;, &quot;category&quot;: &quot;Safety&quot;, &quot;importance&quot;: 8}' style="--c:#dc2626">Read More</button>
+          </div>
+          <div class="card-meta">The AI Chapter &middot; Score: 8/10</div>
+        </div>
+      </div>
+      <div class="card spotlight top10" style="--c:#dc2626" data-article='{&quot;title&quot;: &quot;OpenAI&#x27;s GPT-6 Cyber is rated Critical and has already swept the Linux kernel&quot;, &quot;summary&quot;: &quot;OpenAI released GPT-6 Cyber, the first model it has rated Critical for cyber capability under its own preparedness framework, built to find exploitable vulnerabilities, develop working exploits and generate fixes. OpenAI says an autonomous pipeline using the model found, verified and patched 948 Linux kernel privilege-escalation flaws in a single run at about $1,000 per vulnerability, and reported 81 previously unknown Firefox flaws; access is limited to vetted Daybreak Red customers.&quot;, &quot;why_it_matters&quot;: &quot;A defensive tool that can also find and weaponise flaws at machine speed makes the offence-defence boundary a governance question, not just a product one.&quot;, &quot;source&quot;: &quot;Models at Work&quot;, &quot;url&quot;: &quot;https://modelsatwork.news/&quot;, &quot;category&quot;: &quot;Safety&quot;, &quot;importance&quot;: 8}'>
+        <div class="rank" style="background:linear-gradient(135deg,#dc2626,#dc262688)">10</div>
+        <div class="card-body">
+          <span class="card-cat" style="background:#dc2626">Safety</span>
+          <h3 class="card-title">OpenAI&#x27;s GPT-6 Cyber is rated Critical and has already swept the Linux kernel</h3>
+          <p class="card-summary">OpenAI released GPT-6 Cyber, the first model it has rated Critical for cyber capability under its own preparedness framework, built to find exploitable vulnerabilities, develop working exploits and generate fixes. OpenAI says an autonomous pipeline using the model found, verified and patched 948 Linux kernel privilege-escalation flaws in a single run at about $1,000 per vulnerability, and reported 81 previously unknown Firefox flaws; access is limited to vetted Daybreak Red customers..</p>
+          <div class="card-actions">
+            <a href="https://modelsatwork.news/" target="_blank" rel="noopener" class="open-btn" style="--c:#dc2626">Open ↗</a>
+            <button class="read-more-btn" data-article='{&quot;title&quot;: &quot;OpenAI&#x27;s GPT-6 Cyber is rated Critical and has already swept the Linux kernel&quot;, &quot;summary&quot;: &quot;OpenAI released GPT-6 Cyber, the first model it has rated Critical for cyber capability under its own preparedness framework, built to find exploitable vulnerabilities, develop working exploits and generate fixes. OpenAI says an autonomous pipeline using the model found, verified and patched 948 Linux kernel privilege-escalation flaws in a single run at about $1,000 per vulnerability, and reported 81 previously unknown Firefox flaws; access is limited to vetted Daybreak Red customers.&quot;, &quot;why_it_matters&quot;: &quot;A defensive tool that can also find and weaponise flaws at machine speed makes the offence-defence boundary a governance question, not just a product one.&quot;, &quot;source&quot;: &quot;Models at Work&quot;, &quot;url&quot;: &quot;https://modelsatwork.news/&quot;, &quot;category&quot;: &quot;Safety&quot;, &quot;importance&quot;: 8}' style="--c:#dc2626">Read More</button>
+          </div>
+          <div class="card-meta">Models at Work &middot; Score: 8/10</div>
+        </div>
+      </div>
+      </div>
+  </div>
+
+  <!-- ALL -->
+  <div class="tab-body" id="all">
+    <h2 class="sec-head">All Articles</h2>
+    <input type="text" class="search" id="searchInput" placeholder="Search articles by title or keyword...">
+    <div class="chips" id="chips"><button class="chip" data-filter="Industry" style="--c:#d97706">Industry</button>
+      <button class="chip" data-filter="LLM" style="--c:#7c3aed">LLM</button>
+      <button class="chip" data-filter="Research" style="--c:#059669">Research</button>
+      <button class="chip" data-filter="Safety" style="--c:#dc2626">Safety</button>
+      <button class="chip" data-filter="Tools" style="--c:#0891b2">Tools</button></div>
+    <div class="grid-cards" id="cardGrid">
+      <div class="card spotlight" data-category="Industry" data-title="nvidia board opens independent investigation into ceo jensen huang&#x27;s ties to megaspeed executive" style="--c:#d97706" data-article='{&quot;title&quot;: &quot;Nvidia board opens independent investigation into CEO Jensen Huang&#x27;s ties to Megaspeed executive&quot;, &quot;summary&quot;: &quot;Nvidia&#x27;s board said it has begun an independent review, overseen by a committee of independent directors and outside counsel, of CEO Jensen Huang&#x27;s relationship with Alice Huang, an executive at Nvidia customer Megaspeed whom US officials reportedly assessed as working for Chinese intelligence. Huang acknowledged the relationship to staff and said he will cooperate; the board said it has no reason to believe company secrets or national security were compromised.&quot;, &quot;why_it_matters&quot;: &quot;The review puts the board of the AI boom&#x27;s central chip supplier between a national-security inquiry and the CEO who built the company, weeks before earnings and a requested congressional briefing.&quot;, &quot;source&quot;: &quot;Kill The AI&quot;, &quot;url&quot;: &quot;https://killtheai.com/news/top-10-ai-news-today-november-9-2026/&quot;, &quot;category&quot;: &quot;Industry&quot;, &quot;importance&quot;: 9}'>
+        <span class="card-cat" style="background:#d97706">Industry</span>
+          <h3 class="card-title">Nvidia board opens independent investigation into CEO Jensen Huang&#x27;s ties to Megaspeed executive</h3>
+          <p class="card-summary">Nvidia&#x27;s board said it has begun an independent review, overseen by a committee of independent directors and outside counsel, of CEO Jensen Huang&#x27;s relationship with Alice Huang, an executive at Nvidia customer Megaspeed whom US officials reportedly assessed as working for Chinese intelligence. Huang acknowledged the relationship to staff and said he will cooperate; the board said it has no reason to believe company secrets or national security were compromised.</p>
+          <div class="card-actions">
+            <a href="https://killtheai.com/news/top-10-ai-news-today-november-9-2026/" target="_blank" rel="noopener" class="open-btn" style="--c:#d97706">Open ↗</a>
+            <button class="read-more-btn" data-article='{&quot;title&quot;: &quot;Nvidia board opens independent investigation into CEO Jensen Huang&#x27;s ties to Megaspeed executive&quot;, &quot;summary&quot;: &quot;Nvidia&#x27;s board said it has begun an independent review, overseen by a committee of independent directors and outside counsel, of CEO Jensen Huang&#x27;s relationship with Alice Huang, an executive at Nvidia customer Megaspeed whom US officials reportedly assessed as working for Chinese intelligence. Huang acknowledged the relationship to staff and said he will cooperate; the board said it has no reason to believe company secrets or national security were compromised.&quot;, &quot;why_it_matters&quot;: &quot;The review puts the board of the AI boom&#x27;s central chip supplier between a national-security inquiry and the CEO who built the company, weeks before earnings and a requested congressional briefing.&quot;, &quot;source&quot;: &quot;Kill The AI&quot;, &quot;url&quot;: &quot;https://killtheai.com/news/top-10-ai-news-today-november-9-2026/&quot;, &quot;category&quot;: &quot;Industry&quot;, &quot;importance&quot;: 9}' style="--c:#d97706">Read More</button>
+          </div>
+          <div class="card-meta">Kill The AI &middot; Score: 9/10</div>
+      </div>
+      <div class="card spotlight" data-category="Industry" data-title="openai closes about $11 billion at a $1.25 trillion valuation, short of its target" style="--c:#d97706" data-article='{&quot;title&quot;: &quot;OpenAI closes about $11 billion at a $1.25 trillion valuation, short of its target&quot;, &quot;summary&quot;: &quot;Bloomberg reported, and Reuters and TechCrunch relayed, that OpenAI completed roughly $11 billion of a new round valuing it near $1.25 trillion. The round has not closed and may total about $20 billion, against the $30 billion OpenAI had sought at a higher valuation.&quot;, &quot;why_it_matters&quot;: &quot;The gap between the original ask and cash actually closed is the clearest signal yet that investors are repricing AI growth while the labs keep spending.&quot;, &quot;source&quot;: &quot;PoYo / Bloomberg&quot;, &quot;url&quot;: &quot;https://poyo.ai/hub/2026-11-08-ai-news&quot;, &quot;category&quot;: &quot;Industry&quot;, &quot;importance&quot;: 9}'>
+        <span class="card-cat" style="background:#d97706">Industry</span>
+          <h3 class="card-title">OpenAI closes about $11 billion at a $1.25 trillion valuation, short of its target</h3>
+          <p class="card-summary">Bloomberg reported, and Reuters and TechCrunch relayed, that OpenAI completed roughly $11 billion of a new round valuing it near $1.25 trillion. The round has not closed and may total about $20 billion, against the $30 billion OpenAI had sought at a higher valuation.</p>
+          <div class="card-actions">
+            <a href="https://poyo.ai/hub/2026-11-08-ai-news" target="_blank" rel="noopener" class="open-btn" style="--c:#d97706">Open ↗</a>
+            <button class="read-more-btn" data-article='{&quot;title&quot;: &quot;OpenAI closes about $11 billion at a $1.25 trillion valuation, short of its target&quot;, &quot;summary&quot;: &quot;Bloomberg reported, and Reuters and TechCrunch relayed, that OpenAI completed roughly $11 billion of a new round valuing it near $1.25 trillion. The round has not closed and may total about $20 billion, against the $30 billion OpenAI had sought at a higher valuation.&quot;, &quot;why_it_matters&quot;: &quot;The gap between the original ask and cash actually closed is the clearest signal yet that investors are repricing AI growth while the labs keep spending.&quot;, &quot;source&quot;: &quot;PoYo / Bloomberg&quot;, &quot;url&quot;: &quot;https://poyo.ai/hub/2026-11-08-ai-news&quot;, &quot;category&quot;: &quot;Industry&quot;, &quot;importance&quot;: 9}' style="--c:#d97706">Read More</button>
+          </div>
+          <div class="card-meta">PoYo / Bloomberg &middot; Score: 9/10</div>
+      </div>
+      <div class="card spotlight" data-category="LLM" data-title="mistral releases the full weights of mistral large 4, a 1t-parameter open model" style="--c:#7c3aed" data-article='{&quot;title&quot;: &quot;Mistral releases the full weights of Mistral Large 4, a 1T-parameter open model&quot;, &quot;summary&quot;: &quot;Mistral published Mistral Large 4 weights on Hugging Face: a natively multimodal mixture-of-experts with roughly 1 trillion total and 50 billion active parameters, a 1M-token context, and a modified-MIT licence that requires a separate commercial agreement for model-as-a-service resale. It scores 41% on Terminal-Bench 4.0 and posts 96.6% refusal on malicious-request suites.&quot;, &quot;why_it_matters&quot;: &quot;Enterprises that wanted self-hosted frontier-grade coding and security agents now have a European option, and the licence text rather than the benchmark table will decide adoption.&quot;, &quot;source&quot;: &quot;DEV Community&quot;, &quot;url&quot;: &quot;https://dev.to/hiroki-ii-ai/ai-daily-digest-november-9-2026-mistral-opens-le-chonk-weights-grok-api-watermarks-by-default-2gdm&quot;, &quot;category&quot;: &quot;LLM&quot;, &quot;importance&quot;: 9}'>
+        <span class="card-cat" style="background:#7c3aed">LLM</span>
+          <h3 class="card-title">Mistral releases the full weights of Mistral Large 4, a 1T-parameter open model</h3>
+          <p class="card-summary">Mistral published Mistral Large 4 weights on Hugging Face: a natively multimodal mixture-of-experts with roughly 1 trillion total and 50 billion active parameters, a 1M-token context, and a modified-MIT licence that requires a separate commercial agreement for model-as-a-service resale. It scores 41% on Terminal-Bench 4.0 and posts 96.6% refusal on malicious-request suites.</p>
+          <div class="card-actions">
+            <a href="https://dev.to/hiroki-ii-ai/ai-daily-digest-november-9-2026-mistral-opens-le-chonk-weights-grok-api-watermarks-by-default-2gdm" target="_blank" rel="noopener" class="open-btn" style="--c:#7c3aed">Open ↗</a>
+            <button class="read-more-btn" data-article='{&quot;title&quot;: &quot;Mistral releases the full weights of Mistral Large 4, a 1T-parameter open model&quot;, &quot;summary&quot;: &quot;Mistral published Mistral Large 4 weights on Hugging Face: a natively multimodal mixture-of-experts with roughly 1 trillion total and 50 billion active parameters, a 1M-token context, and a modified-MIT licence that requires a separate commercial agreement for model-as-a-service resale. It scores 41% on Terminal-Bench 4.0 and posts 96.6% refusal on malicious-request suites.&quot;, &quot;why_it_matters&quot;: &quot;Enterprises that wanted self-hosted frontier-grade coding and security agents now have a European option, and the licence text rather than the benchmark table will decide adoption.&quot;, &quot;source&quot;: &quot;DEV Community&quot;, &quot;url&quot;: &quot;https://dev.to/hiroki-ii-ai/ai-daily-digest-november-9-2026-mistral-opens-le-chonk-weights-grok-api-watermarks-by-default-2gdm&quot;, &quot;category&quot;: &quot;LLM&quot;, &quot;importance&quot;: 9}' style="--c:#7c3aed">Read More</button>
+          </div>
+          <div class="card-meta">DEV Community &middot; Score: 9/10</div>
+      </div>
+      <div class="card spotlight" data-category="Safety" data-title="metr audit finds anthropic&#x27;s research velocity roughly doubled, mostly from ai automation" style="--c:#dc2626" data-article='{&quot;title&quot;: &quot;METR audit finds Anthropic&#x27;s research velocity roughly doubled, mostly from AI automation&quot;, &quot;summary&quot;: &quot;An 11-week evaluation by the nonprofit METR, run inside Anthropic between August and late October, found capability growth on well-specified tasks at about 1.9 times the earlier rate, with roughly 80% of the acceleration attributed to internal AI systems automating research and engineering rather than added compute. Anthropic redacted substantial supporting technical evidence before publication, citing proprietary and safety concerns.&quot;, &quot;why_it_matters&quot;: &quot;This is the first third-party measurement of a lab speeding itself up, and the redactions mean the most consequential number in AI cannot yet be independently checked.&quot;, &quot;source&quot;: &quot;PiBrief Tech&quot;, &quot;url&quot;: &quot;https://tech.pibrief.com/editions/2026-11-08&quot;, &quot;category&quot;: &quot;Safety&quot;, &quot;importance&quot;: 9}'>
+        <span class="card-cat" style="background:#dc2626">Safety</span>
+          <h3 class="card-title">METR audit finds Anthropic&#x27;s research velocity roughly doubled, mostly from AI automation</h3>
+          <p class="card-summary">An 11-week evaluation by the nonprofit METR, run inside Anthropic between August and late October, found capability growth on well-specified tasks at about 1.9 times the earlier rate, with roughly 80% of the acceleration attributed to internal AI systems automating research and engineering rather than added compute. Anthropic redacted substantial supporting technical evidence before publication, citing proprietary and safety concerns.</p>
+          <div class="card-actions">
+            <a href="https://tech.pibrief.com/editions/2026-11-08" target="_blank" rel="noopener" class="open-btn" style="--c:#dc2626">Open ↗</a>
+            <button class="read-more-btn" data-article='{&quot;title&quot;: &quot;METR audit finds Anthropic&#x27;s research velocity roughly doubled, mostly from AI automation&quot;, &quot;summary&quot;: &quot;An 11-week evaluation by the nonprofit METR, run inside Anthropic between August and late October, found capability growth on well-specified tasks at about 1.9 times the earlier rate, with roughly 80% of the acceleration attributed to internal AI systems automating research and engineering rather than added compute. Anthropic redacted substantial supporting technical evidence before publication, citing proprietary and safety concerns.&quot;, &quot;why_it_matters&quot;: &quot;This is the first third-party measurement of a lab speeding itself up, and the redactions mean the most consequential number in AI cannot yet be independently checked.&quot;, &quot;source&quot;: &quot;PiBrief Tech&quot;, &quot;url&quot;: &quot;https://tech.pibrief.com/editions/2026-11-08&quot;, &quot;category&quot;: &quot;Safety&quot;, &quot;importance&quot;: 9}' style="--c:#dc2626">Read More</button>
+          </div>
+          <div class="card-meta">PiBrief Tech &middot; Score: 9/10</div>
+      </div>
+      <div class="card spotlight" data-category="Industry" data-title="anthropic pushes toward a mid-november nasdaq debut at a lower valuation" style="--c:#d97706" data-article='{&quot;title&quot;: &quot;Anthropic pushes toward a mid-November Nasdaq debut at a lower valuation&quot;, &quot;summary&quot;: &quot;Anthropic is reportedly targeting a Nasdaq listing as soon as mid-November, with investor accounts putting the valuation at roughly $1 trillion to $1.5 trillion, down from earlier talk of about $2 trillion. Its amended filing disclosed purchase commitments and leases of about $895 billion, substantially all for compute and infrastructure.&quot;, &quot;why_it_matters&quot;: &quot;A listed Anthropic would publish quarterly numbers, giving enterprises that depend on Claude visibility into a supplier&#x27;s finances for the first time.&quot;, &quot;source&quot;: &quot;EmberSeed / CNBC&quot;, &quot;url&quot;: &quot;https://news.emberseedautomation.com.au/&quot;, &quot;category&quot;: &quot;Industry&quot;, &quot;importance&quot;: 8}'>
+        <span class="card-cat" style="background:#d97706">Industry</span>
+          <h3 class="card-title">Anthropic pushes toward a mid-November Nasdaq debut at a lower valuation</h3>
+          <p class="card-summary">Anthropic is reportedly targeting a Nasdaq listing as soon as mid-November, with investor accounts putting the valuation at roughly $1 trillion to $1.5 trillion, down from earlier talk of about $2 trillion. Its amended filing disclosed purchase commitments and leases of about $895 billion, substantially all for compute and infrastructure.</p>
+          <div class="card-actions">
+            <a href="https://news.emberseedautomation.com.au/" target="_blank" rel="noopener" class="open-btn" style="--c:#d97706">Open ↗</a>
+            <button class="read-more-btn" data-article='{&quot;title&quot;: &quot;Anthropic pushes toward a mid-November Nasdaq debut at a lower valuation&quot;, &quot;summary&quot;: &quot;Anthropic is reportedly targeting a Nasdaq listing as soon as mid-November, with investor accounts putting the valuation at roughly $1 trillion to $1.5 trillion, down from earlier talk of about $2 trillion. Its amended filing disclosed purchase commitments and leases of about $895 billion, substantially all for compute and infrastructure.&quot;, &quot;why_it_matters&quot;: &quot;A listed Anthropic would publish quarterly numbers, giving enterprises that depend on Claude visibility into a supplier&#x27;s finances for the first time.&quot;, &quot;source&quot;: &quot;EmberSeed / CNBC&quot;, &quot;url&quot;: &quot;https://news.emberseedautomation.com.au/&quot;, &quot;category&quot;: &quot;Industry&quot;, &quot;importance&quot;: 8}' style="--c:#d97706">Read More</button>
+          </div>
+          <div class="card-meta">EmberSeed / CNBC &middot; Score: 8/10</div>
+      </div>
+      <div class="card spotlight" data-category="LLM" data-title="thinking machines releases inkling 2 small, a 594b moe pretrained in 68 hours" style="--c:#7c3aed" data-article='{&quot;title&quot;: &quot;Thinking Machines releases Inkling 2 Small, a 594B MoE pretrained in 68 hours&quot;, &quot;summary&quot;: &quot;Inkling 2 Small is a multimodal mixture-of-experts with 594B total and 17B active parameters and a 1M-token context. Pretraining took 68 hours on GB300 systems in NVFP4, and its Artificial Analysis score rose from 13 to 31. Apache 2.0 weights are promised after external safety testing; Tinker pricing is $0.30 per million input and $1.00 per million output tokens.&quot;, &quot;why_it_matters&quot;: &quot;A strong open-weight-adjacent model trained outside the Chinese labs in under three days changes the arithmetic on who can compete at the frontier.&quot;, &quot;source&quot;: &quot;Hamidun News / Latent Space&quot;, &quot;url&quot;: &quot;https://news.hamidun.com/en/news/15189/thinking-machines-releases-inkling-2-small-a-594b-moe-traine&quot;, &quot;category&quot;: &quot;LLM&quot;, &quot;importance&quot;: 8}'>
+        <span class="card-cat" style="background:#7c3aed">LLM</span>
+          <h3 class="card-title">Thinking Machines releases Inkling 2 Small, a 594B MoE pretrained in 68 hours</h3>
+          <p class="card-summary">Inkling 2 Small is a multimodal mixture-of-experts with 594B total and 17B active parameters and a 1M-token context. Pretraining took 68 hours on GB300 systems in NVFP4, and its Artificial Analysis score rose from 13 to 31. Apache 2.0 weights are promised after external safety testing; Tinker pricing is $0.30 per million input and $1.00 per million output tokens.</p>
+          <div class="card-actions">
+            <a href="https://news.hamidun.com/en/news/15189/thinking-machines-releases-inkling-2-small-a-594b-moe-traine" target="_blank" rel="noopener" class="open-btn" style="--c:#7c3aed">Open ↗</a>
+            <button class="read-more-btn" data-article='{&quot;title&quot;: &quot;Thinking Machines releases Inkling 2 Small, a 594B MoE pretrained in 68 hours&quot;, &quot;summary&quot;: &quot;Inkling 2 Small is a multimodal mixture-of-experts with 594B total and 17B active parameters and a 1M-token context. Pretraining took 68 hours on GB300 systems in NVFP4, and its Artificial Analysis score rose from 13 to 31. Apache 2.0 weights are promised after external safety testing; Tinker pricing is $0.30 per million input and $1.00 per million output tokens.&quot;, &quot;why_it_matters&quot;: &quot;A strong open-weight-adjacent model trained outside the Chinese labs in under three days changes the arithmetic on who can compete at the frontier.&quot;, &quot;source&quot;: &quot;Hamidun News / Latent Space&quot;, &quot;url&quot;: &quot;https://news.hamidun.com/en/news/15189/thinking-machines-releases-inkling-2-small-a-594b-moe-traine&quot;, &quot;category&quot;: &quot;LLM&quot;, &quot;importance&quot;: 8}' style="--c:#7c3aed">Read More</button>
+          </div>
+          <div class="card-meta">Hamidun News / Latent Space &middot; Score: 8/10</div>
+      </div>
+      <div class="card spotlight" data-category="LLM" data-title="anthropic launches claude sonnet 5.5 with faster generation and cheaper caching" style="--c:#7c3aed" data-article='{&quot;title&quot;: &quot;Anthropic launches Claude Sonnet 5.5 with faster generation and cheaper caching&quot;, &quot;summary&quot;: &quot;Anthropic released Claude Sonnet 5.5, which it says runs over 30% faster than Sonnet 5, halves cache-read pricing and cuts task cost by up to 30% through shorter outputs. It scores 70.6% on Terminal-Bench 4.0, against 10.3% for Sonnet 5 and 66.4% for Opus 5.5, with Claude Haiku 5.5 due in the coming weeks.&quot;, &quot;why_it_matters&quot;: &quot;Mid-tier models that beat last generation&#x27;s flagship on agentic coding are what actually reset production budgets.&quot;, &quot;source&quot;: &quot;Tech Bytes / Anthropic&quot;, &quot;url&quot;: &quot;https://techbytes.app/posts/introducing-claude-sonnet-55/&quot;, &quot;category&quot;: &quot;LLM&quot;, &quot;importance&quot;: 8}'>
+        <span class="card-cat" style="background:#7c3aed">LLM</span>
+          <h3 class="card-title">Anthropic launches Claude Sonnet 5.5 with faster generation and cheaper caching</h3>
+          <p class="card-summary">Anthropic released Claude Sonnet 5.5, which it says runs over 30% faster than Sonnet 5, halves cache-read pricing and cuts task cost by up to 30% through shorter outputs. It scores 70.6% on Terminal-Bench 4.0, against 10.3% for Sonnet 5 and 66.4% for Opus 5.5, with Claude Haiku 5.5 due in the coming weeks.</p>
+          <div class="card-actions">
+            <a href="https://techbytes.app/posts/introducing-claude-sonnet-55/" target="_blank" rel="noopener" class="open-btn" style="--c:#7c3aed">Open ↗</a>
+            <button class="read-more-btn" data-article='{&quot;title&quot;: &quot;Anthropic launches Claude Sonnet 5.5 with faster generation and cheaper caching&quot;, &quot;summary&quot;: &quot;Anthropic released Claude Sonnet 5.5, which it says runs over 30% faster than Sonnet 5, halves cache-read pricing and cuts task cost by up to 30% through shorter outputs. It scores 70.6% on Terminal-Bench 4.0, against 10.3% for Sonnet 5 and 66.4% for Opus 5.5, with Claude Haiku 5.5 due in the coming weeks.&quot;, &quot;why_it_matters&quot;: &quot;Mid-tier models that beat last generation&#x27;s flagship on agentic coding are what actually reset production budgets.&quot;, &quot;source&quot;: &quot;Tech Bytes / Anthropic&quot;, &quot;url&quot;: &quot;https://techbytes.app/posts/introducing-claude-sonnet-55/&quot;, &quot;category&quot;: &quot;LLM&quot;, &quot;importance&quot;: 8}' style="--c:#7c3aed">Read More</button>
+          </div>
+          <div class="card-meta">Tech Bytes / Anthropic &middot; Score: 8/10</div>
+      </div>
+      <div class="card spotlight" data-category="Research" data-title="an ai system produces a lean-checked proof of a conjecture open since 2008" style="--c:#059669" data-article='{&quot;title&quot;: &quot;An AI system produces a Lean-checked proof of a conjecture open since 2008&quot;, &quot;summary&quot;: &quot;Physical Superintelligence said an AI system using a non-public Anthropic model produced a complete proof of the Aaronson-Ambainis conjecture, with every step accepted by the Lean proof assistant, on the third day of a single run. The result has not been peer reviewed, the model behind it is not public, and independent mathematicians have not yet assessed it.&quot;, &quot;why_it_matters&quot;: &quot;Machine-checked proofs are the strongest evidence AI can contribute to mathematics, but a Lean-verified formal statement still has to be shown to match the problem as mathematicians posed it.&quot;, &quot;source&quot;: &quot;Aivio News&quot;, &quot;url&quot;: &quot;https://aivio.news/research/&quot;, &quot;category&quot;: &quot;Research&quot;, &quot;importance&quot;: 8}'>
+        <span class="card-cat" style="background:#059669">Research</span>
+          <h3 class="card-title">An AI system produces a Lean-checked proof of a conjecture open since 2008</h3>
+          <p class="card-summary">Physical Superintelligence said an AI system using a non-public Anthropic model produced a complete proof of the Aaronson-Ambainis conjecture, with every step accepted by the Lean proof assistant, on the third day of a single run. The result has not been peer reviewed, the model behind it is not public, and independent mathematicians have not yet assessed it.</p>
+          <div class="card-actions">
+            <a href="https://aivio.news/research/" target="_blank" rel="noopener" class="open-btn" style="--c:#059669">Open ↗</a>
+            <button class="read-more-btn" data-article='{&quot;title&quot;: &quot;An AI system produces a Lean-checked proof of a conjecture open since 2008&quot;, &quot;summary&quot;: &quot;Physical Superintelligence said an AI system using a non-public Anthropic model produced a complete proof of the Aaronson-Ambainis conjecture, with every step accepted by the Lean proof assistant, on the third day of a single run. The result has not been peer reviewed, the model behind it is not public, and independent mathematicians have not yet assessed it.&quot;, &quot;why_it_matters&quot;: &quot;Machine-checked proofs are the strongest evidence AI can contribute to mathematics, but a Lean-verified formal statement still has to be shown to match the problem as mathematicians posed it.&quot;, &quot;source&quot;: &quot;Aivio News&quot;, &quot;url&quot;: &quot;https://aivio.news/research/&quot;, &quot;category&quot;: &quot;Research&quot;, &quot;importance&quot;: 8}' style="--c:#059669">Read More</button>
+          </div>
+          <div class="card-meta">Aivio News &middot; Score: 8/10</div>
+      </div>
+      <div class="card spotlight" data-category="Safety" data-title="google deepmind says ai agents found two ways to weaken legacy 1024-bit rsa" style="--c:#dc2626" data-article='{&quot;title&quot;: &quot;Google DeepMind says AI agents found two ways to weaken legacy 1024-bit RSA&quot;, &quot;summary&quot;: &quot;DeepMind reported that human-supervised reasoning agents surfaced a signature-forgery technique against short-digest 1024-bit keys and an improved batch factoring algorithm, cutting the marginal cost of factoring related keys by roughly 30 times. In a sandbox it reproduced an earlier benchmark result with 3.5 times less CPU time; the company said 2048-bit keys are not affected.&quot;, &quot;why_it_matters&quot;: &quot;AI compressing years of cryptanalytic research into weeks forces a recalibration of how long legacy algorithm choices can be assumed safe.&quot;, &quot;source&quot;: &quot;The AI Chapter&quot;, &quot;url&quot;: &quot;https://theaichapter.beehiiv.com/p/new-post-1ab4&quot;, &quot;category&quot;: &quot;Safety&quot;, &quot;importance&quot;: 8}'>
+        <span class="card-cat" style="background:#dc2626">Safety</span>
+          <h3 class="card-title">Google DeepMind says AI agents found two ways to weaken legacy 1024-bit RSA</h3>
+          <p class="card-summary">DeepMind reported that human-supervised reasoning agents surfaced a signature-forgery technique against short-digest 1024-bit keys and an improved batch factoring algorithm, cutting the marginal cost of factoring related keys by roughly 30 times. In a sandbox it reproduced an earlier benchmark result with 3.5 times less CPU time; the company said 2048-bit keys are not affected.</p>
+          <div class="card-actions">
+            <a href="https://theaichapter.beehiiv.com/p/new-post-1ab4" target="_blank" rel="noopener" class="open-btn" style="--c:#dc2626">Open ↗</a>
+            <button class="read-more-btn" data-article='{&quot;title&quot;: &quot;Google DeepMind says AI agents found two ways to weaken legacy 1024-bit RSA&quot;, &quot;summary&quot;: &quot;DeepMind reported that human-supervised reasoning agents surfaced a signature-forgery technique against short-digest 1024-bit keys and an improved batch factoring algorithm, cutting the marginal cost of factoring related keys by roughly 30 times. In a sandbox it reproduced an earlier benchmark result with 3.5 times less CPU time; the company said 2048-bit keys are not affected.&quot;, &quot;why_it_matters&quot;: &quot;AI compressing years of cryptanalytic research into weeks forces a recalibration of how long legacy algorithm choices can be assumed safe.&quot;, &quot;source&quot;: &quot;The AI Chapter&quot;, &quot;url&quot;: &quot;https://theaichapter.beehiiv.com/p/new-post-1ab4&quot;, &quot;category&quot;: &quot;Safety&quot;, &quot;importance&quot;: 8}' style="--c:#dc2626">Read More</button>
+          </div>
+          <div class="card-meta">The AI Chapter &middot; Score: 8/10</div>
+      </div>
+      <div class="card spotlight" data-category="Safety" data-title="openai&#x27;s gpt-6 cyber is rated critical and has already swept the linux kernel" style="--c:#dc2626" data-article='{&quot;title&quot;: &quot;OpenAI&#x27;s GPT-6 Cyber is rated Critical and has already swept the Linux kernel&quot;, &quot;summary&quot;: &quot;OpenAI released GPT-6 Cyber, the first model it has rated Critical for cyber capability under its own preparedness framework, built to find exploitable vulnerabilities, develop working exploits and generate fixes. OpenAI says an autonomous pipeline using the model found, verified and patched 948 Linux kernel privilege-escalation flaws in a single run at about $1,000 per vulnerability, and reported 81 previously unknown Firefox flaws; access is limited to vetted Daybreak Red customers.&quot;, &quot;why_it_matters&quot;: &quot;A defensive tool that can also find and weaponise flaws at machine speed makes the offence-defence boundary a governance question, not just a product one.&quot;, &quot;source&quot;: &quot;Models at Work&quot;, &quot;url&quot;: &quot;https://modelsatwork.news/&quot;, &quot;category&quot;: &quot;Safety&quot;, &quot;importance&quot;: 8}'>
+        <span class="card-cat" style="background:#dc2626">Safety</span>
+          <h3 class="card-title">OpenAI&#x27;s GPT-6 Cyber is rated Critical and has already swept the Linux kernel</h3>
+          <p class="card-summary">OpenAI released GPT-6 Cyber, the first model it has rated Critical for cyber capability under its own preparedness framework, built to find exploitable vulnerabilities, develop working exploits and generate fixes. OpenAI says an autonomous pipeline using the model found, verified and patched 948 Linux kernel privilege-escalation flaws in a single run at about $1,000 per vulnerability, and reported 81 previously unknown Firefox flaws; access is limited to vetted Daybreak Red customers.</p>
+          <div class="card-actions">
+            <a href="https://modelsatwork.news/" target="_blank" rel="noopener" class="open-btn" style="--c:#dc2626">Open ↗</a>
+            <button class="read-more-btn" data-article='{&quot;title&quot;: &quot;OpenAI&#x27;s GPT-6 Cyber is rated Critical and has already swept the Linux kernel&quot;, &quot;summary&quot;: &quot;OpenAI released GPT-6 Cyber, the first model it has rated Critical for cyber capability under its own preparedness framework, built to find exploitable vulnerabilities, develop working exploits and generate fixes. OpenAI says an autonomous pipeline using the model found, verified and patched 948 Linux kernel privilege-escalation flaws in a single run at about $1,000 per vulnerability, and reported 81 previously unknown Firefox flaws; access is limited to vetted Daybreak Red customers.&quot;, &quot;why_it_matters&quot;: &quot;A defensive tool that can also find and weaponise flaws at machine speed makes the offence-defence boundary a governance question, not just a product one.&quot;, &quot;source&quot;: &quot;Models at Work&quot;, &quot;url&quot;: &quot;https://modelsatwork.news/&quot;, &quot;category&quot;: &quot;Safety&quot;, &quot;importance&quot;: 8}' style="--c:#dc2626">Read More</button>
+          </div>
+          <div class="card-meta">Models at Work &middot; Score: 8/10</div>
+      </div>
+      <div class="card spotlight" data-category="Industry" data-title="anthropic agrees to pay $3.4 billion for gas-fired generators for its data centres" style="--c:#d97706" data-article='{&quot;title&quot;: &quot;Anthropic agrees to pay $3.4 billion for gas-fired generators for its data centres&quot;, &quot;summary&quot;: &quot;The FT reported that Anthropic committed $3.4 billion to OnePWR Solutions for about 1.7 gigawatts of heavy-duty gas-fired generators, described as the largest known single purchase of power-generation equipment by an AI lab.&quot;, &quot;why_it_matters&quot;: &quot;Labs are now buying power hardware directly rather than waiting on utilities, which shifts both their cost structure and their exposure to local opposition.&quot;, &quot;source&quot;: &quot;AI Affairs / FT&quot;, &quot;url&quot;: &quot;https://www.aiaffairs.com/&quot;, &quot;category&quot;: &quot;Industry&quot;, &quot;importance&quot;: 7}'>
+        <span class="card-cat" style="background:#d97706">Industry</span>
+          <h3 class="card-title">Anthropic agrees to pay $3.4 billion for gas-fired generators for its data centres</h3>
+          <p class="card-summary">The FT reported that Anthropic committed $3.4 billion to OnePWR Solutions for about 1.7 gigawatts of heavy-duty gas-fired generators, described as the largest known single purchase of power-generation equipment by an AI lab.</p>
+          <div class="card-actions">
+            <a href="https://www.aiaffairs.com/" target="_blank" rel="noopener" class="open-btn" style="--c:#d97706">Open ↗</a>
+            <button class="read-more-btn" data-article='{&quot;title&quot;: &quot;Anthropic agrees to pay $3.4 billion for gas-fired generators for its data centres&quot;, &quot;summary&quot;: &quot;The FT reported that Anthropic committed $3.4 billion to OnePWR Solutions for about 1.7 gigawatts of heavy-duty gas-fired generators, described as the largest known single purchase of power-generation equipment by an AI lab.&quot;, &quot;why_it_matters&quot;: &quot;Labs are now buying power hardware directly rather than waiting on utilities, which shifts both their cost structure and their exposure to local opposition.&quot;, &quot;source&quot;: &quot;AI Affairs / FT&quot;, &quot;url&quot;: &quot;https://www.aiaffairs.com/&quot;, &quot;category&quot;: &quot;Industry&quot;, &quot;importance&quot;: 7}' style="--c:#d97706">Read More</button>
+          </div>
+          <div class="card-meta">AI Affairs / FT &middot; Score: 7/10</div>
+      </div>
+      <div class="card spotlight" data-category="LLM" data-title="baidu releases ernie 5.5 flash base, a 280b open moe pretrained on 33.5t tokens" style="--c:#7c3aed" data-article='{&quot;title&quot;: &quot;Baidu releases ERNIE 5.5 Flash Base, a 280B open MoE pretrained on 33.5T tokens&quot;, &quot;summary&quot;: &quot;Baidu published ERNIE 5.5 Flash Base, a 280B mixture-of-experts activating 14B parameters per token, pretrained from scratch on 33.5 trillion tokens and shipped without mid- or post-training. It uses a tiered KV-cache strategy to hold a 1M-token context, and weights are on Hugging Face in FP8 and BF16 with a licence that excludes the EU, UK and South Korea.&quot;, &quot;why_it_matters&quot;: &quot;Base-only releases target labs that want to do their own post-training, and the geographic licence carve-outs are becoming a routine part of Chinese model releases.&quot;, &quot;source&quot;: &quot;TheNextGenTechInsider&quot;, &quot;url&quot;: &quot;https://thenextgentechinsider.com/pulse/baidu-launches-ernie-55-flash-base-280b-parameter-moe-model&quot;, &quot;category&quot;: &quot;LLM&quot;, &quot;importance&quot;: 7}'>
+        <span class="card-cat" style="background:#7c3aed">LLM</span>
+          <h3 class="card-title">Baidu releases ERNIE 5.5 Flash Base, a 280B open MoE pretrained on 33.5T tokens</h3>
+          <p class="card-summary">Baidu published ERNIE 5.5 Flash Base, a 280B mixture-of-experts activating 14B parameters per token, pretrained from scratch on 33.5 trillion tokens and shipped without mid- or post-training. It uses a tiered KV-cache strategy to hold a 1M-token context, and weights are on Hugging Face in FP8 and BF16 with a licence that excludes the EU, UK and South Korea.</p>
+          <div class="card-actions">
+            <a href="https://thenextgentechinsider.com/pulse/baidu-launches-ernie-55-flash-base-280b-parameter-moe-model" target="_blank" rel="noopener" class="open-btn" style="--c:#7c3aed">Open ↗</a>
+            <button class="read-more-btn" data-article='{&quot;title&quot;: &quot;Baidu releases ERNIE 5.5 Flash Base, a 280B open MoE pretrained on 33.5T tokens&quot;, &quot;summary&quot;: &quot;Baidu published ERNIE 5.5 Flash Base, a 280B mixture-of-experts activating 14B parameters per token, pretrained from scratch on 33.5 trillion tokens and shipped without mid- or post-training. It uses a tiered KV-cache strategy to hold a 1M-token context, and weights are on Hugging Face in FP8 and BF16 with a licence that excludes the EU, UK and South Korea.&quot;, &quot;why_it_matters&quot;: &quot;Base-only releases target labs that want to do their own post-training, and the geographic licence carve-outs are becoming a routine part of Chinese model releases.&quot;, &quot;source&quot;: &quot;TheNextGenTechInsider&quot;, &quot;url&quot;: &quot;https://thenextgentechinsider.com/pulse/baidu-launches-ernie-55-flash-base-280b-parameter-moe-model&quot;, &quot;category&quot;: &quot;LLM&quot;, &quot;importance&quot;: 7}' style="--c:#7c3aed">Read More</button>
+          </div>
+          <div class="card-meta">TheNextGenTechInsider &middot; Score: 7/10</div>
+      </div>
+      <div class="card spotlight" data-category="Tools" data-title="kimi k3.1 pro gets day-zero vllm support, so teams can self-host immediately" style="--c:#0891b2" data-article='{&quot;title&quot;: &quot;Kimi K3.1 Pro gets day-zero vLLM support, so teams can self-host immediately&quot;, &quot;summary&quot;: &quot;Moonshot AI released Kimi K3.1 Pro and the vLLM project added support on launch day, with a 1M-token context and a reported 65.7% on Terminal-Bench 4.0 using the Claude Code harness. Model-card details list 2.8 trillion total and 104 billion activated parameters across 896 experts under a custom licence.&quot;, &quot;why_it_matters&quot;: &quot;Inference-stack support on day one is what separates a model people can actually run from one they only read about.&quot;, &quot;source&quot;: &quot;Hamidun News / vLLM&quot;, &quot;url&quot;: &quot;https://news.hamidun.com/en/news/15273/kimi-k3-1-pro-works-in-vllm-from-day-one-1m-tokens-and-65-7&quot;, &quot;category&quot;: &quot;Tools&quot;, &quot;importance&quot;: 7}'>
+        <span class="card-cat" style="background:#0891b2">Tools</span>
+          <h3 class="card-title">Kimi K3.1 Pro gets day-zero vLLM support, so teams can self-host immediately</h3>
+          <p class="card-summary">Moonshot AI released Kimi K3.1 Pro and the vLLM project added support on launch day, with a 1M-token context and a reported 65.7% on Terminal-Bench 4.0 using the Claude Code harness. Model-card details list 2.8 trillion total and 104 billion activated parameters across 896 experts under a custom licence.</p>
+          <div class="card-actions">
+            <a href="https://news.hamidun.com/en/news/15273/kimi-k3-1-pro-works-in-vllm-from-day-one-1m-tokens-and-65-7" target="_blank" rel="noopener" class="open-btn" style="--c:#0891b2">Open ↗</a>
+            <button class="read-more-btn" data-article='{&quot;title&quot;: &quot;Kimi K3.1 Pro gets day-zero vLLM support, so teams can self-host immediately&quot;, &quot;summary&quot;: &quot;Moonshot AI released Kimi K3.1 Pro and the vLLM project added support on launch day, with a 1M-token context and a reported 65.7% on Terminal-Bench 4.0 using the Claude Code harness. Model-card details list 2.8 trillion total and 104 billion activated parameters across 896 experts under a custom licence.&quot;, &quot;why_it_matters&quot;: &quot;Inference-stack support on day one is what separates a model people can actually run from one they only read about.&quot;, &quot;source&quot;: &quot;Hamidun News / vLLM&quot;, &quot;url&quot;: &quot;https://news.hamidun.com/en/news/15273/kimi-k3-1-pro-works-in-vllm-from-day-one-1m-tokens-and-65-7&quot;, &quot;category&quot;: &quot;Tools&quot;, &quot;importance&quot;: 7}' style="--c:#0891b2">Read More</button>
+          </div>
+          <div class="card-meta">Hamidun News / vLLM &middot; Score: 7/10</div>
+      </div>
+      <div class="card spotlight" data-category="Research" data-title="darwin-180b-rsi-r3 shows recursive self-improvement lifting an open model&#x27;s maths score" style="--c:#059669" data-article='{&quot;title&quot;: &quot;Darwin-180B-RSI-R3 shows recursive self-improvement lifting an open model&#x27;s maths score&quot;, &quot;summary&quot;: &quot;Korean startup VIDRAFT published Darwin-180B-RSI-R3, a 180B mixture-of-experts activating about 3B parameters per token, built from a Qwen3.8 checkpoint and refined through three rounds of training only on self-generated solutions that could be verified programmatically. Reported SuperCLUE maths and science scores rose from 57.89 for the base model to 73.68, with weights and a 4-bit GGUF on Hugging Face.&quot;, &quot;why_it_matters&quot;: &quot;Verified-answer self-training needs no human annotation, which makes it the cheapest known path to reasoning gains and the hardest to audit.&quot;, &quot;source&quot;: &quot;Deniz Genc / dev.to&quot;, &quot;url&quot;: &quot;https://deniz.in/vidraft-open-releases-darwin-180b-rsi-r3-a-recursively-self-improved-moe-reasoni&quot;, &quot;category&quot;: &quot;Research&quot;, &quot;importance&quot;: 7}'>
+        <span class="card-cat" style="background:#059669">Research</span>
+          <h3 class="card-title">Darwin-180B-RSI-R3 shows recursive self-improvement lifting an open model&#x27;s maths score</h3>
+          <p class="card-summary">Korean startup VIDRAFT published Darwin-180B-RSI-R3, a 180B mixture-of-experts activating about 3B parameters per token, built from a Qwen3.8 checkpoint and refined through three rounds of training only on self-generated solutions that could be verified programmatically. Reported SuperCLUE maths and science scores rose from 57.89 for the base model to 73.68, with weights and a 4-bit GGUF on Hugging Face.</p>
+          <div class="card-actions">
+            <a href="https://deniz.in/vidraft-open-releases-darwin-180b-rsi-r3-a-recursively-self-improved-moe-reasoni" target="_blank" rel="noopener" class="open-btn" style="--c:#059669">Open ↗</a>
+            <button class="read-more-btn" data-article='{&quot;title&quot;: &quot;Darwin-180B-RSI-R3 shows recursive self-improvement lifting an open model&#x27;s maths score&quot;, &quot;summary&quot;: &quot;Korean startup VIDRAFT published Darwin-180B-RSI-R3, a 180B mixture-of-experts activating about 3B parameters per token, built from a Qwen3.8 checkpoint and refined through three rounds of training only on self-generated solutions that could be verified programmatically. Reported SuperCLUE maths and science scores rose from 57.89 for the base model to 73.68, with weights and a 4-bit GGUF on Hugging Face.&quot;, &quot;why_it_matters&quot;: &quot;Verified-answer self-training needs no human annotation, which makes it the cheapest known path to reasoning gains and the hardest to audit.&quot;, &quot;source&quot;: &quot;Deniz Genc / dev.to&quot;, &quot;url&quot;: &quot;https://deniz.in/vidraft-open-releases-darwin-180b-rsi-r3-a-recursively-self-improved-moe-reasoni&quot;, &quot;category&quot;: &quot;Research&quot;, &quot;importance&quot;: 7}' style="--c:#059669">Read More</button>
+          </div>
+          <div class="card-meta">Deniz Genc / dev.to &middot; Score: 7/10</div>
+      </div>
+      <div class="card spotlight" data-category="Safety" data-title="openai, anthropic and google deepmind confirm weeks of joint work on frontier safety standards" style="--c:#dc2626" data-article='{&quot;title&quot;: &quot;OpenAI, Anthropic and Google DeepMind confirm weeks of joint work on frontier safety standards&quot;, &quot;summary&quot;: &quot;The three labs confirmed they have been coordinating for several weeks on cybersecurity-focused models, safeguards and access programmes, following a July 2026 proposal by DeepMind&#x27;s Demis Hassabis for an industry standards body. The reported pillars are shared technical evaluations, independent pre-release audits, standardised safety protocols and support for related US legislation; all three declined to join Nvidia&#x27;s rival alliance.&quot;, &quot;why_it_matters&quot;: &quot;Rivals agreeing on shared pre-release audits is the first concrete move from each lab setting its own rules toward an industry norm.&quot;, &quot;source&quot;: &quot;AI Road&quot;, &quot;url&quot;: &quot;https://digest.viaai.si/en/openai-anthropic-deepmind-ai&quot;, &quot;category&quot;: &quot;Safety&quot;, &quot;importance&quot;: 7}'>
+        <span class="card-cat" style="background:#dc2626">Safety</span>
+          <h3 class="card-title">OpenAI, Anthropic and Google DeepMind confirm weeks of joint work on frontier safety standards</h3>
+          <p class="card-summary">The three labs confirmed they have been coordinating for several weeks on cybersecurity-focused models, safeguards and access programmes, following a July 2026 proposal by DeepMind&#x27;s Demis Hassabis for an industry standards body. The reported pillars are shared technical evaluations, independent pre-release audits, standardised safety protocols and support for related US legislation; all three declined to join Nvidia&#x27;s rival alliance.</p>
+          <div class="card-actions">
+            <a href="https://digest.viaai.si/en/openai-anthropic-deepmind-ai" target="_blank" rel="noopener" class="open-btn" style="--c:#dc2626">Open ↗</a>
+            <button class="read-more-btn" data-article='{&quot;title&quot;: &quot;OpenAI, Anthropic and Google DeepMind confirm weeks of joint work on frontier safety standards&quot;, &quot;summary&quot;: &quot;The three labs confirmed they have been coordinating for several weeks on cybersecurity-focused models, safeguards and access programmes, following a July 2026 proposal by DeepMind&#x27;s Demis Hassabis for an industry standards body. The reported pillars are shared technical evaluations, independent pre-release audits, standardised safety protocols and support for related US legislation; all three declined to join Nvidia&#x27;s rival alliance.&quot;, &quot;why_it_matters&quot;: &quot;Rivals agreeing on shared pre-release audits is the first concrete move from each lab setting its own rules toward an industry norm.&quot;, &quot;source&quot;: &quot;AI Road&quot;, &quot;url&quot;: &quot;https://digest.viaai.si/en/openai-anthropic-deepmind-ai&quot;, &quot;category&quot;: &quot;Safety&quot;, &quot;importance&quot;: 7}' style="--c:#dc2626">Read More</button>
+          </div>
+          <div class="card-meta">AI Road &middot; Score: 7/10</div>
+      </div>
+      <div class="card spotlight" data-category="Safety" data-title="memharmbench shows cross-session prompt injection persisting in memory-equipped agents" style="--c:#dc2626" data-article='{&quot;title&quot;: &quot;MemHarmBench shows cross-session prompt injection persisting in memory-equipped agents&quot;, &quot;summary&quot;: &quot;A new benchmark of 288 cases across four agent configurations found conditional attack success rates of 59% to 76% for indirect prompt injection, with 55.71% of successful episodes stealthy: the task completed, the goal was adopted and no trajectory anomaly appeared. Injection through images on a webpage produced 52.5% retention and 40% adoption, against 2.5% for clean inputs.&quot;, &quot;why_it_matters&quot;: &quot;Persistent memory turns a single poisoned page into a long-lived instruction, so the security model for agents has to span sessions, not just one conversation.&quot;, &quot;source&quot;: &quot;Research Radar&quot;, &quot;url&quot;: &quot;https://gussand.github.io/radar/2026-11-08/&quot;, &quot;category&quot;: &quot;Safety&quot;, &quot;importance&quot;: 7}'>
+        <span class="card-cat" style="background:#dc2626">Safety</span>
+          <h3 class="card-title">MemHarmBench shows cross-session prompt injection persisting in memory-equipped agents</h3>
+          <p class="card-summary">A new benchmark of 288 cases across four agent configurations found conditional attack success rates of 59% to 76% for indirect prompt injection, with 55.71% of successful episodes stealthy: the task completed, the goal was adopted and no trajectory anomaly appeared. Injection through images on a webpage produced 52.5% retention and 40% adoption, against 2.5% for clean inputs.</p>
+          <div class="card-actions">
+            <a href="https://gussand.github.io/radar/2026-11-08/" target="_blank" rel="noopener" class="open-btn" style="--c:#dc2626">Open ↗</a>
+            <button class="read-more-btn" data-article='{&quot;title&quot;: &quot;MemHarmBench shows cross-session prompt injection persisting in memory-equipped agents&quot;, &quot;summary&quot;: &quot;A new benchmark of 288 cases across four agent configurations found conditional attack success rates of 59% to 76% for indirect prompt injection, with 55.71% of successful episodes stealthy: the task completed, the goal was adopted and no trajectory anomaly appeared. Injection through images on a webpage produced 52.5% retention and 40% adoption, against 2.5% for clean inputs.&quot;, &quot;why_it_matters&quot;: &quot;Persistent memory turns a single poisoned page into a long-lived instruction, so the security model for agents has to span sessions, not just one conversation.&quot;, &quot;source&quot;: &quot;Research Radar&quot;, &quot;url&quot;: &quot;https://gussand.github.io/radar/2026-11-08/&quot;, &quot;category&quot;: &quot;Safety&quot;, &quot;importance&quot;: 7}' style="--c:#dc2626">Read More</button>
+          </div>
+          <div class="card-meta">Research Radar &middot; Score: 7/10</div>
+      </div>
+      <div class="card spotlight" data-category="Tools" data-title="cactus ships a 30 mb binary that runs chat, speech and tool calls on phones" style="--c:#0891b2" data-article='{&quot;title&quot;: &quot;Cactus ships a 30 MB binary that runs chat, speech and tool calls on phones&quot;, &quot;summary&quot;: &quot;Cactus is an open-source single binary of 8 to 29 MB that runs a language model, a speech-to-text model and embeddings on phones, wearables and micro-controllers, can call functions the developer exposes and extracts structured data, all without sending data to the cloud. It was among the week&#x27;s fastest-rising repositories, alongside local agent tools Orkas and agent-autoloop.&quot;, &quot;why_it_matters&quot;: &quot;Small enough to run offline on a microcontroller, these runtimes make private on-device assistants practical rather than a demo.&quot;, &quot;source&quot;: &quot;Early Signal&quot;, &quot;url&quot;: &quot;https://earlysignal.news/weekly/2026-w45&quot;, &quot;category&quot;: &quot;Tools&quot;, &quot;importance&quot;: 7}'>
+        <span class="card-cat" style="background:#0891b2">Tools</span>
+          <h3 class="card-title">Cactus ships a 30 MB binary that runs chat, speech and tool calls on phones</h3>
+          <p class="card-summary">Cactus is an open-source single binary of 8 to 29 MB that runs a language model, a speech-to-text model and embeddings on phones, wearables and micro-controllers, can call functions the developer exposes and extracts structured data, all without sending data to the cloud. It was among the week&#x27;s fastest-rising repositories, alongside local agent tools Orkas and agent-autoloop.</p>
+          <div class="card-actions">
+            <a href="https://earlysignal.news/weekly/2026-w45" target="_blank" rel="noopener" class="open-btn" style="--c:#0891b2">Open ↗</a>
+            <button class="read-more-btn" data-article='{&quot;title&quot;: &quot;Cactus ships a 30 MB binary that runs chat, speech and tool calls on phones&quot;, &quot;summary&quot;: &quot;Cactus is an open-source single binary of 8 to 29 MB that runs a language model, a speech-to-text model and embeddings on phones, wearables and micro-controllers, can call functions the developer exposes and extracts structured data, all without sending data to the cloud. It was among the week&#x27;s fastest-rising repositories, alongside local agent tools Orkas and agent-autoloop.&quot;, &quot;why_it_matters&quot;: &quot;Small enough to run offline on a microcontroller, these runtimes make private on-device assistants practical rather than a demo.&quot;, &quot;source&quot;: &quot;Early Signal&quot;, &quot;url&quot;: &quot;https://earlysignal.news/weekly/2026-w45&quot;, &quot;category&quot;: &quot;Tools&quot;, &quot;importance&quot;: 7}' style="--c:#0891b2">Read More</button>
+          </div>
+          <div class="card-meta">Early Signal &middot; Score: 7/10</div>
+      </div>
+      <div class="card spotlight" data-category="Research" data-title="alibaba&#x27;s co-design bench finds the best coding agent fully solves 26.4% of real tasks" style="--c:#059669" data-article='{&quot;title&quot;: &quot;Alibaba&#x27;s Co-Design Bench finds the best coding agent fully solves 26.4% of real tasks&quot;, &quot;summary&quot;: &quot;Co-Design Bench drew on 37,463 queries from 26,314 real coding sessions and tests agents on requests that had already tripped them up. GPT-6 Astra met 69.9% of requirements per task on average but fully solved only 26.4%, while the same models score above 99% on older benchmarks the authors call saturated; more tokens did not help, and the harness changed results substantially.&quot;, &quot;why_it_matters&quot;: &quot;The distance between vendor leaderboards and end-to-end reliability is the number teams should budget against, and it is much larger than headline scores suggest.&quot;, &quot;source&quot;: &quot;The Decoder&quot;, &quot;url&quot;: &quot;https://the-decoder.com/artificial-intelligence-news/&quot;, &quot;category&quot;: &quot;Research&quot;, &quot;importance&quot;: 7}'>
+        <span class="card-cat" style="background:#059669">Research</span>
+          <h3 class="card-title">Alibaba&#x27;s Co-Design Bench finds the best coding agent fully solves 26.4% of real tasks</h3>
+          <p class="card-summary">Co-Design Bench drew on 37,463 queries from 26,314 real coding sessions and tests agents on requests that had already tripped them up. GPT-6 Astra met 69.9% of requirements per task on average but fully solved only 26.4%, while the same models score above 99% on older benchmarks the authors call saturated; more tokens did not help, and the harness changed results substantially.</p>
+          <div class="card-actions">
+            <a href="https://the-decoder.com/artificial-intelligence-news/" target="_blank" rel="noopener" class="open-btn" style="--c:#059669">Open ↗</a>
+            <button class="read-more-btn" data-article='{&quot;title&quot;: &quot;Alibaba&#x27;s Co-Design Bench finds the best coding agent fully solves 26.4% of real tasks&quot;, &quot;summary&quot;: &quot;Co-Design Bench drew on 37,463 queries from 26,314 real coding sessions and tests agents on requests that had already tripped them up. GPT-6 Astra met 69.9% of requirements per task on average but fully solved only 26.4%, while the same models score above 99% on older benchmarks the authors call saturated; more tokens did not help, and the harness changed results substantially.&quot;, &quot;why_it_matters&quot;: &quot;The distance between vendor leaderboards and end-to-end reliability is the number teams should budget against, and it is much larger than headline scores suggest.&quot;, &quot;source&quot;: &quot;The Decoder&quot;, &quot;url&quot;: &quot;https://the-decoder.com/artificial-intelligence-news/&quot;, &quot;category&quot;: &quot;Research&quot;, &quot;importance&quot;: 7}' style="--c:#059669">Read More</button>
+          </div>
+          <div class="card-meta">The Decoder &middot; Score: 7/10</div>
+      </div>
+      <div class="card spotlight" data-category="LLM" data-title="ant ling releases ling-3.2-flash, a 560b multimodal moe with 1m context" style="--c:#7c3aed" data-article='{&quot;title&quot;: &quot;Ant Ling releases Ling-3.2-flash, a 560B multimodal MoE with 1M context&quot;, &quot;summary&quot;: &quot;Ant Ling released Ling-3.2-flash, a native multimodal mixture-of-experts with 560B total and 25B active parameters, handling text, image and video input over a 1M-token context. It exposes both OpenAI-compatible and Anthropic-compatible APIs and is demonstrated on PDF-to-code, GUI operation and multi-agent tasks.&quot;, &quot;why_it_matters&quot;: &quot;Supporting both major API dialects lowers switching cost for teams that already have agent code written against one provider.&quot;, &quot;source&quot;: &quot;TheNextGenTechInsider&quot;, &quot;url&quot;: &quot;https://thenextgentechinsider.com/pulse/ant-ling-unveils-ling-32-flash-multimodal-moe-model-with-1m-context-window&quot;, &quot;category&quot;: &quot;LLM&quot;, &quot;importance&quot;: 6}'>
+        <span class="card-cat" style="background:#7c3aed">LLM</span>
+          <h3 class="card-title">Ant Ling releases Ling-3.2-flash, a 560B multimodal MoE with 1M context</h3>
+          <p class="card-summary">Ant Ling released Ling-3.2-flash, a native multimodal mixture-of-experts with 560B total and 25B active parameters, handling text, image and video input over a 1M-token context. It exposes both OpenAI-compatible and Anthropic-compatible APIs and is demonstrated on PDF-to-code, GUI operation and multi-agent tasks.</p>
+          <div class="card-actions">
+            <a href="https://thenextgentechinsider.com/pulse/ant-ling-unveils-ling-32-flash-multimodal-moe-model-with-1m-context-window" target="_blank" rel="noopener" class="open-btn" style="--c:#7c3aed">Open ↗</a>
+            <button class="read-more-btn" data-article='{&quot;title&quot;: &quot;Ant Ling releases Ling-3.2-flash, a 560B multimodal MoE with 1M context&quot;, &quot;summary&quot;: &quot;Ant Ling released Ling-3.2-flash, a native multimodal mixture-of-experts with 560B total and 25B active parameters, handling text, image and video input over a 1M-token context. It exposes both OpenAI-compatible and Anthropic-compatible APIs and is demonstrated on PDF-to-code, GUI operation and multi-agent tasks.&quot;, &quot;why_it_matters&quot;: &quot;Supporting both major API dialects lowers switching cost for teams that already have agent code written against one provider.&quot;, &quot;source&quot;: &quot;TheNextGenTechInsider&quot;, &quot;url&quot;: &quot;https://thenextgentechinsider.com/pulse/ant-ling-unveils-ling-32-flash-multimodal-moe-model-with-1m-context-window&quot;, &quot;category&quot;: &quot;LLM&quot;, &quot;importance&quot;: 6}' style="--c:#7c3aed">Read More</button>
+          </div>
+          <div class="card-meta">TheNextGenTechInsider &middot; Score: 6/10</div>
+      </div>
+      <div class="card spotlight" data-category="Research" data-title="salesforce finds merging per-domain rl experts matches joint training with 42% fewer flops" style="--c:#059669" data-article='{&quot;title&quot;: &quot;Salesforce finds merging per-domain RL experts matches joint training with 42% fewer FLOPs&quot;, &quot;summary&quot;: &quot;A Salesforce AI Research preprint trained one reinforcement-learning expert per domain and distilled them into a single model, matching joint training on maths and code with 42% fewer total FLOPs on two domains and 31.6% on four. The same paper reports that distilling from large external teachers generally lost to plain RL per training FLOP, with a 32B teacher peaking at 28.7% on code after 68.7 EFLOP against RL&#x27;s 46.4% at 0.6 EFLOP.&quot;, &quot;why_it_matters&quot;: &quot;If the result holds, post-training budgets can be restructured around cheap domain experts rather than one large joint run.&quot;, &quot;source&quot;: &quot;FourWeekMBA&quot;, &quot;url&quot;: &quot;https://fourweekmba.com/ai-salesforce-merging-rl-experts-cut-training-compute-by-42/&quot;, &quot;category&quot;: &quot;Research&quot;, &quot;importance&quot;: 6}'>
+        <span class="card-cat" style="background:#059669">Research</span>
+          <h3 class="card-title">Salesforce finds merging per-domain RL experts matches joint training with 42% fewer FLOPs</h3>
+          <p class="card-summary">A Salesforce AI Research preprint trained one reinforcement-learning expert per domain and distilled them into a single model, matching joint training on maths and code with 42% fewer total FLOPs on two domains and 31.6% on four. The same paper reports that distilling from large external teachers generally lost to plain RL per training FLOP, with a 32B teacher peaking at 28.7% on code after 68.7 EFLOP against RL&#x27;s 46.4% at 0.6 EFLOP.</p>
+          <div class="card-actions">
+            <a href="https://fourweekmba.com/ai-salesforce-merging-rl-experts-cut-training-compute-by-42/" target="_blank" rel="noopener" class="open-btn" style="--c:#059669">Open ↗</a>
+            <button class="read-more-btn" data-article='{&quot;title&quot;: &quot;Salesforce finds merging per-domain RL experts matches joint training with 42% fewer FLOPs&quot;, &quot;summary&quot;: &quot;A Salesforce AI Research preprint trained one reinforcement-learning expert per domain and distilled them into a single model, matching joint training on maths and code with 42% fewer total FLOPs on two domains and 31.6% on four. The same paper reports that distilling from large external teachers generally lost to plain RL per training FLOP, with a 32B teacher peaking at 28.7% on code after 68.7 EFLOP against RL&#x27;s 46.4% at 0.6 EFLOP.&quot;, &quot;why_it_matters&quot;: &quot;If the result holds, post-training budgets can be restructured around cheap domain experts rather than one large joint run.&quot;, &quot;source&quot;: &quot;FourWeekMBA&quot;, &quot;url&quot;: &quot;https://fourweekmba.com/ai-salesforce-merging-rl-experts-cut-training-compute-by-42/&quot;, &quot;category&quot;: &quot;Research&quot;, &quot;importance&quot;: 6}' style="--c:#059669">Read More</button>
+          </div>
+          <div class="card-meta">FourWeekMBA &middot; Score: 6/10</div>
+      </div>
+      <div class="card spotlight" data-category="Tools" data-title="a developer&#x27;s switch from claude code to the mit-licensed pi harness tops hacker news" style="--c:#0891b2" data-article='{&quot;title&quot;: &quot;A developer&#x27;s switch from Claude Code to the MIT-licensed Pi harness tops Hacker News&quot;, &quot;summary&quot;: &quot;A developer&#x27;s post arguing that 244 Claude Code releases this year, most of which changed the system prompt or tool descriptions, made the tool unpredictable reached the Hacker News front page. The author moved to Pi, a minimal MIT-licensed agent harness with 120.7k GitHub stars that skips sub-agents and plan mode, supports 15+ providers and relies on a minimal system prompt plus AGENTS.md files.&quot;, &quot;why_it_matters&quot;: &quot;Harness churn is now a real operational cost for teams, and it is pushing some of them toward smaller, more inspectable tools.&quot;, &quot;source&quot;: &quot;FourWeekMBA&quot;, &quot;url&quot;: &quot;https://fourweekmba.com/ai-developer-quits-claude-code-for-pi-citing-244-releases/&quot;, &quot;category&quot;: &quot;Tools&quot;, &quot;importance&quot;: 6}'>
+        <span class="card-cat" style="background:#0891b2">Tools</span>
+          <h3 class="card-title">A developer&#x27;s switch from Claude Code to the MIT-licensed Pi harness tops Hacker News</h3>
+          <p class="card-summary">A developer&#x27;s post arguing that 244 Claude Code releases this year, most of which changed the system prompt or tool descriptions, made the tool unpredictable reached the Hacker News front page. The author moved to Pi, a minimal MIT-licensed agent harness with 120.7k GitHub stars that skips sub-agents and plan mode, supports 15+ providers and relies on a minimal system prompt plus AGENTS.md files.</p>
+          <div class="card-actions">
+            <a href="https://fourweekmba.com/ai-developer-quits-claude-code-for-pi-citing-244-releases/" target="_blank" rel="noopener" class="open-btn" style="--c:#0891b2">Open ↗</a>
+            <button class="read-more-btn" data-article='{&quot;title&quot;: &quot;A developer&#x27;s switch from Claude Code to the MIT-licensed Pi harness tops Hacker News&quot;, &quot;summary&quot;: &quot;A developer&#x27;s post arguing that 244 Claude Code releases this year, most of which changed the system prompt or tool descriptions, made the tool unpredictable reached the Hacker News front page. The author moved to Pi, a minimal MIT-licensed agent harness with 120.7k GitHub stars that skips sub-agents and plan mode, supports 15+ providers and relies on a minimal system prompt plus AGENTS.md files.&quot;, &quot;why_it_matters&quot;: &quot;Harness churn is now a real operational cost for teams, and it is pushing some of them toward smaller, more inspectable tools.&quot;, &quot;source&quot;: &quot;FourWeekMBA&quot;, &quot;url&quot;: &quot;https://fourweekmba.com/ai-developer-quits-claude-code-for-pi-citing-244-releases/&quot;, &quot;category&quot;: &quot;Tools&quot;, &quot;importance&quot;: 6}' style="--c:#0891b2">Read More</button>
+          </div>
+          <div class="card-meta">FourWeekMBA &middot; Score: 6/10</div>
+      </div>
+      <div class="card spotlight" data-category="Research" data-title="proquant trains multimodal models at 4-bit while holding image understanding" style="--c:#059669" data-article='{&quot;title&quot;: &quot;ProQuant trains multimodal models at 4-bit while holding image understanding&quot;, &quot;summary&quot;: &quot;ProQuant combines a self-relabelling step with progressive block activation, using a vision-sensitivity vector to decide which layers quantise first and keeping early text layers at full precision until visual grounding recovers. On Qwen-VL-2B-Instruct it reaches 1,830 average accuracy at W4A8 and 1,611 at the aggressive W4A4 setting, where post-training methods collapse to near zero.&quot;, &quot;why_it_matters&quot;: &quot;Cheap multimodal inference depends on quantisation that does not destroy vision, and this shows the schedule matters more than the bit width.&quot;, &quot;source&quot;: &quot;arXiv News&quot;, &quot;url&quot;: &quot;https://www.arxivnews.org/en/articles/9d443005-87fb-43cb-b0ef-e1a877a2c5d4&quot;, &quot;category&quot;: &quot;Research&quot;, &quot;importance&quot;: 6}'>
+        <span class="card-cat" style="background:#059669">Research</span>
+          <h3 class="card-title">ProQuant trains multimodal models at 4-bit while holding image understanding</h3>
+          <p class="card-summary">ProQuant combines a self-relabelling step with progressive block activation, using a vision-sensitivity vector to decide which layers quantise first and keeping early text layers at full precision until visual grounding recovers. On Qwen-VL-2B-Instruct it reaches 1,830 average accuracy at W4A8 and 1,611 at the aggressive W4A4 setting, where post-training methods collapse to near zero.</p>
+          <div class="card-actions">
+            <a href="https://www.arxivnews.org/en/articles/9d443005-87fb-43cb-b0ef-e1a877a2c5d4" target="_blank" rel="noopener" class="open-btn" style="--c:#059669">Open ↗</a>
+            <button class="read-more-btn" data-article='{&quot;title&quot;: &quot;ProQuant trains multimodal models at 4-bit while holding image understanding&quot;, &quot;summary&quot;: &quot;ProQuant combines a self-relabelling step with progressive block activation, using a vision-sensitivity vector to decide which layers quantise first and keeping early text layers at full precision until visual grounding recovers. On Qwen-VL-2B-Instruct it reaches 1,830 average accuracy at W4A8 and 1,611 at the aggressive W4A4 setting, where post-training methods collapse to near zero.&quot;, &quot;why_it_matters&quot;: &quot;Cheap multimodal inference depends on quantisation that does not destroy vision, and this shows the schedule matters more than the bit width.&quot;, &quot;source&quot;: &quot;arXiv News&quot;, &quot;url&quot;: &quot;https://www.arxivnews.org/en/articles/9d443005-87fb-43cb-b0ef-e1a877a2c5d4&quot;, &quot;category&quot;: &quot;Research&quot;, &quot;importance&quot;: 6}' style="--c:#059669">Read More</button>
+          </div>
+          <div class="card-meta">arXiv News &middot; Score: 6/10</div>
+      </div>
+      <div class="card spotlight" data-category="Research" data-title="a 56-task physics benchmark finds no model passes 30% of real research tasks" style="--c:#059669" data-article='{&quot;title&quot;: &quot;A 56-task physics benchmark finds no model passes 30% of real research tasks&quot;, &quot;summary&quot;: &quot;FrontierPhysics, built with 42 physicists across nine areas, asks agents to read the literature, plan, run the work and write a paper on their own research, judged by automatic tests and expert rubrics. Across 22 models and three attempts per task, Claude Opus 5.5 in Claude Code led at 27.4% and GPT-6 Astra followed at 23.2%; reviewers blamed weak rigorous reasoning in 48% of runs and poor physical intuition in 34%, not missing knowledge.&quot;, &quot;why_it_matters&quot;: &quot;AI knows a lot of physics but still cannot turn that into trustworthy research, which is exactly the gap the science-acceleration claims depend on.&quot;, &quot;source&quot;: &quot;Signal Drifts&quot;, &quot;url&quot;: &quot;https://signaldrifts.substack.com/p/ai-research-papers-of-the-week3&quot;, &quot;category&quot;: &quot;Research&quot;, &quot;importance&quot;: 6}'>
+        <span class="card-cat" style="background:#059669">Research</span>
+          <h3 class="card-title">A 56-task physics benchmark finds no model passes 30% of real research tasks</h3>
+          <p class="card-summary">FrontierPhysics, built with 42 physicists across nine areas, asks agents to read the literature, plan, run the work and write a paper on their own research, judged by automatic tests and expert rubrics. Across 22 models and three attempts per task, Claude Opus 5.5 in Claude Code led at 27.4% and GPT-6 Astra followed at 23.2%; reviewers blamed weak rigorous reasoning in 48% of runs and poor physical intuition in 34%, not missing knowledge.</p>
+          <div class="card-actions">
+            <a href="https://signaldrifts.substack.com/p/ai-research-papers-of-the-week3" target="_blank" rel="noopener" class="open-btn" style="--c:#059669">Open ↗</a>
+            <button class="read-more-btn" data-article='{&quot;title&quot;: &quot;A 56-task physics benchmark finds no model passes 30% of real research tasks&quot;, &quot;summary&quot;: &quot;FrontierPhysics, built with 42 physicists across nine areas, asks agents to read the literature, plan, run the work and write a paper on their own research, judged by automatic tests and expert rubrics. Across 22 models and three attempts per task, Claude Opus 5.5 in Claude Code led at 27.4% and GPT-6 Astra followed at 23.2%; reviewers blamed weak rigorous reasoning in 48% of runs and poor physical intuition in 34%, not missing knowledge.&quot;, &quot;why_it_matters&quot;: &quot;AI knows a lot of physics but still cannot turn that into trustworthy research, which is exactly the gap the science-acceleration claims depend on.&quot;, &quot;source&quot;: &quot;Signal Drifts&quot;, &quot;url&quot;: &quot;https://signaldrifts.substack.com/p/ai-research-papers-of-the-week3&quot;, &quot;category&quot;: &quot;Research&quot;, &quot;importance&quot;: 6}' style="--c:#059669">Read More</button>
+          </div>
+          <div class="card-meta">Signal Drifts &middot; Score: 6/10</div>
+      </div>
+      <div class="card spotlight" data-category="Tools" data-title="deepseek harness passes 1.5 million daily users and plans a plugin marketplace" style="--c:#0891b2" data-article='{&quot;title&quot;: &quot;DeepSeek Harness passes 1.5 million daily users and plans a plugin marketplace&quot;, &quot;summary&quot;: &quot;DeepSeek said its open-source Harness agent platform had 1.54 million daily active users consuming about 92 trillion tokens a day as of November 4, plus 5.48 million monthly users through official API channels, with users having built roughly 35,000 third-party plugins. An official marketplace with creator token incentives is planned.&quot;, &quot;why_it_matters&quot;: &quot;A desktop agent platform at that scale with a plugin economy is where tool ecosystems, and their security surface, get decided.&quot;, &quot;source&quot;: &quot;AI Briefing&quot;, &quot;url&quot;: &quot;https://aibriefing.dev/&quot;, &quot;category&quot;: &quot;Tools&quot;, &quot;importance&quot;: 6}'>
+        <span class="card-cat" style="background:#0891b2">Tools</span>
+          <h3 class="card-title">DeepSeek Harness passes 1.5 million daily users and plans a plugin marketplace</h3>
+          <p class="card-summary">DeepSeek said its open-source Harness agent platform had 1.54 million daily active users consuming about 92 trillion tokens a day as of November 4, plus 5.48 million monthly users through official API channels, with users having built roughly 35,000 third-party plugins. An official marketplace with creator token incentives is planned.</p>
+          <div class="card-actions">
+            <a href="https://aibriefing.dev/" target="_blank" rel="noopener" class="open-btn" style="--c:#0891b2">Open ↗</a>
+            <button class="read-more-btn" data-article='{&quot;title&quot;: &quot;DeepSeek Harness passes 1.5 million daily users and plans a plugin marketplace&quot;, &quot;summary&quot;: &quot;DeepSeek said its open-source Harness agent platform had 1.54 million daily active users consuming about 92 trillion tokens a day as of November 4, plus 5.48 million monthly users through official API channels, with users having built roughly 35,000 third-party plugins. An official marketplace with creator token incentives is planned.&quot;, &quot;why_it_matters&quot;: &quot;A desktop agent platform at that scale with a plugin economy is where tool ecosystems, and their security surface, get decided.&quot;, &quot;source&quot;: &quot;AI Briefing&quot;, &quot;url&quot;: &quot;https://aibriefing.dev/&quot;, &quot;category&quot;: &quot;Tools&quot;, &quot;importance&quot;: 6}' style="--c:#0891b2">Read More</button>
+          </div>
+          <div class="card-meta">AI Briefing &middot; Score: 6/10</div>
+      </div>
+      <div class="card spotlight" data-category="Safety" data-title="tencent&#x27;s chief ai scientist warns models will soon pose biology risks" style="--c:#dc2626" data-article='{&quot;title&quot;: &quot;Tencent&#x27;s chief AI scientist warns models will soon pose biology risks&quot;, &quot;summary&quot;: &quot;Tencent chief AI scientist Yao Shunyu said models&#x27; cyber capabilities, and soon their biology capabilities, will reach a threshold where harm is possible, speaking days after Tencent launched its Hy4 flagship model. The same week, Huawei&#x27;s Ascend team reported validating LoRA fine-tuning of Kimi K3.1 Pro on a 128-card Atlas 950 SuperPoD.&quot;, &quot;why_it_matters&quot;: &quot;A lab leader naming biology as the next threshold is a signal about where evaluation capacity, and regulation, will be pushed next.&quot;, &quot;source&quot;: &quot;TPS Report / SCMP&quot;, &quot;url&quot;: &quot;https://tpsreport.news/news&quot;, &quot;category&quot;: &quot;Safety&quot;, &quot;importance&quot;: 6}'>
+        <span class="card-cat" style="background:#dc2626">Safety</span>
+          <h3 class="card-title">Tencent&#x27;s chief AI scientist warns models will soon pose biology risks</h3>
+          <p class="card-summary">Tencent chief AI scientist Yao Shunyu said models&#x27; cyber capabilities, and soon their biology capabilities, will reach a threshold where harm is possible, speaking days after Tencent launched its Hy4 flagship model. The same week, Huawei&#x27;s Ascend team reported validating LoRA fine-tuning of Kimi K3.1 Pro on a 128-card Atlas 950 SuperPoD.</p>
+          <div class="card-actions">
+            <a href="https://tpsreport.news/news" target="_blank" rel="noopener" class="open-btn" style="--c:#dc2626">Open ↗</a>
+            <button class="read-more-btn" data-article='{&quot;title&quot;: &quot;Tencent&#x27;s chief AI scientist warns models will soon pose biology risks&quot;, &quot;summary&quot;: &quot;Tencent chief AI scientist Yao Shunyu said models&#x27; cyber capabilities, and soon their biology capabilities, will reach a threshold where harm is possible, speaking days after Tencent launched its Hy4 flagship model. The same week, Huawei&#x27;s Ascend team reported validating LoRA fine-tuning of Kimi K3.1 Pro on a 128-card Atlas 950 SuperPoD.&quot;, &quot;why_it_matters&quot;: &quot;A lab leader naming biology as the next threshold is a signal about where evaluation capacity, and regulation, will be pushed next.&quot;, &quot;source&quot;: &quot;TPS Report / SCMP&quot;, &quot;url&quot;: &quot;https://tpsreport.news/news&quot;, &quot;category&quot;: &quot;Safety&quot;, &quot;importance&quot;: 6}' style="--c:#dc2626">Read More</button>
+          </div>
+          <div class="card-meta">TPS Report / SCMP &middot; Score: 6/10</div>
+      </div>
+    </div>
+    <div class="no-res" id="noRes" style="display:none">No articles match your search.</div>
+  </div>
+</div>
+
+<!-- MODAL -->
+<div class="modal-overlay" id="modal">
+  <div class="modal-card" id="modalCard">
+    <button class="modal-close" type="button" aria-label="Close">&times;</button>
+    <div id="modalContent"></div>
+  </div>
+</div>
+
+<footer>AI News Daily &bull; Generated by <b>Sarvam AI</b> News Curator &bull; Web Search &bull; arXiv &bull; Hacker News &bull; RSS</footer>
+
+<!-- THREE.JS MORPHING PARTICLE SHAPES -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js" integrity="sha384-CI3ELBVUz9XQO+97x6nwMDPosPR5XvsxW2ua7N1Xeygeh1IxtgqtCkGfQY9WWdHu" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script>
+(function(){
+  const canvas=document.getElementById('bg-canvas');
+  if(!canvas||typeof THREE==='undefined')return;
+  const scene=new THREE.Scene();
+  const camera=new THREE.PerspectiveCamera(60,innerWidth/innerHeight,0.1,1000);
+  const renderer=new THREE.WebGLRenderer({canvas:canvas,alpha:true,antialias:true});
+  renderer.setSize(innerWidth,innerHeight);
+  renderer.setPixelRatio(Math.min(devicePixelRatio,2));
+
+  // ── PARTICLE COUNT ──
+  const PC=innerWidth<640?2500:5000;
+
+  // ── CREATE MORPH SHAPES (hidden geometries to sample vertex positions) ──
+  const shapes=[
+    new THREE.SphereGeometry(120,64,64),
+    new THREE.TorusKnotGeometry(80,28,128,32,2,3),
+    new THREE.IcosahedronGeometry(120,4),
+    new THREE.TorusGeometry(80,30,32,100),
+    new THREE.DodecahedronGeometry(120,3)
+  ];
+
+  // Sample positions from each shape
+  function getShapePositions(geo,count){
+    const pos=geo.attributes.position;
+    const arr=new Float32Array(count*3);
+    for(let i=0;i<count;i++){
+      const idx=Math.floor(Math.random()*pos.count);
+      arr[i*3]=pos.getX(idx);
+      arr[i*3+1]=pos.getY(idx);
+      arr[i*3+2]=pos.getZ(idx);
+    }
+    return arr;
+  }
+
+  // Current and target positions
+  const positions=new Float32Array(PC*3);
+  const current=new Float32Array(PC*3);
+  const targets=shapes.map(s=>getShapePositions(s,PC));
+  let curShape=0,nextShape=1,morphProgress=0;
+  for(let i=0;i<PC*3;i++)current[i]=targets[0][i];
+
+  // Colors — violet, cyan, pink mix
+  const colors=new Float32Array(PC*3);
+  const palette=[[0.49,0.23,0.93],[0.03,0.71,0.93],[0.86,0.15,0.47]];
+  for(let i=0;i<PC;i++){
+    const c=palette[Math.floor(Math.random()*3)];
+    colors[i*3]=c[0];colors[i*3+1]=c[1];colors[i*3+2]=c[2];
+  }
+
+  const geo=new THREE.BufferGeometry();
+  geo.setAttribute('position',new THREE.BufferAttribute(positions,3));
+  geo.setAttribute('color',new THREE.BufferAttribute(colors,3));
+
+  const mat=new THREE.PointsMaterial({
+    size:2.2,vertexColors:true,transparent:true,opacity:.6,
+    blending:THREE.AdditiveBlending,sizeAttenuation:true,depthWrite:false
+  });
+
+  const points=new THREE.Points(geo,mat);
+  scene.add(points);
+
+  // Lines between close particles
+  const lineGeo=new THREE.BufferGeometry();
+  const linePositions=new Float32Array(PC*10*6); // limit connections
+  lineGeo.setAttribute('position',new THREE.BufferAttribute(linePositions,3));
+  const lineMat=new THREE.LineBasicMaterial({color:0x7c3aed,transparent:true,opacity:.04,blending:THREE.AdditiveBlending});
+  const lines=new THREE.LineSegments(lineGeo,lineMat);
+  scene.add(lines);
+
+  camera.position.z=300;
+  let mx=0,my=0,rx=0,ry=0;
+  document.addEventListener('mousemove',e=>{
+    mx=(e.clientX/innerWidth-.5)*2;
+    my=-(e.clientY/innerHeight-.5)*2;
+  });
+
+  let lastTime=performance.now();
+  function animate(){
+    requestAnimationFrame(animate);
+    const now=performance.now();
+    const dt=(now-lastTime)/1000;
+    lastTime=now;
+
+    // Morph progress
+    morphProgress+=dt*0.15;
+    if(morphProgress>=1){
+      morphProgress=0;
+      curShape=nextShape;
+      nextShape=(nextShape+1)%shapes.length;
+      // Copy current target as new current
+      for(let i=0;i<PC*3;i++)current[i]=targets[curShape][i];
+    }
+
+    // Lerp positions between current and next shape
+    const ease=morphProgress*morphProgress*(3-2*morphProgress); // smoothstep
+    for(let i=0;i<PC*3;i++){
+      positions[i]=current[i]+(targets[nextShape][i]-current[i])*ease;
+    }
+    geo.attributes.position.needsUpdate=true;
+
+    // Update lines (limited connections for performance)
+    let li=0;
+    const maxConn=PC*10;
+    for(let i=0;i<PC&&li<maxConn;i++){
+      for(let j=i+1;j<PC&&li<maxConn;j++){
+        const dx=positions[i*3]-positions[j*3];
+        const dy=positions[i*3+1]-positions[j*3+1];
+        const dz=positions[i*3+2]-positions[j*3+2];
+        const d2=dx*dx+dy*dy+dz*dz;
+        if(d2<900){
+          linePositions[li*6]=positions[i*3];
+          linePositions[li*6+1]=positions[i*3+1];
+          linePositions[li*6+2]=positions[i*3+2];
+          linePositions[li*6+3]=positions[j*3];
+          linePositions[li*6+4]=positions[j*3+1];
+          linePositions[li*6+5]=positions[j*3+2];
+          li++;
+        }
+      }
+    }
+    // Zero out remaining
+    for(let k=li*6;k<linePositions.length;k++)linePositions[k]=0;
+    lineGeo.attributes.position.needsUpdate=true;
+
+    // Rotation — smooth follow mouse
+    ry+=(mx*0.5-ry)*0.03;
+    rx+=(my*0.3-rx)*0.03;
+    points.rotation.y=ry+now*0.0001;
+    points.rotation.x=rx*0.5;
+    lines.rotation.y=points.rotation.y;
+    lines.rotation.x=points.rotation.x;
+
+    renderer.render(scene,camera);
+  }
+  animate();
+
+  addEventListener('resize',()=>{
+    camera.aspect=innerWidth/innerHeight;
+    camera.updateProjectionMatrix();
+    renderer.setSize(innerWidth,innerHeight);
+  });
+})();
+</script>
+
+<script>
+// THEME TOGGLE
+function toggleTheme(){
+  const cur=document.documentElement.getAttribute('data-theme');
+  const next=cur==='light'?'dark':'light';
+  document.documentElement.setAttribute('data-theme',next==='dark'?'':'light');
+  document.getElementById('themeLabel').textContent=next==='light'?'Light':'Dark';
+  document.querySelector('.theme-toggle .icon').textContent=next==='light'?'☀️':'🌙';
+  localStorage.setItem('theme',next);
+}
+(function(){const t=localStorage.getItem('theme');if(t==='light'){document.documentElement.setAttribute('data-theme','light');document.getElementById('themeLabel').textContent='Light';document.querySelector('.theme-toggle .icon').textContent='☀️'}})();
+
+// TABS
+document.querySelectorAll('.tab-btn').forEach(b=>{
+  b.addEventListener('click',()=>{
+    document.querySelectorAll('.tab-btn').forEach(x=>x.classList.remove('active'));
+    document.querySelectorAll('.tab-body').forEach(x=>x.classList.remove('active'));
+    b.classList.add('active');
+    document.getElementById(b.dataset.tab).classList.add('active');
+    setTimeout(initReveal,50);
+  });
+});
+
+// MODAL
+function safeUrl(u){
+  try{const x=new URL(String(u),location.href);return(x.protocol==='https:'||x.protocol==='http:')?x.href:'#'}catch(e){return'#'}
+}
+function mk(tag,cls,text){
+  const e=document.createElement(tag);
+  if(cls)e.className=cls;
+  if(text!==undefined)e.textContent=String(text);
+  return e;
+}
+function openModal(data){
+  const c=catColors[data.category]||'#64748b';
+  const cat=mk('span','modal-cat',data.category);
+  cat.style.background=c;
+  const why=mk('div','modal-why');
+  why.append(mk('div','modal-why-label','\u26A1 Why it matters'),mk('p','modal-why-text',data.why_it_matters));
+  const link=mk('a','modal-open-btn','Open Full Article \u2197');
+  link.href=safeUrl(data.url);
+  link.target='_blank';
+  link.rel='noopener noreferrer';
+  document.getElementById('modalContent').replaceChildren(
+    cat,
+    mk('h2','modal-title',data.title),
+    mk('div','modal-score','Importance: '+data.importance+'/10 \u2022 Source: '+data.source),
+    mk('p','modal-summary',data.summary),
+    why,
+    link
+  );
+  document.getElementById('modal').classList.add('active');
+  document.body.style.overflow='hidden';
+}
+function closeModal(){
+  document.getElementById('modal').classList.remove('active');
+  document.body.style.overflow='';
+}
+document.addEventListener('keydown',e=>{if(e.key==='Escape')closeModal()});
+document.getElementById('themeToggle').addEventListener('click',toggleTheme);
+document.querySelector('.modal-close').addEventListener('click',closeModal);
+document.getElementById('modal').addEventListener('click',function(e){if(e.target===this)closeModal()});
+document.addEventListener('click',function(e){
+  const h=e.target.closest('.trend-header');
+  if(h)h.parentElement.classList.toggle('expanded');
+});
+
+var catColors={"LLM":"#7c3aed","Research":"#059669","Safety":"#dc2626","Industry":"#d97706","Tools":"#0891b2","Robotics":"#db2777","Computer Vision":"#9333ea","NLP":"#2563eb"};
+
+// CLICK HANDLERS FOR BRIEFS AND CARDS
+document.querySelectorAll('[data-article]').forEach(el=>{
+  el.addEventListener('click',function(e){
+    if(e.target.closest('a,button'))return;
+    try{
+      const data=JSON.parse(this.dataset.article);
+      openModal(data);
+    }catch(err){console.error(err)}
+  });
+});
+
+// READ MORE BUTTONS
+document.querySelectorAll('.read-more-btn').forEach(btn=>{
+  btn.addEventListener('click',function(e){
+    e.stopPropagation();
+    try{
+      const data=JSON.parse(this.dataset.article);
+      openModal(data);
+    }catch(err){console.error(err)}
+  });
+});
+
+// ANIMATED COUNTERS
+function animateCounters(){
+  document.querySelectorAll('[data-count]').forEach(el=>{
+    const t=parseInt(el.dataset.count),dur=1000,s=performance.now();
+    function u(n){
+      const p=Math.min((n-s)/dur,1),e=1-Math.pow(1-p,3);
+      el.textContent=Math.floor(t*e);
+      if(p<1)requestAnimationFrame(u);else el.textContent=t;
+    }
+    requestAnimationFrame(u);
+  });
+}
+
+// SCROLL REVEAL
+const ro=new IntersectionObserver(es=>{
+  es.forEach(e=>{if(e.isIntersecting)e.target.classList.add('in')})
+},{threshold:.08,rootMargin:'0px 0px -40px 0px'});
+function initReveal(){document.querySelectorAll('.reveal:not(.in)').forEach(e=>ro.observe(e))}
+
+// SPOTLIGHT MOUSE
+document.querySelectorAll('.spotlight').forEach(card=>{
+  card.addEventListener('mousemove',e=>{
+    const r=card.getBoundingClientRect();
+    card.style.setProperty('--mx',(e.clientX-r.left)+'px');
+    card.style.setProperty('--my',(e.clientY-r.top)+'px');
+  });
+});
+
+// SEARCH & FILTER
+const si=document.getElementById('searchInput'),cg=document.getElementById('cardGrid'),
+      nr=document.getElementById('noRes'),chips=document.getElementById('chips');
+let af=null;
+if(si)si.addEventListener('input',()=>fa(si.value.toLowerCase(),af));
+if(chips)chips.querySelectorAll('.chip').forEach(c=>{
+  c.addEventListener('click',()=>{
+    const f=c.dataset.filter;
+    if(af===f){af=null;c.classList.remove('active')}else{
+      af=f;chips.querySelectorAll('.chip').forEach(x=>x.classList.remove('active'));c.classList.add('active');
+    }
+    fa(si?si.value.toLowerCase():'',af);
+  });
+});
+function fa(q,cat){
+  let v=0;if(!cg)return;
+  cg.querySelectorAll('.card').forEach(card=>{
+    const t=card.dataset.title||'',cc=card.dataset.category||'';
+    const mq=!q||t.includes(q),mc=!cat||cc===cat;
+    if(mq&&mc){card.style.display='';v++}else{card.style.display='none'}
+  });
+  if(nr)nr.style.display=v===0?'block':'none';
+}
+
+// INIT
+window.addEventListener('load',()=>{animateCounters();initReveal()});
+</script>
+</body>
+</html>
