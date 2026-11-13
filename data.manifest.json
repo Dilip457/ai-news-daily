@@ -1,0 +1,23 @@
+{
+  "date": "2026-11-13",
+  "html_sha256": "56b2d8e730a14b57d48250df8a1fbcbfe90aae5dd50085b600ca3856f368929e",
+  "html_bytes": 214574,
+  "parts": [
+    {
+      "path": "data.gz.b64.part1",
+      "sha256": "af0f06538ddcc004bce3c6289f9624b4ab044e843b38257edd555f9e518b43fa"
+    },
+    {
+      "path": "data.gz.b64.part2",
+      "sha256": "74323c177122d7d1f412a2c44afa50c071d2082f4f1bcb8cd166114e3691d557"
+    },
+    {
+      "path": "data.gz.b64.part3",
+      "sha256": "a803d3c8cf7dd1e34ff819877555316e65a254ff5434eeec07c29527800bc5fc"
+    },
+    {
+      "path": "data.gz.b64.part4",
+      "sha256": "a155580dceb91cb3b6e982805b3878bfdba1f48a0e0760a26c0c308160a57e1f"
+    }
+  ]
+}
