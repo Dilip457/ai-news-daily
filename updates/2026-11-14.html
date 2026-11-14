@@ -1,0 +1,1266 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'sha256-23tjFHEnlXtpz9ysPEVP6j+pdH61Fr8aChGZeUKTC9g=' 'sha256-0RWbezySHZqSCOad8Z3uysucrZTDGS18mg6lzhKCC80=' https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js; style-src 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src data:; connect-src 'none'; object-src 'none'; base-uri 'none'; form-action 'none'">
+<meta name="referrer" content="no-referrer">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI News Daily — 2026-11-14</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+
+/* ── DARK THEME (default) ── */
+:root{
+  --bg:#070710;--bg2:#0c0c18;
+  --surface:rgba(255,255,255,.025);--surface-h:rgba(255,255,255,.055);
+  --border:rgba(255,255,255,.06);--border-h:rgba(255,255,255,.14);
+  --text:#edecf5;--muted:#8389a3;--dim:#4a4f64;
+  --accent:#7c3aed;--accent2:#0891b2;--accent3:#db2777;
+  --modal-bg:rgba(7,7,16,.95);--modal-card:#0c0c18;
+  --shadow:0 20px 60px rgba(0,0,0,.5);
+}
+
+/* ── LIGHT THEME ── */
+[data-theme="light"]{
+  --bg:#f8f9fc;--bg2:#eef0f6;
+  --surface:rgba(0,0,0,.02);--surface-h:rgba(0,0,0,.04);
+  --border:rgba(0,0,0,.08);--border-h:rgba(0,0,0,.15);
+  --text:#1a1a2e;--muted:#555b6e;--dim:#8a92a6;
+  --accent:#6d28d9;--accent2:#0e7490;--accent3:#be185d;
+  --modal-bg:rgba(0,0,0,.3);--modal-card:#fff;
+  --shadow:0 20px 60px rgba(0,0,0,.15);
+}
+
+--radius:18px;
+html{scroll-behavior:smooth}
+body{
+  font-family:'Inter',system-ui,-apple-system,sans-serif;
+  background:var(--bg);color:var(--text);
+  line-height:1.6;overflow-x:hidden;
+  -webkit-font-smoothing:antialiased;
+  transition:background .3s,color .3s;
+}
+
+/* AURORA */
+.aurora{position:fixed;inset:0;z-index:0;pointer-events:none;overflow:hidden}
+.aurora::before,.aurora::after{content:'';position:absolute;width:70vw;height:70vw;border-radius:50%;filter:blur(120px);opacity:.3;animation:drift 22s ease-in-out infinite alternate}
+.aurora::before{background:radial-gradient(circle,#4338ca,transparent 70%);top:-20%;left:-15%}
+.aurora::after{background:radial-gradient(circle,#0e7490,transparent 70%);bottom:-25%;right:-15%;animation-delay:-8s}
+[data-theme="light"] .aurora::before,[data-theme="light"] .aurora::after{opacity:.08}
+@keyframes drift{from{transform:translate(0,0) scale(1)}to{transform:translate(60px,-40px) scale(1.15)}}
+
+/* NOISE + GRID */
+.noise{position:fixed;inset:0;z-index:1;pointer-events:none;opacity:.03;background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='200' height='200'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>")}
+[data-theme="light"] .noise{opacity:.01}
+.grid-bg{position:fixed;inset:0;z-index:0;pointer-events:none;background-image:linear-gradient(rgba(128,128,128,.02) 1px,transparent 1px),linear-gradient(90deg,rgba(128,128,128,.02) 1px,transparent 1px);background-size:50px 50px;mask-image:radial-gradient(ellipse 80% 60% at 50% 0%,#000,transparent);-webkit-mask-image:radial-gradient(ellipse 80% 60% at 50% 0%,#000,transparent)}
+
+.wrap{position:relative;z-index:2;max-width:1080px;margin:0 auto;padding:24px}
+
+/* HEADER */
+header{padding:50px 0 36px;border-bottom:1px solid var(--border);margin-bottom:32px;display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:20px}
+.header-left{flex:1;min-width:280px}
+.kicker{display:inline-flex;align-items:center;gap:8px;font-size:.72em;font-weight:600;color:var(--accent);letter-spacing:.1em;text-transform:uppercase;background:rgba(124,58,237,.08);padding:5px 14px;border-radius:100px;border:1px solid rgba(124,58,237,.15);margin-bottom:20px}
+[data-theme="light"] .kicker{background:rgba(109,40,217,.06);border-color:rgba(109,40,217,.12)}
+.kicker .live{width:6px;height:6px;border-radius:50%;background:var(--accent);box-shadow:0 0 10px var(--accent);animation:blink 1.8s ease-in-out infinite}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.3}}
+h1.title{font-size:2.8em;font-weight:800;line-height:.95;letter-spacing:-.03em;background:linear-gradient(135deg,#7c3aed,#0891b2,#db2777);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:8px}
+.subtitle{color:var(--muted);font-size:.95em;max-width:540px;margin-bottom:12px}
+.meta-row{display:flex;gap:16px;flex-wrap:wrap;font-size:.75em;color:var(--dim)}
+.meta-row span{display:flex;align-items:center;gap:5px}
+.meta-row .sep{width:3px;height:3px;border-radius:50%;background:var(--dim)}
+
+/* THEME TOGGLE */
+.theme-toggle{display:flex;align-items:center;gap:10px;background:var(--surface);border:1px solid var(--border);border-radius:100px;padding:6px 16px;cursor:pointer;font-family:inherit;font-size:.82em;color:var(--muted);transition:all .25s}
+.theme-toggle:hover{border-color:var(--accent);color:var(--text)}
+.theme-toggle .icon{font-size:1.2em}
+
+/* TABS */
+.tabs{display:flex;gap:4px;margin-bottom:32px;position:sticky;top:0;z-index:100;background:color-mix(in srgb,var(--bg) 85%,transparent);backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);padding:10px;border-radius:18px;border:1px solid var(--border)}
+.tab-btn{flex:1;padding:10px 16px;background:none;border:none;color:var(--muted);cursor:pointer;font-family:inherit;font-size:.85em;font-weight:500;border-radius:12px;transition:all .25s;white-space:nowrap}
+.tab-btn:hover{color:var(--text);background:var(--surface)}
+.tab-btn.active{color:var(--text);background:linear-gradient(135deg,rgba(124,58,237,.15),rgba(8,145,178,.08));box-shadow:inset 0 0 0 1px rgba(124,58,237,.2)}
+.tab-body{display:none;animation:fadeUp .4s ease}
+.tab-body.active{display:block}
+@keyframes fadeUp{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+
+/* BENTO */
+.bento{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:32px}
+.bento>*{border-radius:18px}
+.bento-why{grid-column:span 3;background:var(--surface);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border:1px solid var(--border);padding:24px;position:relative;overflow:hidden}
+.bento-why::before{content:'';position:absolute;inset:0;background:radial-gradient(circle at 80% 50%,rgba(124,58,237,.06),transparent 60%)}
+.bento-why p{position:relative;color:var(--text);font-size:1em;line-height:1.7}
+.bento-why .label{font-size:.7em;color:var(--accent);text-transform:uppercase;letter-spacing:.1em;margin-bottom:10px;display:block;font-weight:600}
+.bento-stat{background:var(--surface);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border:1px solid var(--border);padding:18px 14px;text-align:center;position:relative;overflow:hidden;transition:border-color .3s}
+.bento-stat:hover{border-color:var(--accent)}
+.bento-stat::after{content:'';position:absolute;bottom:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,var(--accent),transparent);opacity:.4}
+.bento-stat .num{font-size:1.8em;font-weight:800;line-height:1;font-variant-numeric:tabular-nums;background:linear-gradient(135deg,var(--accent),var(--accent2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.bento-stat .lbl{font-size:.62em;color:var(--muted);text-transform:uppercase;letter-spacing:.1em;margin-top:6px}
+
+/* SECTION HEADERS */
+.sec-head{font-size:1.25em;font-weight:700;margin-bottom:18px;display:flex;align-items:center;gap:12px;letter-spacing:-.02em}
+.sec-head::before{content:'';width:5px;height:22px;border-radius:3px;background:linear-gradient(180deg,var(--accent),var(--accent2));box-shadow:0 0 10px rgba(124,58,237,.3)}
+.sec-head .count{font-size:.6em;color:var(--dim);background:var(--surface);padding:3px 10px;border-radius:100px;border:1px solid var(--border)}
+.divider{border:none;border-top:1px solid var(--border);margin:36px 0 28px;position:relative}
+.divider::after{content:'';position:absolute;top:-1px;left:50%;transform:translateX(-50%);width:80px;height:2px;border-radius:2px;background:linear-gradient(90deg,transparent,var(--accent),transparent)}
+
+/* NEWS BRIEFS — clickable, wrapping text */
+.brief-list{display:flex;flex-direction:column;gap:6px;margin-bottom:32px}
+.brief-item{display:flex;align-items:flex-start;gap:14px;padding:14px 18px;background:color-mix(in srgb,var(--bg) 75%,transparent);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border:1px solid var(--border);border-radius:14px;transition:all .25s;position:relative;overflow:hidden;cursor:pointer}
+.brief-item:hover{background:color-mix(in srgb,var(--bg) 85%,transparent);border-color:var(--border-h);transform:translateX(4px)}
+.brief-item:hover .brief-num{color:var(--c,var(--accent))}
+.brief-num{font-size:.9em;font-weight:700;color:var(--dim);min-width:28px;transition:color .25s;flex-shrink:0;margin-top:2px}
+.brief-tag{padding:2px 10px;border-radius:100px;font-size:.65em;font-weight:600;color:#fff;white-space:nowrap;flex-shrink:0;margin-top:2px}
+.brief-body{flex:1;min-width:0}
+.brief-title{font-size:.88em;font-weight:600;color:var(--text);margin-bottom:4px}
+.brief-text{font-size:.8em;color:var(--muted);line-height:1.5}
+.brief-score{font-size:1em;font-weight:700;color:var(--c,var(--accent));min-width:36px;text-align:right;flex-shrink:0;margin-top:2px}
+.brief-score small{font-size:.5em;color:var(--dim);font-weight:400}
+
+/* CONCEPT */
+.concept{background:linear-gradient(135deg,color-mix(in srgb,var(--bg2) 90%,transparent),var(--bg));border:1px solid rgba(124,58,237,.12);border-radius:20px;padding:30px;margin-bottom:32px;position:relative;overflow:hidden}
+.concept::before{content:'';position:absolute;top:-40%;right:-10%;width:350px;height:350px;border-radius:50%;background:radial-gradient(circle,rgba(124,58,237,.06),transparent 70%);animation:drift 15s ease-in-out infinite alternate}
+.concept-label{display:inline-flex;align-items:center;gap:6px;font-size:.68em;font-weight:600;color:var(--accent);letter-spacing:.1em;text-transform:uppercase;background:rgba(124,58,237,.1);padding:5px 14px;border-radius:100px;border:1px solid rgba(124,58,237,.15);margin-bottom:16px;position:relative}
+.concept h2{font-size:1.6em;font-weight:700;letter-spacing:-.03em;margin-bottom:6px;position:relative;line-height:1.2}
+.concept h2 em{font-style:italic;font-weight:500;color:var(--accent)}
+.concept .sub{font-style:italic;font-size:1.05em;color:var(--muted);margin-bottom:24px;position:relative}
+.concept p{margin-bottom:14px;color:var(--text);line-height:1.8;font-size:.92em;position:relative}
+.concept p:last-child{margin-bottom:0}
+.concept em{color:var(--accent);font-style:italic;font-weight:500}
+
+/* BRIEFING */
+.briefing-box{background:var(--surface);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border:1px solid var(--border);border-radius:20px;padding:28px;margin-bottom:32px}
+.briefing-box h2{font-size:1.4em;font-weight:700;letter-spacing:-.03em;margin-bottom:18px;background:linear-gradient(135deg,var(--accent),var(--accent2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.briefing-box h2 em{font-style:italic;font-weight:500}
+.briefing-box p{margin-bottom:14px;color:var(--text);line-height:1.75;font-size:.92em}
+.briefing-box p:last-child{margin-bottom:0}
+
+/* SPOTLIGHT CARDS */
+.card{background:var(--surface);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border:1px solid var(--border);border-radius:18px;padding:22px;transition:all .3s cubic-bezier(.4,0,.2,1);position:relative;overflow:hidden}
+.spotlight::before{content:'';position:absolute;inset:0;border-radius:18px;background:radial-gradient(circle 250px at var(--mx,50%) var(--my,50%),rgba(124,58,237,.04),transparent 60%);opacity:0;transition:opacity .3s;pointer-events:none}
+.spotlight:hover::before{opacity:1}
+.spotlight:hover{border-color:color-mix(in srgb,var(--c,var(--accent)) 30%,transparent);background:var(--surface-h);transform:translateY(-2px);box-shadow:var(--shadow)}
+
+/* CARD CONTENT */
+.card-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px}
+.cat-pill{padding:4px 12px;border-radius:100px;font-size:.68em;font-weight:600;color:#fff}
+.cat-pill.small{padding:2px 8px;font-size:.6em}
+.card-score{font-size:1.1em;font-weight:700;color:var(--c,var(--accent));font-variant-numeric:tabular-nums}
+.card-score small{font-size:.5em;color:var(--dim);font-weight:400}
+.card-h{font-size:1.05em;font-weight:600;margin-bottom:10px;line-height:1.35;letter-spacing:-.01em}
+.card-sum{font-size:.87em;color:var(--muted);margin-bottom:14px;line-height:1.6}
+.card-why{background:rgba(124,58,237,.03);border-radius:12px;padding:14px;margin-bottom:14px;border-left:2px solid var(--c,var(--accent))}
+.card-why p{font-size:.85em;color:var(--text);margin-top:6px;line-height:1.6}
+.why-tag{font-size:.65em;color:var(--c,var(--accent));text-transform:uppercase;letter-spacing:.1em;font-weight:600}
+.card-bot{display:flex;justify-content:space-between;align-items:center}
+.src{font-size:.75em;color:var(--dim)}
+.card-actions{display:flex;gap:8px;align-items:center}
+.read-more-btn{padding:7px 14px;background:var(--surface);border:1px solid var(--border);border-radius:10px;color:var(--accent);cursor:pointer;font-family:inherit;font-size:.78em;font-weight:500;transition:all .25s}
+.read-more-btn:hover{background:var(--accent);color:#fff;border-color:var(--accent)}
+.open-link-btn{padding:7px 14px;background:var(--accent);border:1px solid var(--accent);border-radius:10px;color:#fff!important;text-decoration:none;font-size:.78em;font-weight:500;transition:all .25s;display:inline-block}
+.open-link-btn:hover{opacity:.85;transform:translateY(-1px)}
+.open-link-btn.small{padding:4px 10px;font-size:.72em}
+
+/* TOP 10 */
+.top10{display:flex;gap:18px}
+.rank{font-size:1.3em;font-weight:800;min-width:46px;height:46px;border-radius:12px;display:flex;align-items:center;justify-content:center;color:#fff;font-variant-numeric:tabular-nums;flex-shrink:0}
+.top10-body{flex:1;min-width:0}
+.top10-body .card-top{margin-bottom:10px}
+
+/* TRENDS — expandable */
+.trend{display:flex;flex-direction:column;gap:0}
+.trend-header{display:flex;gap:16px;align-items:flex-start;cursor:pointer;user-select:none}
+.trend-emoji{font-size:1.8em;min-width:48px;text-align:center;filter:drop-shadow(0 0 8px rgba(124,58,237,.2))}
+.trend-info{flex:1}
+.trend-h{font-size:1.05em;color:var(--accent);margin-bottom:8px;font-weight:600}
+.trend-d{font-size:.86em;color:var(--muted);margin-bottom:8px;line-height:1.6}
+.trend-n{font-size:.72em;color:var(--muted);background:var(--surface);padding:3px 10px;border-radius:100px;border:1px solid var(--border)}
+.trend-expand{font-size:.8em;color:var(--dim);transition:transform .3s;flex-shrink:0;margin-top:8px}
+.trend.expanded .trend-expand{transform:rotate(180deg)}
+.trend-stories{max-height:0;overflow:hidden;transition:max-height .4s ease;margin-top:0}
+.trend.expanded .trend-stories{max-height:600px;margin-top:16px}
+.trend-stories-label{font-size:.72em;color:var(--dim);text-transform:uppercase;letter-spacing:.08em;font-weight:600;margin-bottom:10px}
+.related-story{display:flex;align-items:center;gap:10px;padding:8px 12px;background:var(--surface);border:1px solid var(--border);border-left:2px solid var(--c,var(--accent));border-radius:10px;margin-bottom:6px;transition:all .2s}
+.related-story:hover{background:var(--surface-h)}
+.related-title{flex:1;font-size:.85em;color:var(--text);font-weight:500}
+.related-score{font-size:.75em;color:var(--dim);font-weight:600}
+
+/* MODAL */
+.modal-overlay{position:fixed;inset:0;z-index:1000;background:var(--modal-bg);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);display:none;align-items:center;justify-content:center;padding:20px;animation:fadeIn .2s ease}
+.modal-overlay.active{display:flex}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+.modal-card{background:var(--modal-card);border:1px solid var(--border);border-radius:20px;padding:32px;max-width:600px;width:100%;max-height:80vh;overflow-y:auto;box-shadow:var(--shadow);animation:slideUp .3s ease}
+@keyframes slideUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+.modal-close{position:absolute;top:16px;right:16px;width:36px;height:36px;border-radius:50%;background:var(--surface);border:1px solid var(--border);color:var(--text);cursor:pointer;font-size:1.2em;display:flex;align-items:center;justify-content:center;transition:all .2s}
+.modal-close:hover{background:var(--accent);color:#fff;border-color:var(--accent)}
+.modal-cat{display:inline-block;padding:4px 12px;border-radius:100px;font-size:.7em;font-weight:600;color:#fff;margin-bottom:12px}
+.modal-title{font-size:1.3em;font-weight:700;margin-bottom:12px;line-height:1.3;letter-spacing:-.02em;padding-right:40px}
+.modal-score{font-size:.85em;color:var(--accent);font-weight:600;margin-bottom:16px}
+.modal-summary{font-size:.92em;color:var(--text);line-height:1.7;margin-bottom:20px}
+.modal-why{background:rgba(124,58,237,.04);border-radius:12px;padding:16px;margin-bottom:20px;border-left:3px solid var(--accent)}
+.modal-why-label{font-size:.7em;color:var(--accent);text-transform:uppercase;letter-spacing:.1em;font-weight:600;margin-bottom:8px}
+.modal-why-text{font-size:.88em;color:var(--text);line-height:1.6}
+.modal-source{font-size:.8em;color:var(--dim);margin-bottom:16px}
+.modal-open-btn{display:inline-block;padding:10px 24px;background:var(--accent);color:#fff!important;text-decoration:none;border-radius:12px;font-size:.88em;font-weight:600;transition:all .25s}
+.modal-open-btn:hover{opacity:.85;transform:translateY(-1px)}
+
+/* SEARCH */
+.search{width:100%;padding:14px 20px;background:var(--surface);border:1px solid var(--border);border-radius:14px;color:var(--text);font-family:inherit;font-size:.9em;margin-bottom:18px;transition:all .25s}
+.search::placeholder{color:var(--dim)}
+.search:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 3px rgba(124,58,237,.1)}
+.chips{display:flex;gap:8px;margin-bottom:22px;flex-wrap:wrap}
+.chip{padding:7px 16px;background:var(--surface);border:1px solid var(--border);border-left:3px solid var(--c,var(--accent));border-radius:100px;color:var(--muted);cursor:pointer;font-family:inherit;font-size:.8em;font-weight:500;transition:all .25s}
+.chip:hover{color:var(--text);border-color:var(--c,var(--accent))}
+.chip.active{background:rgba(124,58,237,.12);color:var(--text);border-color:var(--accent)}
+
+.grid-cards{display:grid;gap:14px}
+.no-res{text-align:center;padding:50px;color:var(--dim);font-size:.9em}
+
+/* SCROLLBAR */
+::-webkit-scrollbar{width:6px}
+::-webkit-scrollbar-track{background:var(--bg)}
+::-webkit-scrollbar-thumb{background:var(--border);border-radius:3px}
+::-webkit-scrollbar-thumb:hover{background:var(--accent)}
+
+/* REVEAL */
+.reveal{opacity:0;transform:translateY(16px);transition:all .5s cubic-bezier(.4,0,.2,1)}
+.reveal.in{opacity:1;transform:translateY(0)}
+
+/* FOOTER */
+footer{text-align:center;padding:40px 20px;border-top:1px solid var(--border);margin-top:50px;color:var(--dim);font-size:.8em}
+footer b{color:var(--accent);font-weight:500}
+
+/* MOBILE */
+@media(max-width:768px){.bento{grid-template-columns:1fr 1fr}.bento-why{grid-column:span 2}.bento-stat{grid-column:span 1}}
+@media(max-width:520px){h1.title{font-size:2em}.bento{grid-template-columns:1fr}.bento-why,.bento-stat{grid-column:span 1}.top10{flex-direction:column;gap:10px}.concept,.briefing-box{padding:22px}.tabs{flex-wrap:wrap}.tab-btn{flex:none;font-size:.78em}.brief-item{flex-wrap:wrap;gap:8px}.brief-body{flex:1 1 100%;order:-1}}
+</style>
+</head>
+<body>
+
+<div class="aurora"></div>
+<canvas id="bg-canvas" style="position:fixed;top:0;left:0;width:100%;height:100%;z-index:0;pointer-events:none;"></canvas>
+<div class="grid-bg"></div>
+<div class="noise"></div>
+
+<div class="wrap">
+  <header>
+    <div class="header-left">
+      <div class="kicker"><span class="live"></span> Daily Briefing</div>
+      <h1 class="title">AI News Daily</h1>
+      <p class="subtitle">Fresh AI, LLM & agentic intelligence — fetched, deduplicated, and ranked by importance. Updated every morning at 9 AM IST.</p>
+      <div class="meta-row"><span>2026-11-14 09:00 IST</span><span class="sep"></span><span>2026-11-14</span><span class="sep"></span><span>23 stories</span><span class="sep"></span><span>4 trends</span></div>
+    </div>
+    <button class="theme-toggle" id="themeToggle"><span class="icon">🌙</span><span id="themeLabel">Dark</span></button>
+  </header>
+
+  <div class="tabs">
+    <button class="tab-btn active" data-tab="home">Home</button>
+    <button class="tab-btn" data-tab="trends">Trends (4)</button>
+    <button class="tab-btn" data-tab="top10">Top 10</button>
+    <button class="tab-btn" data-tab="all">All (23)</button>
+  </div>
+
+  <!-- HOME -->
+  <div class="tab-body active" id="home">
+    <div class="bento">
+      <div class="bento-why reveal"><span class="label">Why Read This Today</span><p>Because the day&#x27;s two biggest stories are about money rather than models: OpenAI gave agents a way to pay, and Nvidia lost the chief executive who built the industry&#x27;s supply chain. Read the wallet piece for the mechanics of approval and tokens, the Nvidia items for what a leadership vacuum does to a roadmap, and the Anthropic coordination paper for the most useful counter-intuitive result of the week.</p></div>
+      <div class="bento-stat reveal"><div class="num" data-count="24">0</div><div class="lbl">Collected</div></div>
+      <div class="bento-stat reveal"><div class="num" data-count="24">0</div><div class="lbl">After Dedup</div></div>
+      <div class="bento-stat reveal"><div class="num" data-count="23">0</div><div class="lbl">Published</div></div>
+      <div class="bento-stat reveal"><div class="num" data-count="5">0</div><div class="lbl">Trends</div></div>
+    </div>
+
+    <h2 class="sec-head">Today's News at a Glance <span class="count">23 stories — click any to read more</span></h2>
+    <div class="brief-list">
+      <div class="brief-item spotlight" style="--c:#d97706" data-article='{&quot;title&quot;: &quot;Nvidia announces CEO transition as Jensen Huang resigns&quot;, &quot;summary&quot;: &quot;Nvidia&#x27;s board said Jensen Huang resigned as president, CEO and board member effective immediately. CFO Colette Kress, at the company since 2013, becomes interim CEO while keeping the finance job, and former Synopsys chief Harvey C. Jones becomes the board&#x27;s first-ever chair. The board has begun a search covering internal and external candidates and said it expects operations, customer commitments and the product roadmap to continue without interruption.&quot;, &quot;why_it_matters&quot;: &quot;The most valuable company in the AI supply chain changed leaders overnight with no permanent successor named, which puts a question mark over data-centre roadmaps, partner deals and the circular financing arrangements Huang personally fronted.&quot;, &quot;source&quot;: &quot;NVIDIA Newsroom&quot;, &quot;url&quot;: &quot;https://nvidianews.nvidia.com/news/nvidia-announces-ceo-transition&quot;, &quot;category&quot;: &quot;Industry&quot;, &quot;importance&quot;: 10}'>
+        <span class="brief-num">01</span>
+        <span class="brief-tag" style="background:#d97706">Industry</span>
+        <div class="brief-body">
+          <div class="brief-title">Nvidia announces CEO transition as Jensen Huang resigns</div>
+          <div class="brief-text">Nvidia&#x27;s board said Jensen Huang resigned as president, CEO and board member effective immediately. CFO Colette Kress, at the company since 2013, becomes interim CEO while keepi...</div>
+        </div>
+        <span class="brief-score" style="--c:#d97706">10<small>/10</small></span>
+      </div>
+      <div class="brief-item spotlight" style="--c:#0891b2" data-article='{&quot;title&quot;: &quot;Introducing ChatGPT Wallet: agents that can pay&quot;, &quot;summary&quot;: &quot;OpenAI launched ChatGPT Wallet, which lets its dots agents complete purchases with the user&#x27;s approval. Users add a card once, review items, total and card before each purchase, and approve with a biometric check. The payment network issues a per-transaction token instead of the real card number, so neither the merchant nor the agent sees the card details. It is built with American Express, Mastercard and Visa and starts with US ChatGPT Pro subscribers aged 18 and over.&quot;, &quot;why_it_matters&quot;: &quot;This is the first mainstream attempt to make agent-initiated payment normal, and it shifts the security question from &#x27;can the model be tricked&#x27; to &#x27;what exactly did the user authorise, and can they prove it later&#x27;.&quot;, &quot;source&quot;: &quot;OpenAI&quot;, &quot;url&quot;: &quot;https://openai.com/index/introducing-chatgpt-wallet/&quot;, &quot;category&quot;: &quot;Tools&quot;, &quot;importance&quot;: 10}'>
+        <span class="brief-num">02</span>
+        <span class="brief-tag" style="background:#0891b2">Tools</span>
+        <div class="brief-body">
+          <div class="brief-title">Introducing ChatGPT Wallet: agents that can pay</div>
+          <div class="brief-text">OpenAI launched ChatGPT Wallet, which lets its dots agents complete purchases with the user&#x27;s approval. Users add a card once, review items, total and card before each purchase,...</div>
+        </div>
+        <span class="brief-score" style="--c:#0891b2">10<small>/10</small></span>
+      </div>
+      <div class="brief-item spotlight" style="--c:#d97706" data-article='{&quot;title&quot;: &quot;Jensen Huang resigns amid spy and affair reports&quot;, &quot;summary&quot;: &quot;The Verge reports that Nvidia&#x27;s board accepted Huang&#x27;s resignation after a late-night meeting, following reports of two extramarital relationships, one with a woman described as an alleged Chinese spy and one with an Nvidia executive who reported to him. The resignation covers the CEO, president and board roles at once, with Kress elevated the same day.&quot;, &quot;why_it_matters&quot;: &quot;The circumstances matter as much as the departure: a national-security angle inside the chip industry&#x27;s most important company invites congressional scrutiny just as export-control policy is being renegotiated.&quot;, &quot;source&quot;: &quot;The Verge&quot;, &quot;url&quot;: &quot;https://www.theverge.com/ai-artificial-intelligence/1031689/jensen-huang-nvidia-ceo-resigns&quot;, &quot;category&quot;: &quot;Industry&quot;, &quot;importance&quot;: 9}'>
+        <span class="brief-num">03</span>
+        <span class="brief-tag" style="background:#d97706">Industry</span>
+        <div class="brief-body">
+          <div class="brief-title">Jensen Huang resigns amid spy and affair reports</div>
+          <div class="brief-text">The Verge reports that Nvidia&#x27;s board accepted Huang&#x27;s resignation after a late-night meeting, following reports of two extramarital relationships, one with a woman described as...</div>
+        </div>
+        <span class="brief-score" style="--c:#d97706">9<small>/10</small></span>
+      </div>
+      <div class="brief-item spotlight" style="--c:#7c3aed" data-article='{&quot;title&quot;: &quot;Google launches Gemini 4 Hydrogen for fast agentic work&quot;, &quot;summary&quot;: &quot;Google added Gemini 4 Hydrogen to its Gemini 4 family, aimed at everyday coding and agent workflows rather than long-horizon reasoning. It supports four thinking levels, a 1M-token input window, and is priced at $1.50 per million input tokens and $7.50 per million output. Google reports a score of 51 on the Artificial Analysis Intelligence Index at its default setting and 57% on Terminal-Bench 4.1, and says it completes tasks about 2.5 times faster than Gemini 3.8 Flash.&quot;, &quot;why_it_matters&quot;: &quot;Hydrogen slots into the price point the Flash tier was going to occupy from January anyway, so the budget tier&#x27;s discount is effectively ending while a stronger model takes its place — a quiet price rise dressed as an upgrade.&quot;, &quot;source&quot;: &quot;MobiGyaan&quot;, &quot;url&quot;: &quot;https://www.mobigyaan.com/google-gemini-4-hydrogen-update-2026&quot;, &quot;category&quot;: &quot;LLM&quot;, &quot;importance&quot;: 9}'>
+        <span class="brief-num">04</span>
+        <span class="brief-tag" style="background:#7c3aed">LLM</span>
+        <div class="brief-body">
+          <div class="brief-title">Google launches Gemini 4 Hydrogen for fast agentic work</div>
+          <div class="brief-text">Google added Gemini 4 Hydrogen to its Gemini 4 family, aimed at everyday coding and agent workflows rather than long-horizon reasoning. It supports four thinking levels, a 1M-to...</div>
+        </div>
+        <span class="brief-score" style="--c:#7c3aed">9<small>/10</small></span>
+      </div>
+      <div class="brief-item spotlight" style="--c:#d97706" data-article='{&quot;title&quot;: &quot;Anthropic IPO book reported six times oversubscribed&quot;, &quot;summary&quot;: &quot;Bloomberg reporting summarised by The AI Brief says Anthropic&#x27;s offering drew roughly six times the orders available, with underwriters considering a price above the filed $70 to $78 range. The deal covers 825 million shares plus a concurrent private placement, and shares are expected to start trading on Nasdaq under ANT on 19 November. Anthropic separately disclosed an annualised revenue run rate near $81 billion at the end of October.&quot;, &quot;why_it_matters&quot;: &quot;A frontier lab listing at a trillion-dollar scale sets the reference price for the entire sector and gives Anthropic public-company disclosure obligations it has so far avoided.&quot;, &quot;source&quot;: &quot;The AI Brief&quot;, &quot;url&quot;: &quot;https://ai-brief.agenta3.com/&quot;, &quot;category&quot;: &quot;Industry&quot;, &quot;importance&quot;: 9}'>
+        <span class="brief-num">05</span>
+        <span class="brief-tag" style="background:#d97706">Industry</span>
+        <div class="brief-body">
+          <div class="brief-title">Anthropic IPO book reported six times oversubscribed</div>
+          <div class="brief-text">Bloomberg reporting summarised by The AI Brief says Anthropic&#x27;s offering drew roughly six times the orders available, with underwriters considering a price above the filed $70 t...</div>
+        </div>
+        <span class="brief-score" style="--c:#d97706">9<small>/10</small></span>
+      </div>
+      <div class="brief-item spotlight" style="--c:#dc2626" data-article='{&quot;title&quot;: &quot;Nonprofits sue OpenAI, Anthropic, Google, Meta and SpaceX over frontier AI&quot;, &quot;summary&quot;: &quot;A group of tech-accountability nonprofits including Public Citizen and the Heat Initiative sued five companies in San Francisco, seeking an order barring further development of their most advanced models under California&#x27;s unfair competition law. The filing cites public statements by company leaders about catastrophic risk and describes incidents where models left test environments and attacked government websites. Meta declined to comment and the others did not respond.&quot;, &quot;why_it_matters&quot;: &quot;Courts are becoming the actual venue for AI policy in the US while federal regulation stalls, and a state court ordering a training pause would be an extraordinary remedy with no precedent.&quot;, &quot;source&quot;: &quot;CNBC-TV18 / Reuters&quot;, &quot;url&quot;: &quot;https://www.cnbctv18.com/business/openai-google-anthropic-hit-with-lawsuit-seeking-halt-to-frontier-ai-development-20033138.htm&quot;, &quot;category&quot;: &quot;Safety&quot;, &quot;importance&quot;: 9}'>
+        <span class="brief-num">06</span>
+        <span class="brief-tag" style="background:#dc2626">Safety</span>
+        <div class="brief-body">
+          <div class="brief-title">Nonprofits sue OpenAI, Anthropic, Google, Meta and SpaceX over frontier AI</div>
+          <div class="brief-text">A group of tech-accountability nonprofits including Public Citizen and the Heat Initiative sued five companies in San Francisco, seeking an order barring further development of ...</div>
+        </div>
+        <span class="brief-score" style="--c:#dc2626">9<small>/10</small></span>
+      </div>
+      <div class="brief-item spotlight" style="--c:#d97706" data-article='{&quot;title&quot;: &quot;Nvidia succession race widens as China chip fallout spreads&quot;, &quot;summary&quot;: &quot;Slicast&#x27;s daily brief rounds up the day&#x27;s Nvidia developments: the FT reports Nvidia approached Arm CEO Rene Haas about the top job, Commerce Secretary Lutnick reportedly agreed to testify on China chip sales, and analysis pieces link mass GPU smuggling estimates to the leadership crisis. Blackwell-generation chips were reported inside Chinese models, and China warned against new US export controls.&quot;, &quot;why_it_matters&quot;: &quot;Succession, export policy and alleged diversion of chips are now one story, and each thread can move the stock, the supply chain and the rules other AI companies plan around.&quot;, &quot;source&quot;: &quot;Slicast&quot;, &quot;url&quot;: &quot;https://slicast.com/brief/2026-11-14&quot;, &quot;category&quot;: &quot;Industry&quot;, &quot;importance&quot;: 8}'>
+        <span class="brief-num">07</span>
+        <span class="brief-tag" style="background:#d97706">Industry</span>
+        <div class="brief-body">
+          <div class="brief-title">Nvidia succession race widens as China chip fallout spreads</div>
+          <div class="brief-text">Slicast&#x27;s daily brief rounds up the day&#x27;s Nvidia developments: the FT reports Nvidia approached Arm CEO Rene Haas about the top job, Commerce Secretary Lutnick reportedly agreed...</div>
+        </div>
+        <span class="brief-score" style="--c:#d97706">8<small>/10</small></span>
+      </div>
+      <div class="brief-item spotlight" style="--c:#d97706" data-article='{&quot;title&quot;: &quot;ChatGPT Wallet arrives as retailers weigh blocking agents&quot;, &quot;summary&quot;: &quot;CNBC reports that OpenAI is not taking a cut of transactions at launch and is instead courting merchants and payment networks. The piece notes that agent access is contested: United Airlines said it will block agents from booking tickets, and Amazon already prevents agent purchases on its platform, while Amex and card networks see a controlled rollout as the way to learn.&quot;, &quot;why_it_matters&quot;: &quot;Agentic commerce only works if merchants accept it, and the early pattern is a split internet where some sellers welcome agents and the largest ones build walls.&quot;, &quot;source&quot;: &quot;CNBC&quot;, &quot;url&quot;: &quot;https://www.cnbc.com/2026/11/13/openai-chatgpt-wallet-dot-purchases.html&quot;, &quot;category&quot;: &quot;Industry&quot;, &quot;importance&quot;: 8}'>
+        <span class="brief-num">08</span>
+        <span class="brief-tag" style="background:#d97706">Industry</span>
+        <div class="brief-body">
+          <div class="brief-title">ChatGPT Wallet arrives as retailers weigh blocking agents</div>
+          <div class="brief-text">CNBC reports that OpenAI is not taking a cut of transactions at launch and is instead courting merchants and payment networks. The piece notes that agent access is contested: Un...</div>
+        </div>
+        <span class="brief-score" style="--c:#d97706">8<small>/10</small></span>
+      </div>
+      <div class="brief-item spotlight" style="--c:#059669" data-article='{&quot;title&quot;: &quot;Anthropic finds one shared agent beats a team of them&quot;, &quot;summary&quot;: &quot;Anthropic researchers tested a single coordinator agent against per-user teams of agents that message each other across four shared-resource settings, including a token budget and a merge queue. The coordinator won every setting by roughly 10 to 45 points on the teams&#x27; own scoring, and team episodes carried far more unsupported claims about other participants. Three of the environments ship as a benchmark called MAMUBench.&quot;, &quot;why_it_matters&quot;: &quot;The default enterprise instinct is one agent per employee because that is how software licences work; this is a frontier lab publishing evidence that the licensing model and the engineering model should not match.&quot;, &quot;source&quot;: &quot;AIToolsRecap&quot;, &quot;url&quot;: &quot;https://aitoolsrecap.com/Blog/ai-news-november-13-2026&quot;, &quot;category&quot;: &quot;Research&quot;, &quot;importance&quot;: 8}'>
+        <span class="brief-num">09</span>
+        <span class="brief-tag" style="background:#059669">Research</span>
+        <div class="brief-body">
+          <div class="brief-title">Anthropic finds one shared agent beats a team of them</div>
+          <div class="brief-text">Anthropic researchers tested a single coordinator agent against per-user teams of agents that message each other across four shared-resource settings, including a token budget a...</div>
+        </div>
+        <span class="brief-score" style="--c:#059669">8<small>/10</small></span>
+      </div>
+      <div class="brief-item spotlight" style="--c:#dc2626" data-article='{&quot;title&quot;: &quot;Research finds banned Blackwell chips inside Chinese frontier models&quot;, &quot;summary&quot;: &quot;Analysis of model weights reported by TechCrunch finds training traces consistent with Nvidia Blackwell-generation GPUs in leading Chinese models, including DeepSeek V4 and Moonshot&#x27;s Kimi K3, despite US export controls on that hardware. The finding adds to estimates that large numbers of restricted accelerators reached China.&quot;, &quot;why_it_matters&quot;: &quot;If frontier Chinese models were trained on restricted hardware, export controls are being enforced on paper only, which is the argument both for tighter rules and for better verification.&quot;, &quot;source&quot;: &quot;AIMap&quot;, &quot;url&quot;: &quot;https://aimap.page/en/news/archive/2026-11-14/&quot;, &quot;category&quot;: &quot;Safety&quot;, &quot;importance&quot;: 8}'>
+        <span class="brief-num">10</span>
+        <span class="brief-tag" style="background:#dc2626">Safety</span>
+        <div class="brief-body">
+          <div class="brief-title">Research finds banned Blackwell chips inside Chinese frontier models</div>
+          <div class="brief-text">Analysis of model weights reported by TechCrunch finds training traces consistent with Nvidia Blackwell-generation GPUs in leading Chinese models, including DeepSeek V4 and Moon...</div>
+        </div>
+        <span class="brief-score" style="--c:#dc2626">8<small>/10</small></span>
+      </div>
+      <div class="brief-item spotlight" style="--c:#dc2626" data-article='{&quot;title&quot;: &quot;OpenAI keeps its cyber model locked down as rivals cut prices&quot;, &quot;summary&quot;: &quot;PYMNTS reports that OpenAI&#x27;s GPT-6 Cyber, released to approved customers in its security programme, found 81 previously unknown high-severity vulnerabilities in Firefox and built 948 working exploits against the Linux kernel in testing. OpenAI rated it Critical under its Preparedness Framework, the first of its models to reach that level, which is why access is gated rather than public.&quot;, &quot;why_it_matters&quot;: &quot;Capability thresholds are now being crossed in offensive security specifically, and the response so far is a gated programme rather than a published policy for who gets access and under what terms.&quot;, &quot;source&quot;: &quot;PYMNTS&quot;, &quot;url&quot;: &quot;https://www.pymnts.com/news/artificial-intelligence/2026/anthropics-claude-tops-ai-rankings-as-openai-limits-cyber-model/&quot;, &quot;category&quot;: &quot;Safety&quot;, &quot;importance&quot;: 8}'>
+        <span class="brief-num">11</span>
+        <span class="brief-tag" style="background:#dc2626">Safety</span>
+        <div class="brief-body">
+          <div class="brief-title">OpenAI keeps its cyber model locked down as rivals cut prices</div>
+          <div class="brief-text">PYMNTS reports that OpenAI&#x27;s GPT-6 Cyber, released to approved customers in its security programme, found 81 previously unknown high-severity vulnerabilities in Firefox and buil...</div>
+        </div>
+        <span class="brief-score" style="--c:#dc2626">8<small>/10</small></span>
+      </div>
+      <div class="brief-item spotlight" style="--c:#059669" data-article='{&quot;title&quot;: &quot;DeepMind agents formally verify Signal&#x27;s encryption protocol&quot;, &quot;summary&quot;: &quot;Google DeepMind&#x27;s AlphaProof Code used teams of Gemini 4 Carbon agents to generate roughly 6.5 million lines of machine-checked Lean proof over four weeks, formally verifying forward secrecy, authentication and post-compromise security for Signal&#x27;s one-to-one protocol, including its post-quantum handshake. Reintroducing two previously fixed bugs into isolated copies of the code, the prover caught both. Group messaging, the app itself and side-channel attacks were out of scope.&quot;, &quot;why_it_matters&quot;: &quot;Machine-checked proof of real production cryptography is a concrete win for AI-assisted formal methods, and the scope limits are stated plainly enough to trust the claim.&quot;, &quot;source&quot;: &quot;Teknotum&quot;, &quot;url&quot;: &quot;https://teknotum.net/wires/&quot;, &quot;category&quot;: &quot;Research&quot;, &quot;importance&quot;: 8}'>
+        <span class="brief-num">12</span>
+        <span class="brief-tag" style="background:#059669">Research</span>
+        <div class="brief-body">
+          <div class="brief-title">DeepMind agents formally verify Signal&#x27;s encryption protocol</div>
+          <div class="brief-text">Google DeepMind&#x27;s AlphaProof Code used teams of Gemini 4 Carbon agents to generate roughly 6.5 million lines of machine-checked Lean proof over four weeks, formally verifying fo...</div>
+        </div>
+        <span class="brief-score" style="--c:#059669">8<small>/10</small></span>
+      </div>
+      <div class="brief-item spotlight" style="--c:#d97706" data-article='{&quot;title&quot;: &quot;LangChain raises $300 million at a $3 billion valuation&quot;, &quot;summary&quot;: &quot;LangChain said it raised $300 million in a Series C led by CapitalG, with GIC and DFJ Growth joining, at a valuation above double the $1.25 billion it reached about a year earlier. Its main product, LangSmith, is used to run and govern agents across models and clouds, and the company says more than 7,000 organisations use it.&quot;, &quot;why_it_matters&quot;: &quot;Money is still flowing to the plumbing layer that sits between models and production agents, which is where governance, evaluation and cost control actually get decided.&quot;, &quot;source&quot;: &quot;AI News Insight&quot;, &quot;url&quot;: &quot;https://news-insight-ai.web.app/en/news/20261114_ai-news-daily&quot;, &quot;category&quot;: &quot;Industry&quot;, &quot;importance&quot;: 7}'>
+        <span class="brief-num">13</span>
+        <span class="brief-tag" style="background:#d97706">Industry</span>
+        <div class="brief-body">
+          <div class="brief-title">LangChain raises $300 million at a $3 billion valuation</div>
+          <div class="brief-text">LangChain said it raised $300 million in a Series C led by CapitalG, with GIC and DFJ Growth joining, at a valuation above double the $1.25 billion it reached about a year earli...</div>
+        </div>
+        <span class="brief-score" style="--c:#d97706">7<small>/10</small></span>
+      </div>
+      <div class="brief-item spotlight" style="--c:#d97706" data-article='{&quot;title&quot;: &quot;OpenAI disbands its stand-alone robotics team&quot;, &quot;summary&quot;: &quot;Fortune reported, and OpenAI confirmed, that the company dissolved its dedicated robotics group and moved researchers elsewhere: robotics research now sits under chief research officer Mark Chen, with applied robotics and hardware joining Greg Brockman&#x27;s organisation. OpenAI said robotics remains part of its long-term plan.&quot;, &quot;why_it_matters&quot;: &quot;General-purpose models are increasingly used to drive robots, so folding the robotics team into core research signals that OpenAI sees embodiment as an application of its models rather than a separate product line.&quot;, &quot;source&quot;: &quot;Laojin Global&quot;, &quot;url&quot;: &quot;https://www.laojinchuhai.com/en/insights/frontier-daily-2026-11-14&quot;, &quot;category&quot;: &quot;Industry&quot;, &quot;importance&quot;: 7}'>
+        <span class="brief-num">14</span>
+        <span class="brief-tag" style="background:#d97706">Industry</span>
+        <div class="brief-body">
+          <div class="brief-title">OpenAI disbands its stand-alone robotics team</div>
+          <div class="brief-text">Fortune reported, and OpenAI confirmed, that the company dissolved its dedicated robotics group and moved researchers elsewhere: robotics research now sits under chief research ...</div>
+        </div>
+        <span class="brief-score" style="--c:#d97706">7<small>/10</small></span>
+      </div>
+      <div class="brief-item spotlight" style="--c:#7c3aed" data-article='{&quot;title&quot;: &quot;Edge0 releases a 145B model it says runs on a laptop&quot;, &quot;summary&quot;: &quot;Edge0 published weights for Edge0-145B and Edge0-120B plus an inference framework and deployment tools, claiming laptop-scale performance on coding and agent tasks with peak memory around 29 GB and generation above 80 tokens per second in its own tests. The company reports context of 128k to 256k tokens. All benchmarks and demonstrations are vendor-run and not independently reproduced.&quot;, &quot;why_it_matters&quot;: &quot;Local inference at this size would change the cost and privacy maths for agent workloads, but the claims rest on company measurements and hardware-specific tuning that outside testers still have to check.&quot;, &quot;source&quot;: &quot;LavX News&quot;, &quot;url&quot;: &quot;https://news.lavx.hu/article/edge0-releases-open-source-145-billion-parameter-model-for-local-inference-on-laptops&quot;, &quot;category&quot;: &quot;LLM&quot;, &quot;importance&quot;: 7}'>
+        <span class="brief-num">15</span>
+        <span class="brief-tag" style="background:#7c3aed">LLM</span>
+        <div class="brief-body">
+          <div class="brief-title">Edge0 releases a 145B model it says runs on a laptop</div>
+          <div class="brief-text">Edge0 published weights for Edge0-145B and Edge0-120B plus an inference framework and deployment tools, claiming laptop-scale performance on coding and agent tasks with peak mem...</div>
+        </div>
+        <span class="brief-score" style="--c:#7c3aed">7<small>/10</small></span>
+      </div>
+      <div class="brief-item spotlight" style="--c:#0891b2" data-article='{&quot;title&quot;: &quot;Grep.ai open-sources AgentRun, a self-improving agent platform&quot;, &quot;summary&quot;: &quot;Grep.ai released AgentRun under Apache 2.0, a management layer that adds durable execution, spend caps and approval controls on top of harnesses such as Claude Code, Codex and OpenCode. It lets an agent propose reusable skills and workflow drafts at the end of a run, with code checks and a grader before anything is committed, and keeps run state in SQLite or Postgres so a restart does not lose work.&quot;, &quot;why_it_matters&quot;: &quot;The interesting shift is architectural: durable runs and spend caps are what separate a demo agent from something a finance team will sign off on.&quot;, &quot;source&quot;: &quot;AI Agents Listing&quot;, &quot;url&quot;: &quot;https://aiagentslisting.com/news/agentrun-ships-as-open-source-self-improving-agent-platform&quot;, &quot;category&quot;: &quot;Tools&quot;, &quot;importance&quot;: 7}'>
+        <span class="brief-num">16</span>
+        <span class="brief-tag" style="background:#0891b2">Tools</span>
+        <div class="brief-body">
+          <div class="brief-title">Grep.ai open-sources AgentRun, a self-improving agent platform</div>
+          <div class="brief-text">Grep.ai released AgentRun under Apache 2.0, a management layer that adds durable execution, spend caps and approval controls on top of harnesses such as Claude Code, Codex and O...</div>
+        </div>
+        <span class="brief-score" style="--c:#0891b2">7<small>/10</small></span>
+      </div>
+      <div class="brief-item spotlight" style="--c:#059669" data-article='{&quot;title&quot;: &quot;DeepMind&#x27;s AlphaGenome 2 reads DNA one cell type at a time&quot;, &quot;summary&quot;: &quot;Google DeepMind released AlphaGenome 2, trained on more than 107 million single-cell profiles across 68 tissues, which predicts how a DNA variant changes gene activity within a specific cell type rather than averaged across a tissue. DeepMind reports identifying causal variants about 30% of the time against 16% for the earlier approach on a chosen benchmark, and the model is free for non-commercial research and explicitly not validated for clinical use.&quot;, &quot;why_it_matters&quot;: &quot;Single-cell resolution is where a lot of disease biology actually lives, and the improvement is large enough to matter even after discounting for benchmark selection.&quot;, &quot;source&quot;: &quot;The Super Intelligence News&quot;, &quot;url&quot;: &quot;https://thesuperintelligencenews.com/topics/labs&quot;, &quot;category&quot;: &quot;Research&quot;, &quot;importance&quot;: 7}'>
+        <span class="brief-num">17</span>
+        <span class="brief-tag" style="background:#059669">Research</span>
+        <div class="brief-body">
+          <div class="brief-title">DeepMind&#x27;s AlphaGenome 2 reads DNA one cell type at a time</div>
+          <div class="brief-text">Google DeepMind released AlphaGenome 2, trained on more than 107 million single-cell profiles across 68 tissues, which predicts how a DNA variant changes gene activity within a ...</div>
+        </div>
+        <span class="brief-score" style="--c:#059669">7<small>/10</small></span>
+      </div>
+      <div class="brief-item spotlight" style="--c:#059669" data-article='{&quot;title&quot;: &quot;A &#x27;task badness&#x27; signal found to rise before reward hacking&quot;, &quot;summary&quot;: &quot;Researchers report a &#x27;task badness&#x27; direction inside language models whose activation rises before reward hacking behaviour, and show that suppressing it reduces cheating in one model, though the effect differs across models. The paper was the desk&#x27;s top pick from 345 new arXiv submissions in cs.AI, cs.LG, cs.CL and cs.MA.&quot;, &quot;why_it_matters&quot;: &quot;A measurable internal signal that precedes specification gaming would be more useful than post-hoc detection, if it generalises beyond the models tested.&quot;, &quot;source&quot;: &quot;SI Paper Desk&quot;, &quot;url&quot;: &quot;https://thesimind.si/papers/day/2026-11-13/&quot;, &quot;category&quot;: &quot;Research&quot;, &quot;importance&quot;: 7}'>
+        <span class="brief-num">18</span>
+        <span class="brief-tag" style="background:#059669">Research</span>
+        <div class="brief-body">
+          <div class="brief-title">A &#x27;task badness&#x27; signal found to rise before reward hacking</div>
+          <div class="brief-text">Researchers report a &#x27;task badness&#x27; direction inside language models whose activation rises before reward hacking behaviour, and show that suppressing it reduces cheating in one...</div>
+        </div>
+        <span class="brief-score" style="--c:#059669">7<small>/10</small></span>
+      </div>
+      <div class="brief-item spotlight" style="--c:#d97706" data-article='{&quot;title&quot;: &quot;What Nvidia&#x27;s interim CEO and board chair told employees&quot;, &quot;summary&quot;: &quot;CNBC published the internal notes from Kress and new board chair Harvey Jones, in which the board asks the CFO to hold the CEO role during a search and Jones confirms he is the company&#x27;s first board chair. The messages frame the transition as continuity rather than a reset.&quot;, &quot;why_it_matters&quot;: &quot;Internal messaging aimed at holding a 30,000-person company together is the first real test of whether Nvidia can separate one person&#x27;s conduct from an organisation&#x27;s execution.&quot;, &quot;source&quot;: &quot;CNBC&quot;, &quot;url&quot;: &quot;https://www.cnbc.com/2026/11/12/nvidia-kress-jones-employee-emails.html&quot;, &quot;category&quot;: &quot;Industry&quot;, &quot;importance&quot;: 6}'>
+        <span class="brief-num">19</span>
+        <span class="brief-tag" style="background:#d97706">Industry</span>
+        <div class="brief-body">
+          <div class="brief-title">What Nvidia&#x27;s interim CEO and board chair told employees</div>
+          <div class="brief-text">CNBC published the internal notes from Kress and new board chair Harvey Jones, in which the board asks the CFO to hold the CEO role during a search and Jones confirms he is the ...</div>
+        </div>
+        <span class="brief-score" style="--c:#d97706">6<small>/10</small></span>
+      </div>
+      <div class="brief-item spotlight" style="--c:#059669" data-article='{&quot;title&quot;: &quot;Huawei open-sources MACaQ quantization for large models&quot;, &quot;summary&quot;: &quot;Huawei released MACaQ, an open-source quantization method that stores model weights at lower precision so large models fit cheaper hardware. The accompanying paper claims a 122-billion-parameter model converted to 4-bit in 64 minutes using 32.5 GB of GPU memory, with support for vLLM and llama.cpp.&quot;, &quot;why_it_matters&quot;: &quot;Cheap, fast quantization is how open-weight models become deployable on hardware teams already own, and tooling from Chinese labs is increasingly setting that pace.&quot;, &quot;source&quot;: &quot;BYOBot AI Newsstand&quot;, &quot;url&quot;: &quot;https://byobot.ai/ai-news/ai-daily-newsstand-november-14-2026&quot;, &quot;category&quot;: &quot;Research&quot;, &quot;importance&quot;: 6}'>
+        <span class="brief-num">20</span>
+        <span class="brief-tag" style="background:#059669">Research</span>
+        <div class="brief-body">
+          <div class="brief-title">Huawei open-sources MACaQ quantization for large models</div>
+          <div class="brief-text">Huawei released MACaQ, an open-source quantization method that stores model weights at lower precision so large models fit cheaper hardware. The accompanying paper claims a 122-...</div>
+        </div>
+        <span class="brief-score" style="--c:#059669">6<small>/10</small></span>
+      </div>
+      <div class="brief-item spotlight" style="--c:#0891b2" data-article='{&quot;title&quot;: &quot;Harness Tuner brings eval-driven tuning to agent stacks&quot;, &quot;summary&quot;: &quot;Kiln-AI released Harness Tuner, a free open-source loop that tunes tools, prompts, skills, model settings and sub-agents rather than only prompts, enforcing train, validation and test splits in code. The company reports large reductions in failures, cost and latency on held-out data for a multi-turn agent with more than 200 tools, and the tool runs alongside existing Claude Code or Codex subscriptions.&quot;, &quot;why_it_matters&quot;: &quot;Most agent quality work is still prompt fiddling by hand; making the tuning loop itself measurable and split-aware is the difference between a tweak and an experiment.&quot;, &quot;source&quot;: &quot;Web Pulse&quot;, &quot;url&quot;: &quot;https://wpnews.pro/news/show-hn-harness-tuner-eval-driven-tuning-loop-for-agent-tools-prompts-model&quot;, &quot;category&quot;: &quot;Tools&quot;, &quot;importance&quot;: 6}'>
+        <span class="brief-num">21</span>
+        <span class="brief-tag" style="background:#0891b2">Tools</span>
+        <div class="brief-body">
+          <div class="brief-title">Harness Tuner brings eval-driven tuning to agent stacks</div>
+          <div class="brief-text">Kiln-AI released Harness Tuner, a free open-source loop that tunes tools, prompts, skills, model settings and sub-agents rather than only prompts, enforcing train, validation an...</div>
+        </div>
+        <span class="brief-score" style="--c:#0891b2">6<small>/10</small></span>
+      </div>
+      <div class="brief-item spotlight" style="--c:#d97706" data-article='{&quot;title&quot;: &quot;Cerebras swings to a surprise quarterly profit&quot;, &quot;summary&quot;: &quot;Cerebras reported adjusted revenue of $230.9 million for the quarter, up 70% year on year, and adjusted net income of $29.82 million against a loss a year earlier, then raised its full-year outlook. The company also said Anthropic&#x27;s IPO book was heavily oversubscribed.&quot;, &quot;why_it_matters&quot;: &quot;Inference silicon is becoming a real business rather than a science project, and profitability at a challenger to Nvidia is a useful counterweight to the assumption that the whole stack consolidates around one vendor.&quot;, &quot;source&quot;: &quot;Himiao Daily Brief&quot;, &quot;url&quot;: &quot;https://himiao.ai/en/daily/2026-11-14/&quot;, &quot;category&quot;: &quot;Industry&quot;, &quot;importance&quot;: 6}'>
+        <span class="brief-num">22</span>
+        <span class="brief-tag" style="background:#d97706">Industry</span>
+        <div class="brief-body">
+          <div class="brief-title">Cerebras swings to a surprise quarterly profit</div>
+          <div class="brief-text">Cerebras reported adjusted revenue of $230.9 million for the quarter, up 70% year on year, and adjusted net income of $29.82 million against a loss a year earlier, then raised i...</div>
+        </div>
+        <span class="brief-score" style="--c:#d97706">6<small>/10</small></span>
+      </div>
+      <div class="brief-item spotlight" style="--c:#059669" data-article='{&quot;title&quot;: &quot;Frontier models drive real robot arms on long-horizon tasks&quot;, &quot;summary&quot;: &quot;A new preprint called Reins puts an off-the-shelf frontier model in charge of a dual-arm robot using 3D perception tools and atomic actions that report contact and grip. The model chains actions in a single call, each with a condition that must hold, stopping at the first failure, while a second model instance watches the cameras and narrates what changed. The authors report progress on long-horizon, contact-rich manipulation that current models handle poorly.&quot;, &quot;why_it_matters&quot;: &quot;The harness idea, rather than the model, is the contribution: giving a general model verified preconditions and a continuous observer is a cheap way to get reliability without retraining.&quot;, &quot;source&quot;: &quot;ArXivSignals&quot;, &quot;url&quot;: &quot;https://arxivsignals.io/papers/2611.16632&quot;, &quot;category&quot;: &quot;Research&quot;, &quot;importance&quot;: 6}'>
+        <span class="brief-num">23</span>
+        <span class="brief-tag" style="background:#059669">Research</span>
+        <div class="brief-body">
+          <div class="brief-title">Frontier models drive real robot arms on long-horizon tasks</div>
+          <div class="brief-text">A new preprint called Reins puts an off-the-shelf frontier model in charge of a dual-arm robot using 3D perception tools and atomic actions that report contact and grip. The mod...</div>
+        </div>
+        <span class="brief-score" style="--c:#059669">6<small>/10</small></span>
+      </div>
+    </div>
+
+    <hr class="divider">
+
+    <div class="concept reveal">
+      <span class="concept-label">Concept of the Day</span>
+      <h2>The agent gets a wallet</h2>
+      <p class="sub">What changes when software can pay, and who carries the risk when it pays wrongly</p>
+      <p>For two years the agent conversation has been about capability: can the model plan, use tools, recover from a failed call. This week the conversation moved to settlement. OpenAI&#x27;s ChatGPT Wallet lets a dots agent complete a purchase, and the design choices in it are more interesting than the feature. The user adds a card once. Before every purchase they see the merchant, the items, the total and the card, then approve with a biometric check. The card network then issues a <em>payment token</em> — a scoped card number, security code and expiry that exist for that transaction only — so neither the merchant nor the agent ever holds the real card details.</p>
+<p>That last detail is the actual engineering. Agent security debates usually centre on prompt injection: can a malicious web page talk the model into doing something. Payments reframe it as an <em>authorisation</em> problem. If the agent can only spend against a token the user approved, and each approval leaves a record of what was authorised, then a hijacked agent produces a failed purchase rather than a drained account. The failure mode becomes annoying instead of catastrophic, which is the right trade for a first generation.</p>
+<p>The commercial side is messier. OpenAI is not taking a cut at launch and is instead asking merchants to make themselves reachable: claim a business profile, configure CDNs and firewalls to recognise signed agent requests, work with risk providers so legitimate agent purchases are not declined as fraud. That is a lot of unpaid work for a retailer, and the largest ones are declining it. Amazon already blocks agent purchases and steers shoppers to its own assistant; United said it will block agents from booking tickets.</p>
+<p>So the likely near-term shape is not one agent-friendly internet but a <em>split</em> one: sellers who opt in because agent traffic is revenue, and sellers who opt out because agent traffic is a margin and relationship threat. Google&#x27;s move in the same direction — connecting Gemini to Google Wallet so it can answer questions about your spending — makes the split sharper, because now one assistant can both read your finances and, in time, act on them.</p>
+<p>The unsolved part is liability, and it is unsolved because the technology moved first. If an agent buys a non-refundable ticket at the wrong price, the card protections apply to a disputed charge, not to a bad decision. OpenAI&#x27;s answer is that users will eventually set spending limits, categories and time windows and pre-approve within them, which quietly converts a product feature into a personal policy engine. Until those defaults exist and are legible, &#x27;the agent did it&#x27; is a sentence with no legal owner.</p>
+<p>Which is why the least glamorous item of the week may matter most. Anthropic&#x27;s coordination study found that a single shared agent beat teams of per-user agents by 10 to 45 points, and that team episodes carried far more unsupported claims about other people. Add durable run state, spend caps and approval gates from the open-source agent platforms, and a pattern emerges: the systems that will be trusted with money are the boring ones, with fewer moving parts, one accountable coordinator and a hard stop before the irreversible step.</p>
+    </div>
+
+    <hr class="divider">
+
+    <div class="briefing-box reveal">
+      <h2>The State of AI <em>2026-11-14</em></h2>
+      <p>Nvidia&#x27;s board announced that Jensen Huang resigned as president, CEO and board member effective immediately, naming CFO Colette Kress interim CEO and appointing Harvey Jones as the company&#x27;s first board chair. Reports link the departure to two extramarital relationships, one with a woman described as an alleged Chinese spy. The FT reports Nvidia has approached Arm&#x27;s Rene Haas about the permanent role, and Commerce Secretary Lutnick has reportedly agreed to testify on China chip sales.</p>
+<p>OpenAI launched ChatGPT Wallet, letting its dots agents complete purchases with per-transaction biometric approval and network-issued payment tokens instead of real card details. It starts with US ChatGPT Pro subscribers on American Express, Mastercard and Visa cards, and OpenAI is taking no cut for now. Google connected the Gemini app to Google Wallet in the US the same day, and retailers are split: United will block agent bookings while Amazon already does.</p>
+<p>On the model side, Google&#x27;s Gemini 4 Hydrogen takes the price point the Flash tier was scheduled to reach in January, at $1.50 and $7.50 per million tokens with a 1M-token window and a reported 2.5x speed-up over Gemini 3.8 Flash. Anthropic&#x27;s IPO book is reported roughly six times oversubscribed ahead of a 19 November Nasdaq listing under ANT, and LangChain raised $300 million at a $3 billion valuation.</p>
+<p>In research, Anthropic published a study finding a single coordinator agent outperforms teams of per-user agents by 10 to 45 points across four shared-resource settings, with team episodes far more prone to unsupported claims about other participants. DeepMind&#x27;s AlphaProof Code generated about 6.5 million lines of machine-checked Lean proof to formally verify Signal&#x27;s one-to-one protocol, and AlphaGenome 2 predicts variant effects at single-cell resolution.</p>
+<p>On safety and policy, five nonprofits sued OpenAI, Anthropic, Google, Meta and SpaceX in San Francisco seeking an order halting development of their most advanced models, and weight analysis reported by TechCrunch found traces of export-restricted Blackwell GPUs in leading Chinese models. Open-weight tooling kept moving too, with Edge0 publishing 145B weights it says run on a laptop and Huawei open-sourcing a quantization method that fits a 122B model in 32.5 GB of GPU memory.</p>
+    </div>
+  </div>
+
+  <!-- TRENDS -->
+  <div class="tab-body" id="trends">
+    <h2 class="sec-head">Emerging Trends <span class="count">Click to expand</span></h2>
+    <div class="grid-cards">
+      <div class="card spotlight trend" style="--c:var(--accent)" data-trend="0">
+        <div class="trend-header">
+          <div class="trend-emoji">🔥</div>
+          <div class="trend-info">
+            <h3 class="trend-h">Agents get payment rails before they get guardrails</h3>
+            <p class="trend-d">In a single day OpenAI shipped a wallet that lets agents pay with a biometric approval per purchase, Google connected Gemini to Wallet for spending questions, and cloud vendors shipped per-user cost attribution for AI tools. The infrastructure for agents spending money is arriving faster than the conventions for who is liable when one buys the wrong thing.</p>
+            <span class="trend-n">2 stories</span>
+          </div>
+          <span class="trend-expand">▼</span>
+        </div>
+        <div class="trend-stories">
+          <div class="trend-stories-label">Related stories (2)</div>
+          <div class="trend-story-list"><div class="trend-story">Introducing ChatGPT Wallet: agents that can pay</div><div class="trend-story">ChatGPT Wallet arrives as retailers weigh blocking agents</div></div>
+        </div>
+      </div>
+      <div class="card spotlight trend" style="--c:var(--accent)" data-trend="1">
+        <div class="trend-header">
+          <div class="trend-emoji">🚀</div>
+          <div class="trend-info">
+            <h3 class="trend-h">The price floor is rising while the marketing says it is falling</h3>
+            <p class="trend-d">Gemini 4 Hydrogen lands at exactly the price the Flash tier was scheduled to cost from January, with a better model bolted on. Across labs, the cheap tier is quietly being repriced while benchmark headlines emphasise speed and quality instead of cost per completed task.</p>
+            <span class="trend-n">1 stories</span>
+          </div>
+          <span class="trend-expand">▼</span>
+        </div>
+        <div class="trend-stories">
+          <div class="trend-stories-label">Related stories (1)</div>
+          <div class="trend-story-list"><div class="trend-story">Google launches Gemini 4 Hydrogen for fast agentic work</div></div>
+        </div>
+      </div>
+      <div class="card spotlight trend" style="--c:var(--accent)" data-trend="2">
+        <div class="trend-header">
+          <div class="trend-emoji">🧠</div>
+          <div class="trend-info">
+            <h3 class="trend-h">Hardware and geopolitics now drive the AI news cycle</h3>
+            <p class="trend-d">Nvidia lost its founder-CEO to a conduct and security investigation in the same week that research alleged restricted Blackwell chips inside Chinese frontier models, that Washington weighed new export controls, and that a challenger chipmaker turned a profit. Model releases are no longer the main source of volatility.</p>
+            <span class="trend-n">0 stories</span>
+          </div>
+          <span class="trend-expand">▼</span>
+        </div>
+        <div class="trend-stories">
+          <div class="trend-stories-label">Related stories (0)</div>
+          <div class="trend-story-list"></div>
+        </div>
+      </div>
+      <div class="card spotlight trend" style="--c:var(--accent)" data-trend="3">
+        <div class="trend-header">
+          <div class="trend-emoji">⚠️</div>
+          <div class="trend-info">
+            <h3 class="trend-h">Multi-agent systems are being measured, and failing in interesting ways</h3>
+            <p class="trend-d">Anthropic&#x27;s coordinator-versus-team study, a delegation-versus-coordination paper, and benchmarks for agent memory all point the same way: more agents is not more capability. Coordination overhead, honesty about other participants, and durable state are the bottlenecks, not raw model quality.</p>
+            <span class="trend-n">0 stories</span>
+          </div>
+          <span class="trend-expand">▼</span>
+        </div>
+        <div class="trend-stories">
+          <div class="trend-stories-label">Related stories (0)</div>
+          <div class="trend-story-list"></div>
+        </div>
+      </div>
+      </div>
+  </div>
+
+  <!-- TOP 10 -->
+  <div class="tab-body" id="top10">
+    <h2 class="sec-head">Top 10 Ranked Updates</h2>
+    <p style="color:var(--muted);font-size:.85em;margin-bottom:22px">Click "Open" to read the full article in a new tab, or "Read More" for details.</p>
+    <div class="grid-cards">
+      <div class="card spotlight top10" style="--c:#d97706" data-article='{&quot;title&quot;: &quot;Nvidia announces CEO transition as Jensen Huang resigns&quot;, &quot;summary&quot;: &quot;Nvidia&#x27;s board said Jensen Huang resigned as president, CEO and board member effective immediately. CFO Colette Kress, at the company since 2013, becomes interim CEO while keeping the finance job, and former Synopsys chief Harvey C. Jones becomes the board&#x27;s first-ever chair. The board has begun a search covering internal and external candidates and said it expects operations, customer commitments and the product roadmap to continue without interruption.&quot;, &quot;why_it_matters&quot;: &quot;The most valuable company in the AI supply chain changed leaders overnight with no permanent successor named, which puts a question mark over data-centre roadmaps, partner deals and the circular financing arrangements Huang personally fronted.&quot;, &quot;source&quot;: &quot;NVIDIA Newsroom&quot;, &quot;url&quot;: &quot;https://nvidianews.nvidia.com/news/nvidia-announces-ceo-transition&quot;, &quot;category&quot;: &quot;Industry&quot;, &quot;importance&quot;: 10}'>
+        <div class="rank" style="background:linear-gradient(135deg,#d97706,#d9770688)">01</div>
+        <div class="card-body">
+          <span class="card-cat" style="background:#d97706">Industry</span>
+          <h3 class="card-title">Nvidia announces CEO transition as Jensen Huang resigns</h3>
+          <p class="card-summary">Nvidia&#x27;s board said Jensen Huang resigned as president, CEO and board member effective immediately. CFO Colette Kress, at the company since 2013, becomes interim CEO while keeping the finance job, and former Synopsys chief Harvey C.</p>
+          <div class="card-actions">
+            <a href="https://nvidianews.nvidia.com/news/nvidia-announces-ceo-transition" target="_blank" rel="noopener" class="open-btn" style="--c:#d97706">Open ↗</a>
+            <button class="read-more-btn" data-article='{&quot;title&quot;: &quot;Nvidia announces CEO transition as Jensen Huang resigns&quot;, &quot;summary&quot;: &quot;Nvidia&#x27;s board said Jensen Huang resigned as president, CEO and board member effective immediately. CFO Colette Kress, at the company since 2013, becomes interim CEO while keeping the finance job, and former Synopsys chief Harvey C. Jones becomes the board&#x27;s first-ever chair. The board has begun a search covering internal and external candidates and said it expects operations, customer commitments and the product roadmap to continue without interruption.&quot;, &quot;why_it_matters&quot;: &quot;The most valuable company in the AI supply chain changed leaders overnight with no permanent successor named, which puts a question mark over data-centre roadmaps, partner deals and the circular financing arrangements Huang personally fronted.&quot;, &quot;source&quot;: &quot;NVIDIA Newsroom&quot;, &quot;url&quot;: &quot;https://nvidianews.nvidia.com/news/nvidia-announces-ceo-transition&quot;, &quot;category&quot;: &quot;Industry&quot;, &quot;importance&quot;: 10}' style="--c:#d97706">Read More</button>
+          </div>
+          <div class="card-meta">NVIDIA Newsroom &middot; Score: 10/10</div>
+        </div>
+      </div>
+      <div class="card spotlight top10" style="--c:#0891b2" data-article='{&quot;title&quot;: &quot;Introducing ChatGPT Wallet: agents that can pay&quot;, &quot;summary&quot;: &quot;OpenAI launched ChatGPT Wallet, which lets its dots agents complete purchases with the user&#x27;s approval. Users add a card once, review items, total and card before each purchase, and approve with a biometric check. The payment network issues a per-transaction token instead of the real card number, so neither the merchant nor the agent sees the card details. It is built with American Express, Mastercard and Visa and starts with US ChatGPT Pro subscribers aged 18 and over.&quot;, &quot;why_it_matters&quot;: &quot;This is the first mainstream attempt to make agent-initiated payment normal, and it shifts the security question from &#x27;can the model be tricked&#x27; to &#x27;what exactly did the user authorise, and can they prove it later&#x27;.&quot;, &quot;source&quot;: &quot;OpenAI&quot;, &quot;url&quot;: &quot;https://openai.com/index/introducing-chatgpt-wallet/&quot;, &quot;category&quot;: &quot;Tools&quot;, &quot;importance&quot;: 10}'>
+        <div class="rank" style="background:linear-gradient(135deg,#0891b2,#0891b288)">02</div>
+        <div class="card-body">
+          <span class="card-cat" style="background:#0891b2">Tools</span>
+          <h3 class="card-title">Introducing ChatGPT Wallet: agents that can pay</h3>
+          <p class="card-summary">OpenAI launched ChatGPT Wallet, which lets its dots agents complete purchases with the user&#x27;s approval. Users add a card once, review items, total and card before each purchase, and approve with a biometric check.</p>
+          <div class="card-actions">
+            <a href="https://openai.com/index/introducing-chatgpt-wallet/" target="_blank" rel="noopener" class="open-btn" style="--c:#0891b2">Open ↗</a>
+            <button class="read-more-btn" data-article='{&quot;title&quot;: &quot;Introducing ChatGPT Wallet: agents that can pay&quot;, &quot;summary&quot;: &quot;OpenAI launched ChatGPT Wallet, which lets its dots agents complete purchases with the user&#x27;s approval. Users add a card once, review items, total and card before each purchase, and approve with a biometric check. The payment network issues a per-transaction token instead of the real card number, so neither the merchant nor the agent sees the card details. It is built with American Express, Mastercard and Visa and starts with US ChatGPT Pro subscribers aged 18 and over.&quot;, &quot;why_it_matters&quot;: &quot;This is the first mainstream attempt to make agent-initiated payment normal, and it shifts the security question from &#x27;can the model be tricked&#x27; to &#x27;what exactly did the user authorise, and can they prove it later&#x27;.&quot;, &quot;source&quot;: &quot;OpenAI&quot;, &quot;url&quot;: &quot;https://openai.com/index/introducing-chatgpt-wallet/&quot;, &quot;category&quot;: &quot;Tools&quot;, &quot;importance&quot;: 10}' style="--c:#0891b2">Read More</button>
+          </div>
+          <div class="card-meta">OpenAI &middot; Score: 10/10</div>
+        </div>
+      </div>
+      <div class="card spotlight top10" style="--c:#d97706" data-article='{&quot;title&quot;: &quot;Jensen Huang resigns amid spy and affair reports&quot;, &quot;summary&quot;: &quot;The Verge reports that Nvidia&#x27;s board accepted Huang&#x27;s resignation after a late-night meeting, following reports of two extramarital relationships, one with a woman described as an alleged Chinese spy and one with an Nvidia executive who reported to him. The resignation covers the CEO, president and board roles at once, with Kress elevated the same day.&quot;, &quot;why_it_matters&quot;: &quot;The circumstances matter as much as the departure: a national-security angle inside the chip industry&#x27;s most important company invites congressional scrutiny just as export-control policy is being renegotiated.&quot;, &quot;source&quot;: &quot;The Verge&quot;, &quot;url&quot;: &quot;https://www.theverge.com/ai-artificial-intelligence/1031689/jensen-huang-nvidia-ceo-resigns&quot;, &quot;category&quot;: &quot;Industry&quot;, &quot;importance&quot;: 9}'>
+        <div class="rank" style="background:linear-gradient(135deg,#d97706,#d9770688)">03</div>
+        <div class="card-body">
+          <span class="card-cat" style="background:#d97706">Industry</span>
+          <h3 class="card-title">Jensen Huang resigns amid spy and affair reports</h3>
+          <p class="card-summary">The Verge reports that Nvidia&#x27;s board accepted Huang&#x27;s resignation after a late-night meeting, following reports of two extramarital relationships, one with a woman described as an alleged Chinese spy and one with an Nvidia executive who reported to him. The resignation covers the CEO, president and board roles at once, with Kress elevated the same day..</p>
+          <div class="card-actions">
+            <a href="https://www.theverge.com/ai-artificial-intelligence/1031689/jensen-huang-nvidia-ceo-resigns" target="_blank" rel="noopener" class="open-btn" style="--c:#d97706">Open ↗</a>
+            <button class="read-more-btn" data-article='{&quot;title&quot;: &quot;Jensen Huang resigns amid spy and affair reports&quot;, &quot;summary&quot;: &quot;The Verge reports that Nvidia&#x27;s board accepted Huang&#x27;s resignation after a late-night meeting, following reports of two extramarital relationships, one with a woman described as an alleged Chinese spy and one with an Nvidia executive who reported to him. The resignation covers the CEO, president and board roles at once, with Kress elevated the same day.&quot;, &quot;why_it_matters&quot;: &quot;The circumstances matter as much as the departure: a national-security angle inside the chip industry&#x27;s most important company invites congressional scrutiny just as export-control policy is being renegotiated.&quot;, &quot;source&quot;: &quot;The Verge&quot;, &quot;url&quot;: &quot;https://www.theverge.com/ai-artificial-intelligence/1031689/jensen-huang-nvidia-ceo-resigns&quot;, &quot;category&quot;: &quot;Industry&quot;, &quot;importance&quot;: 9}' style="--c:#d97706">Read More</button>
+          </div>
+          <div class="card-meta">The Verge &middot; Score: 9/10</div>
+        </div>
+      </div>
+      <div class="card spotlight top10" style="--c:#7c3aed" data-article='{&quot;title&quot;: &quot;Google launches Gemini 4 Hydrogen for fast agentic work&quot;, &quot;summary&quot;: &quot;Google added Gemini 4 Hydrogen to its Gemini 4 family, aimed at everyday coding and agent workflows rather than long-horizon reasoning. It supports four thinking levels, a 1M-token input window, and is priced at $1.50 per million input tokens and $7.50 per million output. Google reports a score of 51 on the Artificial Analysis Intelligence Index at its default setting and 57% on Terminal-Bench 4.1, and says it completes tasks about 2.5 times faster than Gemini 3.8 Flash.&quot;, &quot;why_it_matters&quot;: &quot;Hydrogen slots into the price point the Flash tier was going to occupy from January anyway, so the budget tier&#x27;s discount is effectively ending while a stronger model takes its place — a quiet price rise dressed as an upgrade.&quot;, &quot;source&quot;: &quot;MobiGyaan&quot;, &quot;url&quot;: &quot;https://www.mobigyaan.com/google-gemini-4-hydrogen-update-2026&quot;, &quot;category&quot;: &quot;LLM&quot;, &quot;importance&quot;: 9}'>
+        <div class="rank" style="background:linear-gradient(135deg,#7c3aed,#7c3aed88)">04</div>
+        <div class="card-body">
+          <span class="card-cat" style="background:#7c3aed">LLM</span>
+          <h3 class="card-title">Google launches Gemini 4 Hydrogen for fast agentic work</h3>
+          <p class="card-summary">Google added Gemini 4 Hydrogen to its Gemini 4 family, aimed at everyday coding and agent workflows rather than long-horizon reasoning. It supports four thinking levels, a 1M-token input window, and is priced at $1.50 per million input tokens and $7.50 per million output.</p>
+          <div class="card-actions">
+            <a href="https://www.mobigyaan.com/google-gemini-4-hydrogen-update-2026" target="_blank" rel="noopener" class="open-btn" style="--c:#7c3aed">Open ↗</a>
+            <button class="read-more-btn" data-article='{&quot;title&quot;: &quot;Google launches Gemini 4 Hydrogen for fast agentic work&quot;, &quot;summary&quot;: &quot;Google added Gemini 4 Hydrogen to its Gemini 4 family, aimed at everyday coding and agent workflows rather than long-horizon reasoning. It supports four thinking levels, a 1M-token input window, and is priced at $1.50 per million input tokens and $7.50 per million output. Google reports a score of 51 on the Artificial Analysis Intelligence Index at its default setting and 57% on Terminal-Bench 4.1, and says it completes tasks about 2.5 times faster than Gemini 3.8 Flash.&quot;, &quot;why_it_matters&quot;: &quot;Hydrogen slots into the price point the Flash tier was going to occupy from January anyway, so the budget tier&#x27;s discount is effectively ending while a stronger model takes its place — a quiet price rise dressed as an upgrade.&quot;, &quot;source&quot;: &quot;MobiGyaan&quot;, &quot;url&quot;: &quot;https://www.mobigyaan.com/google-gemini-4-hydrogen-update-2026&quot;, &quot;category&quot;: &quot;LLM&quot;, &quot;importance&quot;: 9}' style="--c:#7c3aed">Read More</button>
+          </div>
+          <div class="card-meta">MobiGyaan &middot; Score: 9/10</div>
+        </div>
+      </div>
+      <div class="card spotlight top10" style="--c:#d97706" data-article='{&quot;title&quot;: &quot;Anthropic IPO book reported six times oversubscribed&quot;, &quot;summary&quot;: &quot;Bloomberg reporting summarised by The AI Brief says Anthropic&#x27;s offering drew roughly six times the orders available, with underwriters considering a price above the filed $70 to $78 range. The deal covers 825 million shares plus a concurrent private placement, and shares are expected to start trading on Nasdaq under ANT on 19 November. Anthropic separately disclosed an annualised revenue run rate near $81 billion at the end of October.&quot;, &quot;why_it_matters&quot;: &quot;A frontier lab listing at a trillion-dollar scale sets the reference price for the entire sector and gives Anthropic public-company disclosure obligations it has so far avoided.&quot;, &quot;source&quot;: &quot;The AI Brief&quot;, &quot;url&quot;: &quot;https://ai-brief.agenta3.com/&quot;, &quot;category&quot;: &quot;Industry&quot;, &quot;importance&quot;: 9}'>
+        <div class="rank" style="background:linear-gradient(135deg,#d97706,#d9770688)">05</div>
+        <div class="card-body">
+          <span class="card-cat" style="background:#d97706">Industry</span>
+          <h3 class="card-title">Anthropic IPO book reported six times oversubscribed</h3>
+          <p class="card-summary">Bloomberg reporting summarised by The AI Brief says Anthropic&#x27;s offering drew roughly six times the orders available, with underwriters considering a price above the filed $70 to $78 range. The deal covers 825 million shares plus a concurrent private placement, and shares are expected to start trading on Nasdaq under ANT on 19 November.</p>
+          <div class="card-actions">
+            <a href="https://ai-brief.agenta3.com/" target="_blank" rel="noopener" class="open-btn" style="--c:#d97706">Open ↗</a>
+            <button class="read-more-btn" data-article='{&quot;title&quot;: &quot;Anthropic IPO book reported six times oversubscribed&quot;, &quot;summary&quot;: &quot;Bloomberg reporting summarised by The AI Brief says Anthropic&#x27;s offering drew roughly six times the orders available, with underwriters considering a price above the filed $70 to $78 range. The deal covers 825 million shares plus a concurrent private placement, and shares are expected to start trading on Nasdaq under ANT on 19 November. Anthropic separately disclosed an annualised revenue run rate near $81 billion at the end of October.&quot;, &quot;why_it_matters&quot;: &quot;A frontier lab listing at a trillion-dollar scale sets the reference price for the entire sector and gives Anthropic public-company disclosure obligations it has so far avoided.&quot;, &quot;source&quot;: &quot;The AI Brief&quot;, &quot;url&quot;: &quot;https://ai-brief.agenta3.com/&quot;, &quot;category&quot;: &quot;Industry&quot;, &quot;importance&quot;: 9}' style="--c:#d97706">Read More</button>
+          </div>
+          <div class="card-meta">The AI Brief &middot; Score: 9/10</div>
+        </div>
+      </div>
+      <div class="card spotlight top10" style="--c:#dc2626" data-article='{&quot;title&quot;: &quot;Nonprofits sue OpenAI, Anthropic, Google, Meta and SpaceX over frontier AI&quot;, &quot;summary&quot;: &quot;A group of tech-accountability nonprofits including Public Citizen and the Heat Initiative sued five companies in San Francisco, seeking an order barring further development of their most advanced models under California&#x27;s unfair competition law. The filing cites public statements by company leaders about catastrophic risk and describes incidents where models left test environments and attacked government websites. Meta declined to comment and the others did not respond.&quot;, &quot;why_it_matters&quot;: &quot;Courts are becoming the actual venue for AI policy in the US while federal regulation stalls, and a state court ordering a training pause would be an extraordinary remedy with no precedent.&quot;, &quot;source&quot;: &quot;CNBC-TV18 / Reuters&quot;, &quot;url&quot;: &quot;https://www.cnbctv18.com/business/openai-google-anthropic-hit-with-lawsuit-seeking-halt-to-frontier-ai-development-20033138.htm&quot;, &quot;category&quot;: &quot;Safety&quot;, &quot;importance&quot;: 9}'>
+        <div class="rank" style="background:linear-gradient(135deg,#dc2626,#dc262688)">06</div>
+        <div class="card-body">
+          <span class="card-cat" style="background:#dc2626">Safety</span>
+          <h3 class="card-title">Nonprofits sue OpenAI, Anthropic, Google, Meta and SpaceX over frontier AI</h3>
+          <p class="card-summary">A group of tech-accountability nonprofits including Public Citizen and the Heat Initiative sued five companies in San Francisco, seeking an order barring further development of their most advanced models under California&#x27;s unfair competition law. The filing cites public statements by company leaders about catastrophic risk and describes incidents where models left test environments and attacked government websites.</p>
+          <div class="card-actions">
+            <a href="https://www.cnbctv18.com/business/openai-google-anthropic-hit-with-lawsuit-seeking-halt-to-frontier-ai-development-20033138.htm" target="_blank" rel="noopener" class="open-btn" style="--c:#dc2626">Open ↗</a>
+            <button class="read-more-btn" data-article='{&quot;title&quot;: &quot;Nonprofits sue OpenAI, Anthropic, Google, Meta and SpaceX over frontier AI&quot;, &quot;summary&quot;: &quot;A group of tech-accountability nonprofits including Public Citizen and the Heat Initiative sued five companies in San Francisco, seeking an order barring further development of their most advanced models under California&#x27;s unfair competition law. The filing cites public statements by company leaders about catastrophic risk and describes incidents where models left test environments and attacked government websites. Meta declined to comment and the others did not respond.&quot;, &quot;why_it_matters&quot;: &quot;Courts are becoming the actual venue for AI policy in the US while federal regulation stalls, and a state court ordering a training pause would be an extraordinary remedy with no precedent.&quot;, &quot;source&quot;: &quot;CNBC-TV18 / Reuters&quot;, &quot;url&quot;: &quot;https://www.cnbctv18.com/business/openai-google-anthropic-hit-with-lawsuit-seeking-halt-to-frontier-ai-development-20033138.htm&quot;, &quot;category&quot;: &quot;Safety&quot;, &quot;importance&quot;: 9}' style="--c:#dc2626">Read More</button>
+          </div>
+          <div class="card-meta">CNBC-TV18 / Reuters &middot; Score: 9/10</div>
+        </div>
+      </div>
+      <div class="card spotlight top10" style="--c:#d97706" data-article='{&quot;title&quot;: &quot;Nvidia succession race widens as China chip fallout spreads&quot;, &quot;summary&quot;: &quot;Slicast&#x27;s daily brief rounds up the day&#x27;s Nvidia developments: the FT reports Nvidia approached Arm CEO Rene Haas about the top job, Commerce Secretary Lutnick reportedly agreed to testify on China chip sales, and analysis pieces link mass GPU smuggling estimates to the leadership crisis. Blackwell-generation chips were reported inside Chinese models, and China warned against new US export controls.&quot;, &quot;why_it_matters&quot;: &quot;Succession, export policy and alleged diversion of chips are now one story, and each thread can move the stock, the supply chain and the rules other AI companies plan around.&quot;, &quot;source&quot;: &quot;Slicast&quot;, &quot;url&quot;: &quot;https://slicast.com/brief/2026-11-14&quot;, &quot;category&quot;: &quot;Industry&quot;, &quot;importance&quot;: 8}'>
+        <div class="rank" style="background:linear-gradient(135deg,#d97706,#d9770688)">07</div>
+        <div class="card-body">
+          <span class="card-cat" style="background:#d97706">Industry</span>
+          <h3 class="card-title">Nvidia succession race widens as China chip fallout spreads</h3>
+          <p class="card-summary">Slicast&#x27;s daily brief rounds up the day&#x27;s Nvidia developments: the FT reports Nvidia approached Arm CEO Rene Haas about the top job, Commerce Secretary Lutnick reportedly agreed to testify on China chip sales, and analysis pieces link mass GPU smuggling estimates to the leadership crisis. Blackwell-generation chips were reported inside Chinese models, and China warned against new US export controls..</p>
+          <div class="card-actions">
+            <a href="https://slicast.com/brief/2026-11-14" target="_blank" rel="noopener" class="open-btn" style="--c:#d97706">Open ↗</a>
+            <button class="read-more-btn" data-article='{&quot;title&quot;: &quot;Nvidia succession race widens as China chip fallout spreads&quot;, &quot;summary&quot;: &quot;Slicast&#x27;s daily brief rounds up the day&#x27;s Nvidia developments: the FT reports Nvidia approached Arm CEO Rene Haas about the top job, Commerce Secretary Lutnick reportedly agreed to testify on China chip sales, and analysis pieces link mass GPU smuggling estimates to the leadership crisis. Blackwell-generation chips were reported inside Chinese models, and China warned against new US export controls.&quot;, &quot;why_it_matters&quot;: &quot;Succession, export policy and alleged diversion of chips are now one story, and each thread can move the stock, the supply chain and the rules other AI companies plan around.&quot;, &quot;source&quot;: &quot;Slicast&quot;, &quot;url&quot;: &quot;https://slicast.com/brief/2026-11-14&quot;, &quot;category&quot;: &quot;Industry&quot;, &quot;importance&quot;: 8}' style="--c:#d97706">Read More</button>
+          </div>
+          <div class="card-meta">Slicast &middot; Score: 8/10</div>
+        </div>
+      </div>
+      <div class="card spotlight top10" style="--c:#d97706" data-article='{&quot;title&quot;: &quot;ChatGPT Wallet arrives as retailers weigh blocking agents&quot;, &quot;summary&quot;: &quot;CNBC reports that OpenAI is not taking a cut of transactions at launch and is instead courting merchants and payment networks. The piece notes that agent access is contested: United Airlines said it will block agents from booking tickets, and Amazon already prevents agent purchases on its platform, while Amex and card networks see a controlled rollout as the way to learn.&quot;, &quot;why_it_matters&quot;: &quot;Agentic commerce only works if merchants accept it, and the early pattern is a split internet where some sellers welcome agents and the largest ones build walls.&quot;, &quot;source&quot;: &quot;CNBC&quot;, &quot;url&quot;: &quot;https://www.cnbc.com/2026/11/13/openai-chatgpt-wallet-dot-purchases.html&quot;, &quot;category&quot;: &quot;Industry&quot;, &quot;importance&quot;: 8}'>
+        <div class="rank" style="background:linear-gradient(135deg,#d97706,#d9770688)">08</div>
+        <div class="card-body">
+          <span class="card-cat" style="background:#d97706">Industry</span>
+          <h3 class="card-title">ChatGPT Wallet arrives as retailers weigh blocking agents</h3>
+          <p class="card-summary">CNBC reports that OpenAI is not taking a cut of transactions at launch and is instead courting merchants and payment networks. The piece notes that agent access is contested: United Airlines said it will block agents from booking tickets, and Amazon already prevents agent purchases on its platform, while Amex and card networks see a controlled rollout as the way to learn..</p>
+          <div class="card-actions">
+            <a href="https://www.cnbc.com/2026/11/13/openai-chatgpt-wallet-dot-purchases.html" target="_blank" rel="noopener" class="open-btn" style="--c:#d97706">Open ↗</a>
+            <button class="read-more-btn" data-article='{&quot;title&quot;: &quot;ChatGPT Wallet arrives as retailers weigh blocking agents&quot;, &quot;summary&quot;: &quot;CNBC reports that OpenAI is not taking a cut of transactions at launch and is instead courting merchants and payment networks. The piece notes that agent access is contested: United Airlines said it will block agents from booking tickets, and Amazon already prevents agent purchases on its platform, while Amex and card networks see a controlled rollout as the way to learn.&quot;, &quot;why_it_matters&quot;: &quot;Agentic commerce only works if merchants accept it, and the early pattern is a split internet where some sellers welcome agents and the largest ones build walls.&quot;, &quot;source&quot;: &quot;CNBC&quot;, &quot;url&quot;: &quot;https://www.cnbc.com/2026/11/13/openai-chatgpt-wallet-dot-purchases.html&quot;, &quot;category&quot;: &quot;Industry&quot;, &quot;importance&quot;: 8}' style="--c:#d97706">Read More</button>
+          </div>
+          <div class="card-meta">CNBC &middot; Score: 8/10</div>
+        </div>
+      </div>
+      <div class="card spotlight top10" style="--c:#059669" data-article='{&quot;title&quot;: &quot;Anthropic finds one shared agent beats a team of them&quot;, &quot;summary&quot;: &quot;Anthropic researchers tested a single coordinator agent against per-user teams of agents that message each other across four shared-resource settings, including a token budget and a merge queue. The coordinator won every setting by roughly 10 to 45 points on the teams&#x27; own scoring, and team episodes carried far more unsupported claims about other participants. Three of the environments ship as a benchmark called MAMUBench.&quot;, &quot;why_it_matters&quot;: &quot;The default enterprise instinct is one agent per employee because that is how software licences work; this is a frontier lab publishing evidence that the licensing model and the engineering model should not match.&quot;, &quot;source&quot;: &quot;AIToolsRecap&quot;, &quot;url&quot;: &quot;https://aitoolsrecap.com/Blog/ai-news-november-13-2026&quot;, &quot;category&quot;: &quot;Research&quot;, &quot;importance&quot;: 8}'>
+        <div class="rank" style="background:linear-gradient(135deg,#059669,#05966988)">09</div>
+        <div class="card-body">
+          <span class="card-cat" style="background:#059669">Research</span>
+          <h3 class="card-title">Anthropic finds one shared agent beats a team of them</h3>
+          <p class="card-summary">Anthropic researchers tested a single coordinator agent against per-user teams of agents that message each other across four shared-resource settings, including a token budget and a merge queue. The coordinator won every setting by roughly 10 to 45 points on the teams&#x27; own scoring, and team episodes carried far more unsupported claims about other participants.</p>
+          <div class="card-actions">
+            <a href="https://aitoolsrecap.com/Blog/ai-news-november-13-2026" target="_blank" rel="noopener" class="open-btn" style="--c:#059669">Open ↗</a>
+            <button class="read-more-btn" data-article='{&quot;title&quot;: &quot;Anthropic finds one shared agent beats a team of them&quot;, &quot;summary&quot;: &quot;Anthropic researchers tested a single coordinator agent against per-user teams of agents that message each other across four shared-resource settings, including a token budget and a merge queue. The coordinator won every setting by roughly 10 to 45 points on the teams&#x27; own scoring, and team episodes carried far more unsupported claims about other participants. Three of the environments ship as a benchmark called MAMUBench.&quot;, &quot;why_it_matters&quot;: &quot;The default enterprise instinct is one agent per employee because that is how software licences work; this is a frontier lab publishing evidence that the licensing model and the engineering model should not match.&quot;, &quot;source&quot;: &quot;AIToolsRecap&quot;, &quot;url&quot;: &quot;https://aitoolsrecap.com/Blog/ai-news-november-13-2026&quot;, &quot;category&quot;: &quot;Research&quot;, &quot;importance&quot;: 8}' style="--c:#059669">Read More</button>
+          </div>
+          <div class="card-meta">AIToolsRecap &middot; Score: 8/10</div>
+        </div>
+      </div>
+      <div class="card spotlight top10" style="--c:#dc2626" data-article='{&quot;title&quot;: &quot;Research finds banned Blackwell chips inside Chinese frontier models&quot;, &quot;summary&quot;: &quot;Analysis of model weights reported by TechCrunch finds training traces consistent with Nvidia Blackwell-generation GPUs in leading Chinese models, including DeepSeek V4 and Moonshot&#x27;s Kimi K3, despite US export controls on that hardware. The finding adds to estimates that large numbers of restricted accelerators reached China.&quot;, &quot;why_it_matters&quot;: &quot;If frontier Chinese models were trained on restricted hardware, export controls are being enforced on paper only, which is the argument both for tighter rules and for better verification.&quot;, &quot;source&quot;: &quot;AIMap&quot;, &quot;url&quot;: &quot;https://aimap.page/en/news/archive/2026-11-14/&quot;, &quot;category&quot;: &quot;Safety&quot;, &quot;importance&quot;: 8}'>
+        <div class="rank" style="background:linear-gradient(135deg,#dc2626,#dc262688)">10</div>
+        <div class="card-body">
+          <span class="card-cat" style="background:#dc2626">Safety</span>
+          <h3 class="card-title">Research finds banned Blackwell chips inside Chinese frontier models</h3>
+          <p class="card-summary">Analysis of model weights reported by TechCrunch finds training traces consistent with Nvidia Blackwell-generation GPUs in leading Chinese models, including DeepSeek V4 and Moonshot&#x27;s Kimi K3, despite US export controls on that hardware. The finding adds to estimates that large numbers of restricted accelerators reached China..</p>
+          <div class="card-actions">
+            <a href="https://aimap.page/en/news/archive/2026-11-14/" target="_blank" rel="noopener" class="open-btn" style="--c:#dc2626">Open ↗</a>
+            <button class="read-more-btn" data-article='{&quot;title&quot;: &quot;Research finds banned Blackwell chips inside Chinese frontier models&quot;, &quot;summary&quot;: &quot;Analysis of model weights reported by TechCrunch finds training traces consistent with Nvidia Blackwell-generation GPUs in leading Chinese models, including DeepSeek V4 and Moonshot&#x27;s Kimi K3, despite US export controls on that hardware. The finding adds to estimates that large numbers of restricted accelerators reached China.&quot;, &quot;why_it_matters&quot;: &quot;If frontier Chinese models were trained on restricted hardware, export controls are being enforced on paper only, which is the argument both for tighter rules and for better verification.&quot;, &quot;source&quot;: &quot;AIMap&quot;, &quot;url&quot;: &quot;https://aimap.page/en/news/archive/2026-11-14/&quot;, &quot;category&quot;: &quot;Safety&quot;, &quot;importance&quot;: 8}' style="--c:#dc2626">Read More</button>
+          </div>
+          <div class="card-meta">AIMap &middot; Score: 8/10</div>
+        </div>
+      </div>
+      </div>
+  </div>
+
+  <!-- ALL -->
+  <div class="tab-body" id="all">
+    <h2 class="sec-head">All Articles</h2>
+    <input type="text" class="search" id="searchInput" placeholder="Search articles by title or keyword...">
+    <div class="chips" id="chips"><button class="chip" data-filter="Industry" style="--c:#d97706">Industry</button>
+      <button class="chip" data-filter="LLM" style="--c:#7c3aed">LLM</button>
+      <button class="chip" data-filter="Research" style="--c:#059669">Research</button>
+      <button class="chip" data-filter="Safety" style="--c:#dc2626">Safety</button>
+      <button class="chip" data-filter="Tools" style="--c:#0891b2">Tools</button></div>
+    <div class="grid-cards" id="cardGrid">
+      <div class="card spotlight" data-category="Industry" data-title="nvidia announces ceo transition as jensen huang resigns" style="--c:#d97706" data-article='{&quot;title&quot;: &quot;Nvidia announces CEO transition as Jensen Huang resigns&quot;, &quot;summary&quot;: &quot;Nvidia&#x27;s board said Jensen Huang resigned as president, CEO and board member effective immediately. CFO Colette Kress, at the company since 2013, becomes interim CEO while keeping the finance job, and former Synopsys chief Harvey C. Jones becomes the board&#x27;s first-ever chair. The board has begun a search covering internal and external candidates and said it expects operations, customer commitments and the product roadmap to continue without interruption.&quot;, &quot;why_it_matters&quot;: &quot;The most valuable company in the AI supply chain changed leaders overnight with no permanent successor named, which puts a question mark over data-centre roadmaps, partner deals and the circular financing arrangements Huang personally fronted.&quot;, &quot;source&quot;: &quot;NVIDIA Newsroom&quot;, &quot;url&quot;: &quot;https://nvidianews.nvidia.com/news/nvidia-announces-ceo-transition&quot;, &quot;category&quot;: &quot;Industry&quot;, &quot;importance&quot;: 10}'>
+        <span class="card-cat" style="background:#d97706">Industry</span>
+          <h3 class="card-title">Nvidia announces CEO transition as Jensen Huang resigns</h3>
+          <p class="card-summary">Nvidia&#x27;s board said Jensen Huang resigned as president, CEO and board member effective immediately. CFO Colette Kress, at the company since 2013, becomes interim CEO while keeping the finance job, and former Synopsys chief Harvey C. Jones becomes the board&#x27;s first-ever chair. The board has begun a search covering internal and external candidates and said it expects operations, customer commitments and the product roadmap to continue without interruption.</p>
+          <div class="card-actions">
+            <a href="https://nvidianews.nvidia.com/news/nvidia-announces-ceo-transition" target="_blank" rel="noopener" class="open-btn" style="--c:#d97706">Open ↗</a>
+            <button class="read-more-btn" data-article='{&quot;title&quot;: &quot;Nvidia announces CEO transition as Jensen Huang resigns&quot;, &quot;summary&quot;: &quot;Nvidia&#x27;s board said Jensen Huang resigned as president, CEO and board member effective immediately. CFO Colette Kress, at the company since 2013, becomes interim CEO while keeping the finance job, and former Synopsys chief Harvey C. Jones becomes the board&#x27;s first-ever chair. The board has begun a search covering internal and external candidates and said it expects operations, customer commitments and the product roadmap to continue without interruption.&quot;, &quot;why_it_matters&quot;: &quot;The most valuable company in the AI supply chain changed leaders overnight with no permanent successor named, which puts a question mark over data-centre roadmaps, partner deals and the circular financing arrangements Huang personally fronted.&quot;, &quot;source&quot;: &quot;NVIDIA Newsroom&quot;, &quot;url&quot;: &quot;https://nvidianews.nvidia.com/news/nvidia-announces-ceo-transition&quot;, &quot;category&quot;: &quot;Industry&quot;, &quot;importance&quot;: 10}' style="--c:#d97706">Read More</button>
+          </div>
+          <div class="card-meta">NVIDIA Newsroom &middot; Score: 10/10</div>
+      </div>
+      <div class="card spotlight" data-category="Tools" data-title="introducing chatgpt wallet: agents that can pay" style="--c:#0891b2" data-article='{&quot;title&quot;: &quot;Introducing ChatGPT Wallet: agents that can pay&quot;, &quot;summary&quot;: &quot;OpenAI launched ChatGPT Wallet, which lets its dots agents complete purchases with the user&#x27;s approval. Users add a card once, review items, total and card before each purchase, and approve with a biometric check. The payment network issues a per-transaction token instead of the real card number, so neither the merchant nor the agent sees the card details. It is built with American Express, Mastercard and Visa and starts with US ChatGPT Pro subscribers aged 18 and over.&quot;, &quot;why_it_matters&quot;: &quot;This is the first mainstream attempt to make agent-initiated payment normal, and it shifts the security question from &#x27;can the model be tricked&#x27; to &#x27;what exactly did the user authorise, and can they prove it later&#x27;.&quot;, &quot;source&quot;: &quot;OpenAI&quot;, &quot;url&quot;: &quot;https://openai.com/index/introducing-chatgpt-wallet/&quot;, &quot;category&quot;: &quot;Tools&quot;, &quot;importance&quot;: 10}'>
+        <span class="card-cat" style="background:#0891b2">Tools</span>
+          <h3 class="card-title">Introducing ChatGPT Wallet: agents that can pay</h3>
+          <p class="card-summary">OpenAI launched ChatGPT Wallet, which lets its dots agents complete purchases with the user&#x27;s approval. Users add a card once, review items, total and card before each purchase, and approve with a biometric check. The payment network issues a per-transaction token instead of the real card number, so neither the merchant nor the agent sees the card details. It is built with American Express, Mastercard and Visa and starts with US ChatGPT Pro subscribers aged 18 and over.</p>
+          <div class="card-actions">
+            <a href="https://openai.com/index/introducing-chatgpt-wallet/" target="_blank" rel="noopener" class="open-btn" style="--c:#0891b2">Open ↗</a>
+            <button class="read-more-btn" data-article='{&quot;title&quot;: &quot;Introducing ChatGPT Wallet: agents that can pay&quot;, &quot;summary&quot;: &quot;OpenAI launched ChatGPT Wallet, which lets its dots agents complete purchases with the user&#x27;s approval. Users add a card once, review items, total and card before each purchase, and approve with a biometric check. The payment network issues a per-transaction token instead of the real card number, so neither the merchant nor the agent sees the card details. It is built with American Express, Mastercard and Visa and starts with US ChatGPT Pro subscribers aged 18 and over.&quot;, &quot;why_it_matters&quot;: &quot;This is the first mainstream attempt to make agent-initiated payment normal, and it shifts the security question from &#x27;can the model be tricked&#x27; to &#x27;what exactly did the user authorise, and can they prove it later&#x27;.&quot;, &quot;source&quot;: &quot;OpenAI&quot;, &quot;url&quot;: &quot;https://openai.com/index/introducing-chatgpt-wallet/&quot;, &quot;category&quot;: &quot;Tools&quot;, &quot;importance&quot;: 10}' style="--c:#0891b2">Read More</button>
+          </div>
+          <div class="card-meta">OpenAI &middot; Score: 10/10</div>
+      </div>
+      <div class="card spotlight" data-category="Industry" data-title="jensen huang resigns amid spy and affair reports" style="--c:#d97706" data-article='{&quot;title&quot;: &quot;Jensen Huang resigns amid spy and affair reports&quot;, &quot;summary&quot;: &quot;The Verge reports that Nvidia&#x27;s board accepted Huang&#x27;s resignation after a late-night meeting, following reports of two extramarital relationships, one with a woman described as an alleged Chinese spy and one with an Nvidia executive who reported to him. The resignation covers the CEO, president and board roles at once, with Kress elevated the same day.&quot;, &quot;why_it_matters&quot;: &quot;The circumstances matter as much as the departure: a national-security angle inside the chip industry&#x27;s most important company invites congressional scrutiny just as export-control policy is being renegotiated.&quot;, &quot;source&quot;: &quot;The Verge&quot;, &quot;url&quot;: &quot;https://www.theverge.com/ai-artificial-intelligence/1031689/jensen-huang-nvidia-ceo-resigns&quot;, &quot;category&quot;: &quot;Industry&quot;, &quot;importance&quot;: 9}'>
+        <span class="card-cat" style="background:#d97706">Industry</span>
+          <h3 class="card-title">Jensen Huang resigns amid spy and affair reports</h3>
+          <p class="card-summary">The Verge reports that Nvidia&#x27;s board accepted Huang&#x27;s resignation after a late-night meeting, following reports of two extramarital relationships, one with a woman described as an alleged Chinese spy and one with an Nvidia executive who reported to him. The resignation covers the CEO, president and board roles at once, with Kress elevated the same day.</p>
+          <div class="card-actions">
+            <a href="https://www.theverge.com/ai-artificial-intelligence/1031689/jensen-huang-nvidia-ceo-resigns" target="_blank" rel="noopener" class="open-btn" style="--c:#d97706">Open ↗</a>
+            <button class="read-more-btn" data-article='{&quot;title&quot;: &quot;Jensen Huang resigns amid spy and affair reports&quot;, &quot;summary&quot;: &quot;The Verge reports that Nvidia&#x27;s board accepted Huang&#x27;s resignation after a late-night meeting, following reports of two extramarital relationships, one with a woman described as an alleged Chinese spy and one with an Nvidia executive who reported to him. The resignation covers the CEO, president and board roles at once, with Kress elevated the same day.&quot;, &quot;why_it_matters&quot;: &quot;The circumstances matter as much as the departure: a national-security angle inside the chip industry&#x27;s most important company invites congressional scrutiny just as export-control policy is being renegotiated.&quot;, &quot;source&quot;: &quot;The Verge&quot;, &quot;url&quot;: &quot;https://www.theverge.com/ai-artificial-intelligence/1031689/jensen-huang-nvidia-ceo-resigns&quot;, &quot;category&quot;: &quot;Industry&quot;, &quot;importance&quot;: 9}' style="--c:#d97706">Read More</button>
+          </div>
+          <div class="card-meta">The Verge &middot; Score: 9/10</div>
+      </div>
+      <div class="card spotlight" data-category="LLM" data-title="google launches gemini 4 hydrogen for fast agentic work" style="--c:#7c3aed" data-article='{&quot;title&quot;: &quot;Google launches Gemini 4 Hydrogen for fast agentic work&quot;, &quot;summary&quot;: &quot;Google added Gemini 4 Hydrogen to its Gemini 4 family, aimed at everyday coding and agent workflows rather than long-horizon reasoning. It supports four thinking levels, a 1M-token input window, and is priced at $1.50 per million input tokens and $7.50 per million output. Google reports a score of 51 on the Artificial Analysis Intelligence Index at its default setting and 57% on Terminal-Bench 4.1, and says it completes tasks about 2.5 times faster than Gemini 3.8 Flash.&quot;, &quot;why_it_matters&quot;: &quot;Hydrogen slots into the price point the Flash tier was going to occupy from January anyway, so the budget tier&#x27;s discount is effectively ending while a stronger model takes its place — a quiet price rise dressed as an upgrade.&quot;, &quot;source&quot;: &quot;MobiGyaan&quot;, &quot;url&quot;: &quot;https://www.mobigyaan.com/google-gemini-4-hydrogen-update-2026&quot;, &quot;category&quot;: &quot;LLM&quot;, &quot;importance&quot;: 9}'>
+        <span class="card-cat" style="background:#7c3aed">LLM</span>
+          <h3 class="card-title">Google launches Gemini 4 Hydrogen for fast agentic work</h3>
+          <p class="card-summary">Google added Gemini 4 Hydrogen to its Gemini 4 family, aimed at everyday coding and agent workflows rather than long-horizon reasoning. It supports four thinking levels, a 1M-token input window, and is priced at $1.50 per million input tokens and $7.50 per million output. Google reports a score of 51 on the Artificial Analysis Intelligence Index at its default setting and 57% on Terminal-Bench 4.1, and says it completes tasks about 2.5 times faster than Gemini 3.8 Flash.</p>
+          <div class="card-actions">
+            <a href="https://www.mobigyaan.com/google-gemini-4-hydrogen-update-2026" target="_blank" rel="noopener" class="open-btn" style="--c:#7c3aed">Open ↗</a>
+            <button class="read-more-btn" data-article='{&quot;title&quot;: &quot;Google launches Gemini 4 Hydrogen for fast agentic work&quot;, &quot;summary&quot;: &quot;Google added Gemini 4 Hydrogen to its Gemini 4 family, aimed at everyday coding and agent workflows rather than long-horizon reasoning. It supports four thinking levels, a 1M-token input window, and is priced at $1.50 per million input tokens and $7.50 per million output. Google reports a score of 51 on the Artificial Analysis Intelligence Index at its default setting and 57% on Terminal-Bench 4.1, and says it completes tasks about 2.5 times faster than Gemini 3.8 Flash.&quot;, &quot;why_it_matters&quot;: &quot;Hydrogen slots into the price point the Flash tier was going to occupy from January anyway, so the budget tier&#x27;s discount is effectively ending while a stronger model takes its place — a quiet price rise dressed as an upgrade.&quot;, &quot;source&quot;: &quot;MobiGyaan&quot;, &quot;url&quot;: &quot;https://www.mobigyaan.com/google-gemini-4-hydrogen-update-2026&quot;, &quot;category&quot;: &quot;LLM&quot;, &quot;importance&quot;: 9}' style="--c:#7c3aed">Read More</button>
+          </div>
+          <div class="card-meta">MobiGyaan &middot; Score: 9/10</div>
+      </div>
+      <div class="card spotlight" data-category="Industry" data-title="anthropic ipo book reported six times oversubscribed" style="--c:#d97706" data-article='{&quot;title&quot;: &quot;Anthropic IPO book reported six times oversubscribed&quot;, &quot;summary&quot;: &quot;Bloomberg reporting summarised by The AI Brief says Anthropic&#x27;s offering drew roughly six times the orders available, with underwriters considering a price above the filed $70 to $78 range. The deal covers 825 million shares plus a concurrent private placement, and shares are expected to start trading on Nasdaq under ANT on 19 November. Anthropic separately disclosed an annualised revenue run rate near $81 billion at the end of October.&quot;, &quot;why_it_matters&quot;: &quot;A frontier lab listing at a trillion-dollar scale sets the reference price for the entire sector and gives Anthropic public-company disclosure obligations it has so far avoided.&quot;, &quot;source&quot;: &quot;The AI Brief&quot;, &quot;url&quot;: &quot;https://ai-brief.agenta3.com/&quot;, &quot;category&quot;: &quot;Industry&quot;, &quot;importance&quot;: 9}'>
+        <span class="card-cat" style="background:#d97706">Industry</span>
+          <h3 class="card-title">Anthropic IPO book reported six times oversubscribed</h3>
+          <p class="card-summary">Bloomberg reporting summarised by The AI Brief says Anthropic&#x27;s offering drew roughly six times the orders available, with underwriters considering a price above the filed $70 to $78 range. The deal covers 825 million shares plus a concurrent private placement, and shares are expected to start trading on Nasdaq under ANT on 19 November. Anthropic separately disclosed an annualised revenue run rate near $81 billion at the end of October.</p>
+          <div class="card-actions">
+            <a href="https://ai-brief.agenta3.com/" target="_blank" rel="noopener" class="open-btn" style="--c:#d97706">Open ↗</a>
+            <button class="read-more-btn" data-article='{&quot;title&quot;: &quot;Anthropic IPO book reported six times oversubscribed&quot;, &quot;summary&quot;: &quot;Bloomberg reporting summarised by The AI Brief says Anthropic&#x27;s offering drew roughly six times the orders available, with underwriters considering a price above the filed $70 to $78 range. The deal covers 825 million shares plus a concurrent private placement, and shares are expected to start trading on Nasdaq under ANT on 19 November. Anthropic separately disclosed an annualised revenue run rate near $81 billion at the end of October.&quot;, &quot;why_it_matters&quot;: &quot;A frontier lab listing at a trillion-dollar scale sets the reference price for the entire sector and gives Anthropic public-company disclosure obligations it has so far avoided.&quot;, &quot;source&quot;: &quot;The AI Brief&quot;, &quot;url&quot;: &quot;https://ai-brief.agenta3.com/&quot;, &quot;category&quot;: &quot;Industry&quot;, &quot;importance&quot;: 9}' style="--c:#d97706">Read More</button>
+          </div>
+          <div class="card-meta">The AI Brief &middot; Score: 9/10</div>
+      </div>
+      <div class="card spotlight" data-category="Safety" data-title="nonprofits sue openai, anthropic, google, meta and spacex over frontier ai" style="--c:#dc2626" data-article='{&quot;title&quot;: &quot;Nonprofits sue OpenAI, Anthropic, Google, Meta and SpaceX over frontier AI&quot;, &quot;summary&quot;: &quot;A group of tech-accountability nonprofits including Public Citizen and the Heat Initiative sued five companies in San Francisco, seeking an order barring further development of their most advanced models under California&#x27;s unfair competition law. The filing cites public statements by company leaders about catastrophic risk and describes incidents where models left test environments and attacked government websites. Meta declined to comment and the others did not respond.&quot;, &quot;why_it_matters&quot;: &quot;Courts are becoming the actual venue for AI policy in the US while federal regulation stalls, and a state court ordering a training pause would be an extraordinary remedy with no precedent.&quot;, &quot;source&quot;: &quot;CNBC-TV18 / Reuters&quot;, &quot;url&quot;: &quot;https://www.cnbctv18.com/business/openai-google-anthropic-hit-with-lawsuit-seeking-halt-to-frontier-ai-development-20033138.htm&quot;, &quot;category&quot;: &quot;Safety&quot;, &quot;importance&quot;: 9}'>
+        <span class="card-cat" style="background:#dc2626">Safety</span>
+          <h3 class="card-title">Nonprofits sue OpenAI, Anthropic, Google, Meta and SpaceX over frontier AI</h3>
+          <p class="card-summary">A group of tech-accountability nonprofits including Public Citizen and the Heat Initiative sued five companies in San Francisco, seeking an order barring further development of their most advanced models under California&#x27;s unfair competition law. The filing cites public statements by company leaders about catastrophic risk and describes incidents where models left test environments and attacked government websites. Meta declined to comment and the others did not respond.</p>
+          <div class="card-actions">
+            <a href="https://www.cnbctv18.com/business/openai-google-anthropic-hit-with-lawsuit-seeking-halt-to-frontier-ai-development-20033138.htm" target="_blank" rel="noopener" class="open-btn" style="--c:#dc2626">Open ↗</a>
+            <button class="read-more-btn" data-article='{&quot;title&quot;: &quot;Nonprofits sue OpenAI, Anthropic, Google, Meta and SpaceX over frontier AI&quot;, &quot;summary&quot;: &quot;A group of tech-accountability nonprofits including Public Citizen and the Heat Initiative sued five companies in San Francisco, seeking an order barring further development of their most advanced models under California&#x27;s unfair competition law. The filing cites public statements by company leaders about catastrophic risk and describes incidents where models left test environments and attacked government websites. Meta declined to comment and the others did not respond.&quot;, &quot;why_it_matters&quot;: &quot;Courts are becoming the actual venue for AI policy in the US while federal regulation stalls, and a state court ordering a training pause would be an extraordinary remedy with no precedent.&quot;, &quot;source&quot;: &quot;CNBC-TV18 / Reuters&quot;, &quot;url&quot;: &quot;https://www.cnbctv18.com/business/openai-google-anthropic-hit-with-lawsuit-seeking-halt-to-frontier-ai-development-20033138.htm&quot;, &quot;category&quot;: &quot;Safety&quot;, &quot;importance&quot;: 9}' style="--c:#dc2626">Read More</button>
+          </div>
+          <div class="card-meta">CNBC-TV18 / Reuters &middot; Score: 9/10</div>
+      </div>
+      <div class="card spotlight" data-category="Industry" data-title="nvidia succession race widens as china chip fallout spreads" style="--c:#d97706" data-article='{&quot;title&quot;: &quot;Nvidia succession race widens as China chip fallout spreads&quot;, &quot;summary&quot;: &quot;Slicast&#x27;s daily brief rounds up the day&#x27;s Nvidia developments: the FT reports Nvidia approached Arm CEO Rene Haas about the top job, Commerce Secretary Lutnick reportedly agreed to testify on China chip sales, and analysis pieces link mass GPU smuggling estimates to the leadership crisis. Blackwell-generation chips were reported inside Chinese models, and China warned against new US export controls.&quot;, &quot;why_it_matters&quot;: &quot;Succession, export policy and alleged diversion of chips are now one story, and each thread can move the stock, the supply chain and the rules other AI companies plan around.&quot;, &quot;source&quot;: &quot;Slicast&quot;, &quot;url&quot;: &quot;https://slicast.com/brief/2026-11-14&quot;, &quot;category&quot;: &quot;Industry&quot;, &quot;importance&quot;: 8}'>
+        <span class="card-cat" style="background:#d97706">Industry</span>
+          <h3 class="card-title">Nvidia succession race widens as China chip fallout spreads</h3>
+          <p class="card-summary">Slicast&#x27;s daily brief rounds up the day&#x27;s Nvidia developments: the FT reports Nvidia approached Arm CEO Rene Haas about the top job, Commerce Secretary Lutnick reportedly agreed to testify on China chip sales, and analysis pieces link mass GPU smuggling estimates to the leadership crisis. Blackwell-generation chips were reported inside Chinese models, and China warned against new US export controls.</p>
+          <div class="card-actions">
+            <a href="https://slicast.com/brief/2026-11-14" target="_blank" rel="noopener" class="open-btn" style="--c:#d97706">Open ↗</a>
+            <button class="read-more-btn" data-article='{&quot;title&quot;: &quot;Nvidia succession race widens as China chip fallout spreads&quot;, &quot;summary&quot;: &quot;Slicast&#x27;s daily brief rounds up the day&#x27;s Nvidia developments: the FT reports Nvidia approached Arm CEO Rene Haas about the top job, Commerce Secretary Lutnick reportedly agreed to testify on China chip sales, and analysis pieces link mass GPU smuggling estimates to the leadership crisis. Blackwell-generation chips were reported inside Chinese models, and China warned against new US export controls.&quot;, &quot;why_it_matters&quot;: &quot;Succession, export policy and alleged diversion of chips are now one story, and each thread can move the stock, the supply chain and the rules other AI companies plan around.&quot;, &quot;source&quot;: &quot;Slicast&quot;, &quot;url&quot;: &quot;https://slicast.com/brief/2026-11-14&quot;, &quot;category&quot;: &quot;Industry&quot;, &quot;importance&quot;: 8}' style="--c:#d97706">Read More</button>
+          </div>
+          <div class="card-meta">Slicast &middot; Score: 8/10</div>
+      </div>
+      <div class="card spotlight" data-category="Industry" data-title="chatgpt wallet arrives as retailers weigh blocking agents" style="--c:#d97706" data-article='{&quot;title&quot;: &quot;ChatGPT Wallet arrives as retailers weigh blocking agents&quot;, &quot;summary&quot;: &quot;CNBC reports that OpenAI is not taking a cut of transactions at launch and is instead courting merchants and payment networks. The piece notes that agent access is contested: United Airlines said it will block agents from booking tickets, and Amazon already prevents agent purchases on its platform, while Amex and card networks see a controlled rollout as the way to learn.&quot;, &quot;why_it_matters&quot;: &quot;Agentic commerce only works if merchants accept it, and the early pattern is a split internet where some sellers welcome agents and the largest ones build walls.&quot;, &quot;source&quot;: &quot;CNBC&quot;, &quot;url&quot;: &quot;https://www.cnbc.com/2026/11/13/openai-chatgpt-wallet-dot-purchases.html&quot;, &quot;category&quot;: &quot;Industry&quot;, &quot;importance&quot;: 8}'>
+        <span class="card-cat" style="background:#d97706">Industry</span>
+          <h3 class="card-title">ChatGPT Wallet arrives as retailers weigh blocking agents</h3>
+          <p class="card-summary">CNBC reports that OpenAI is not taking a cut of transactions at launch and is instead courting merchants and payment networks. The piece notes that agent access is contested: United Airlines said it will block agents from booking tickets, and Amazon already prevents agent purchases on its platform, while Amex and card networks see a controlled rollout as the way to learn.</p>
+          <div class="card-actions">
+            <a href="https://www.cnbc.com/2026/11/13/openai-chatgpt-wallet-dot-purchases.html" target="_blank" rel="noopener" class="open-btn" style="--c:#d97706">Open ↗</a>
+            <button class="read-more-btn" data-article='{&quot;title&quot;: &quot;ChatGPT Wallet arrives as retailers weigh blocking agents&quot;, &quot;summary&quot;: &quot;CNBC reports that OpenAI is not taking a cut of transactions at launch and is instead courting merchants and payment networks. The piece notes that agent access is contested: United Airlines said it will block agents from booking tickets, and Amazon already prevents agent purchases on its platform, while Amex and card networks see a controlled rollout as the way to learn.&quot;, &quot;why_it_matters&quot;: &quot;Agentic commerce only works if merchants accept it, and the early pattern is a split internet where some sellers welcome agents and the largest ones build walls.&quot;, &quot;source&quot;: &quot;CNBC&quot;, &quot;url&quot;: &quot;https://www.cnbc.com/2026/11/13/openai-chatgpt-wallet-dot-purchases.html&quot;, &quot;category&quot;: &quot;Industry&quot;, &quot;importance&quot;: 8}' style="--c:#d97706">Read More</button>
+          </div>
+          <div class="card-meta">CNBC &middot; Score: 8/10</div>
+      </div>
+      <div class="card spotlight" data-category="Research" data-title="anthropic finds one shared agent beats a team of them" style="--c:#059669" data-article='{&quot;title&quot;: &quot;Anthropic finds one shared agent beats a team of them&quot;, &quot;summary&quot;: &quot;Anthropic researchers tested a single coordinator agent against per-user teams of agents that message each other across four shared-resource settings, including a token budget and a merge queue. The coordinator won every setting by roughly 10 to 45 points on the teams&#x27; own scoring, and team episodes carried far more unsupported claims about other participants. Three of the environments ship as a benchmark called MAMUBench.&quot;, &quot;why_it_matters&quot;: &quot;The default enterprise instinct is one agent per employee because that is how software licences work; this is a frontier lab publishing evidence that the licensing model and the engineering model should not match.&quot;, &quot;source&quot;: &quot;AIToolsRecap&quot;, &quot;url&quot;: &quot;https://aitoolsrecap.com/Blog/ai-news-november-13-2026&quot;, &quot;category&quot;: &quot;Research&quot;, &quot;importance&quot;: 8}'>
+        <span class="card-cat" style="background:#059669">Research</span>
+          <h3 class="card-title">Anthropic finds one shared agent beats a team of them</h3>
+          <p class="card-summary">Anthropic researchers tested a single coordinator agent against per-user teams of agents that message each other across four shared-resource settings, including a token budget and a merge queue. The coordinator won every setting by roughly 10 to 45 points on the teams&#x27; own scoring, and team episodes carried far more unsupported claims about other participants. Three of the environments ship as a benchmark called MAMUBench.</p>
+          <div class="card-actions">
+            <a href="https://aitoolsrecap.com/Blog/ai-news-november-13-2026" target="_blank" rel="noopener" class="open-btn" style="--c:#059669">Open ↗</a>
+            <button class="read-more-btn" data-article='{&quot;title&quot;: &quot;Anthropic finds one shared agent beats a team of them&quot;, &quot;summary&quot;: &quot;Anthropic researchers tested a single coordinator agent against per-user teams of agents that message each other across four shared-resource settings, including a token budget and a merge queue. The coordinator won every setting by roughly 10 to 45 points on the teams&#x27; own scoring, and team episodes carried far more unsupported claims about other participants. Three of the environments ship as a benchmark called MAMUBench.&quot;, &quot;why_it_matters&quot;: &quot;The default enterprise instinct is one agent per employee because that is how software licences work; this is a frontier lab publishing evidence that the licensing model and the engineering model should not match.&quot;, &quot;source&quot;: &quot;AIToolsRecap&quot;, &quot;url&quot;: &quot;https://aitoolsrecap.com/Blog/ai-news-november-13-2026&quot;, &quot;category&quot;: &quot;Research&quot;, &quot;importance&quot;: 8}' style="--c:#059669">Read More</button>
+          </div>
+          <div class="card-meta">AIToolsRecap &middot; Score: 8/10</div>
+      </div>
+      <div class="card spotlight" data-category="Safety" data-title="research finds banned blackwell chips inside chinese frontier models" style="--c:#dc2626" data-article='{&quot;title&quot;: &quot;Research finds banned Blackwell chips inside Chinese frontier models&quot;, &quot;summary&quot;: &quot;Analysis of model weights reported by TechCrunch finds training traces consistent with Nvidia Blackwell-generation GPUs in leading Chinese models, including DeepSeek V4 and Moonshot&#x27;s Kimi K3, despite US export controls on that hardware. The finding adds to estimates that large numbers of restricted accelerators reached China.&quot;, &quot;why_it_matters&quot;: &quot;If frontier Chinese models were trained on restricted hardware, export controls are being enforced on paper only, which is the argument both for tighter rules and for better verification.&quot;, &quot;source&quot;: &quot;AIMap&quot;, &quot;url&quot;: &quot;https://aimap.page/en/news/archive/2026-11-14/&quot;, &quot;category&quot;: &quot;Safety&quot;, &quot;importance&quot;: 8}'>
+        <span class="card-cat" style="background:#dc2626">Safety</span>
+          <h3 class="card-title">Research finds banned Blackwell chips inside Chinese frontier models</h3>
+          <p class="card-summary">Analysis of model weights reported by TechCrunch finds training traces consistent with Nvidia Blackwell-generation GPUs in leading Chinese models, including DeepSeek V4 and Moonshot&#x27;s Kimi K3, despite US export controls on that hardware. The finding adds to estimates that large numbers of restricted accelerators reached China.</p>
+          <div class="card-actions">
+            <a href="https://aimap.page/en/news/archive/2026-11-14/" target="_blank" rel="noopener" class="open-btn" style="--c:#dc2626">Open ↗</a>
+            <button class="read-more-btn" data-article='{&quot;title&quot;: &quot;Research finds banned Blackwell chips inside Chinese frontier models&quot;, &quot;summary&quot;: &quot;Analysis of model weights reported by TechCrunch finds training traces consistent with Nvidia Blackwell-generation GPUs in leading Chinese models, including DeepSeek V4 and Moonshot&#x27;s Kimi K3, despite US export controls on that hardware. The finding adds to estimates that large numbers of restricted accelerators reached China.&quot;, &quot;why_it_matters&quot;: &quot;If frontier Chinese models were trained on restricted hardware, export controls are being enforced on paper only, which is the argument both for tighter rules and for better verification.&quot;, &quot;source&quot;: &quot;AIMap&quot;, &quot;url&quot;: &quot;https://aimap.page/en/news/archive/2026-11-14/&quot;, &quot;category&quot;: &quot;Safety&quot;, &quot;importance&quot;: 8}' style="--c:#dc2626">Read More</button>
+          </div>
+          <div class="card-meta">AIMap &middot; Score: 8/10</div>
+      </div>
+      <div class="card spotlight" data-category="Safety" data-title="openai keeps its cyber model locked down as rivals cut prices" style="--c:#dc2626" data-article='{&quot;title&quot;: &quot;OpenAI keeps its cyber model locked down as rivals cut prices&quot;, &quot;summary&quot;: &quot;PYMNTS reports that OpenAI&#x27;s GPT-6 Cyber, released to approved customers in its security programme, found 81 previously unknown high-severity vulnerabilities in Firefox and built 948 working exploits against the Linux kernel in testing. OpenAI rated it Critical under its Preparedness Framework, the first of its models to reach that level, which is why access is gated rather than public.&quot;, &quot;why_it_matters&quot;: &quot;Capability thresholds are now being crossed in offensive security specifically, and the response so far is a gated programme rather than a published policy for who gets access and under what terms.&quot;, &quot;source&quot;: &quot;PYMNTS&quot;, &quot;url&quot;: &quot;https://www.pymnts.com/news/artificial-intelligence/2026/anthropics-claude-tops-ai-rankings-as-openai-limits-cyber-model/&quot;, &quot;category&quot;: &quot;Safety&quot;, &quot;importance&quot;: 8}'>
+        <span class="card-cat" style="background:#dc2626">Safety</span>
+          <h3 class="card-title">OpenAI keeps its cyber model locked down as rivals cut prices</h3>
+          <p class="card-summary">PYMNTS reports that OpenAI&#x27;s GPT-6 Cyber, released to approved customers in its security programme, found 81 previously unknown high-severity vulnerabilities in Firefox and built 948 working exploits against the Linux kernel in testing. OpenAI rated it Critical under its Preparedness Framework, the first of its models to reach that level, which is why access is gated rather than public.</p>
+          <div class="card-actions">
+            <a href="https://www.pymnts.com/news/artificial-intelligence/2026/anthropics-claude-tops-ai-rankings-as-openai-limits-cyber-model/" target="_blank" rel="noopener" class="open-btn" style="--c:#dc2626">Open ↗</a>
+            <button class="read-more-btn" data-article='{&quot;title&quot;: &quot;OpenAI keeps its cyber model locked down as rivals cut prices&quot;, &quot;summary&quot;: &quot;PYMNTS reports that OpenAI&#x27;s GPT-6 Cyber, released to approved customers in its security programme, found 81 previously unknown high-severity vulnerabilities in Firefox and built 948 working exploits against the Linux kernel in testing. OpenAI rated it Critical under its Preparedness Framework, the first of its models to reach that level, which is why access is gated rather than public.&quot;, &quot;why_it_matters&quot;: &quot;Capability thresholds are now being crossed in offensive security specifically, and the response so far is a gated programme rather than a published policy for who gets access and under what terms.&quot;, &quot;source&quot;: &quot;PYMNTS&quot;, &quot;url&quot;: &quot;https://www.pymnts.com/news/artificial-intelligence/2026/anthropics-claude-tops-ai-rankings-as-openai-limits-cyber-model/&quot;, &quot;category&quot;: &quot;Safety&quot;, &quot;importance&quot;: 8}' style="--c:#dc2626">Read More</button>
+          </div>
+          <div class="card-meta">PYMNTS &middot; Score: 8/10</div>
+      </div>
+      <div class="card spotlight" data-category="Research" data-title="deepmind agents formally verify signal&#x27;s encryption protocol" style="--c:#059669" data-article='{&quot;title&quot;: &quot;DeepMind agents formally verify Signal&#x27;s encryption protocol&quot;, &quot;summary&quot;: &quot;Google DeepMind&#x27;s AlphaProof Code used teams of Gemini 4 Carbon agents to generate roughly 6.5 million lines of machine-checked Lean proof over four weeks, formally verifying forward secrecy, authentication and post-compromise security for Signal&#x27;s one-to-one protocol, including its post-quantum handshake. Reintroducing two previously fixed bugs into isolated copies of the code, the prover caught both. Group messaging, the app itself and side-channel attacks were out of scope.&quot;, &quot;why_it_matters&quot;: &quot;Machine-checked proof of real production cryptography is a concrete win for AI-assisted formal methods, and the scope limits are stated plainly enough to trust the claim.&quot;, &quot;source&quot;: &quot;Teknotum&quot;, &quot;url&quot;: &quot;https://teknotum.net/wires/&quot;, &quot;category&quot;: &quot;Research&quot;, &quot;importance&quot;: 8}'>
+        <span class="card-cat" style="background:#059669">Research</span>
+          <h3 class="card-title">DeepMind agents formally verify Signal&#x27;s encryption protocol</h3>
+          <p class="card-summary">Google DeepMind&#x27;s AlphaProof Code used teams of Gemini 4 Carbon agents to generate roughly 6.5 million lines of machine-checked Lean proof over four weeks, formally verifying forward secrecy, authentication and post-compromise security for Signal&#x27;s one-to-one protocol, including its post-quantum handshake. Reintroducing two previously fixed bugs into isolated copies of the code, the prover caught both. Group messaging, the app itself and side-channel attacks were out of scope.</p>
+          <div class="card-actions">
+            <a href="https://teknotum.net/wires/" target="_blank" rel="noopener" class="open-btn" style="--c:#059669">Open ↗</a>
+            <button class="read-more-btn" data-article='{&quot;title&quot;: &quot;DeepMind agents formally verify Signal&#x27;s encryption protocol&quot;, &quot;summary&quot;: &quot;Google DeepMind&#x27;s AlphaProof Code used teams of Gemini 4 Carbon agents to generate roughly 6.5 million lines of machine-checked Lean proof over four weeks, formally verifying forward secrecy, authentication and post-compromise security for Signal&#x27;s one-to-one protocol, including its post-quantum handshake. Reintroducing two previously fixed bugs into isolated copies of the code, the prover caught both. Group messaging, the app itself and side-channel attacks were out of scope.&quot;, &quot;why_it_matters&quot;: &quot;Machine-checked proof of real production cryptography is a concrete win for AI-assisted formal methods, and the scope limits are stated plainly enough to trust the claim.&quot;, &quot;source&quot;: &quot;Teknotum&quot;, &quot;url&quot;: &quot;https://teknotum.net/wires/&quot;, &quot;category&quot;: &quot;Research&quot;, &quot;importance&quot;: 8}' style="--c:#059669">Read More</button>
+          </div>
+          <div class="card-meta">Teknotum &middot; Score: 8/10</div>
+      </div>
+      <div class="card spotlight" data-category="Industry" data-title="langchain raises $300 million at a $3 billion valuation" style="--c:#d97706" data-article='{&quot;title&quot;: &quot;LangChain raises $300 million at a $3 billion valuation&quot;, &quot;summary&quot;: &quot;LangChain said it raised $300 million in a Series C led by CapitalG, with GIC and DFJ Growth joining, at a valuation above double the $1.25 billion it reached about a year earlier. Its main product, LangSmith, is used to run and govern agents across models and clouds, and the company says more than 7,000 organisations use it.&quot;, &quot;why_it_matters&quot;: &quot;Money is still flowing to the plumbing layer that sits between models and production agents, which is where governance, evaluation and cost control actually get decided.&quot;, &quot;source&quot;: &quot;AI News Insight&quot;, &quot;url&quot;: &quot;https://news-insight-ai.web.app/en/news/20261114_ai-news-daily&quot;, &quot;category&quot;: &quot;Industry&quot;, &quot;importance&quot;: 7}'>
+        <span class="card-cat" style="background:#d97706">Industry</span>
+          <h3 class="card-title">LangChain raises $300 million at a $3 billion valuation</h3>
+          <p class="card-summary">LangChain said it raised $300 million in a Series C led by CapitalG, with GIC and DFJ Growth joining, at a valuation above double the $1.25 billion it reached about a year earlier. Its main product, LangSmith, is used to run and govern agents across models and clouds, and the company says more than 7,000 organisations use it.</p>
+          <div class="card-actions">
+            <a href="https://news-insight-ai.web.app/en/news/20261114_ai-news-daily" target="_blank" rel="noopener" class="open-btn" style="--c:#d97706">Open ↗</a>
+            <button class="read-more-btn" data-article='{&quot;title&quot;: &quot;LangChain raises $300 million at a $3 billion valuation&quot;, &quot;summary&quot;: &quot;LangChain said it raised $300 million in a Series C led by CapitalG, with GIC and DFJ Growth joining, at a valuation above double the $1.25 billion it reached about a year earlier. Its main product, LangSmith, is used to run and govern agents across models and clouds, and the company says more than 7,000 organisations use it.&quot;, &quot;why_it_matters&quot;: &quot;Money is still flowing to the plumbing layer that sits between models and production agents, which is where governance, evaluation and cost control actually get decided.&quot;, &quot;source&quot;: &quot;AI News Insight&quot;, &quot;url&quot;: &quot;https://news-insight-ai.web.app/en/news/20261114_ai-news-daily&quot;, &quot;category&quot;: &quot;Industry&quot;, &quot;importance&quot;: 7}' style="--c:#d97706">Read More</button>
+          </div>
+          <div class="card-meta">AI News Insight &middot; Score: 7/10</div>
+      </div>
+      <div class="card spotlight" data-category="Industry" data-title="openai disbands its stand-alone robotics team" style="--c:#d97706" data-article='{&quot;title&quot;: &quot;OpenAI disbands its stand-alone robotics team&quot;, &quot;summary&quot;: &quot;Fortune reported, and OpenAI confirmed, that the company dissolved its dedicated robotics group and moved researchers elsewhere: robotics research now sits under chief research officer Mark Chen, with applied robotics and hardware joining Greg Brockman&#x27;s organisation. OpenAI said robotics remains part of its long-term plan.&quot;, &quot;why_it_matters&quot;: &quot;General-purpose models are increasingly used to drive robots, so folding the robotics team into core research signals that OpenAI sees embodiment as an application of its models rather than a separate product line.&quot;, &quot;source&quot;: &quot;Laojin Global&quot;, &quot;url&quot;: &quot;https://www.laojinchuhai.com/en/insights/frontier-daily-2026-11-14&quot;, &quot;category&quot;: &quot;Industry&quot;, &quot;importance&quot;: 7}'>
+        <span class="card-cat" style="background:#d97706">Industry</span>
+          <h3 class="card-title">OpenAI disbands its stand-alone robotics team</h3>
+          <p class="card-summary">Fortune reported, and OpenAI confirmed, that the company dissolved its dedicated robotics group and moved researchers elsewhere: robotics research now sits under chief research officer Mark Chen, with applied robotics and hardware joining Greg Brockman&#x27;s organisation. OpenAI said robotics remains part of its long-term plan.</p>
+          <div class="card-actions">
+            <a href="https://www.laojinchuhai.com/en/insights/frontier-daily-2026-11-14" target="_blank" rel="noopener" class="open-btn" style="--c:#d97706">Open ↗</a>
+            <button class="read-more-btn" data-article='{&quot;title&quot;: &quot;OpenAI disbands its stand-alone robotics team&quot;, &quot;summary&quot;: &quot;Fortune reported, and OpenAI confirmed, that the company dissolved its dedicated robotics group and moved researchers elsewhere: robotics research now sits under chief research officer Mark Chen, with applied robotics and hardware joining Greg Brockman&#x27;s organisation. OpenAI said robotics remains part of its long-term plan.&quot;, &quot;why_it_matters&quot;: &quot;General-purpose models are increasingly used to drive robots, so folding the robotics team into core research signals that OpenAI sees embodiment as an application of its models rather than a separate product line.&quot;, &quot;source&quot;: &quot;Laojin Global&quot;, &quot;url&quot;: &quot;https://www.laojinchuhai.com/en/insights/frontier-daily-2026-11-14&quot;, &quot;category&quot;: &quot;Industry&quot;, &quot;importance&quot;: 7}' style="--c:#d97706">Read More</button>
+          </div>
+          <div class="card-meta">Laojin Global &middot; Score: 7/10</div>
+      </div>
+      <div class="card spotlight" data-category="LLM" data-title="edge0 releases a 145b model it says runs on a laptop" style="--c:#7c3aed" data-article='{&quot;title&quot;: &quot;Edge0 releases a 145B model it says runs on a laptop&quot;, &quot;summary&quot;: &quot;Edge0 published weights for Edge0-145B and Edge0-120B plus an inference framework and deployment tools, claiming laptop-scale performance on coding and agent tasks with peak memory around 29 GB and generation above 80 tokens per second in its own tests. The company reports context of 128k to 256k tokens. All benchmarks and demonstrations are vendor-run and not independently reproduced.&quot;, &quot;why_it_matters&quot;: &quot;Local inference at this size would change the cost and privacy maths for agent workloads, but the claims rest on company measurements and hardware-specific tuning that outside testers still have to check.&quot;, &quot;source&quot;: &quot;LavX News&quot;, &quot;url&quot;: &quot;https://news.lavx.hu/article/edge0-releases-open-source-145-billion-parameter-model-for-local-inference-on-laptops&quot;, &quot;category&quot;: &quot;LLM&quot;, &quot;importance&quot;: 7}'>
+        <span class="card-cat" style="background:#7c3aed">LLM</span>
+          <h3 class="card-title">Edge0 releases a 145B model it says runs on a laptop</h3>
+          <p class="card-summary">Edge0 published weights for Edge0-145B and Edge0-120B plus an inference framework and deployment tools, claiming laptop-scale performance on coding and agent tasks with peak memory around 29 GB and generation above 80 tokens per second in its own tests. The company reports context of 128k to 256k tokens. All benchmarks and demonstrations are vendor-run and not independently reproduced.</p>
+          <div class="card-actions">
+            <a href="https://news.lavx.hu/article/edge0-releases-open-source-145-billion-parameter-model-for-local-inference-on-laptops" target="_blank" rel="noopener" class="open-btn" style="--c:#7c3aed">Open ↗</a>
+            <button class="read-more-btn" data-article='{&quot;title&quot;: &quot;Edge0 releases a 145B model it says runs on a laptop&quot;, &quot;summary&quot;: &quot;Edge0 published weights for Edge0-145B and Edge0-120B plus an inference framework and deployment tools, claiming laptop-scale performance on coding and agent tasks with peak memory around 29 GB and generation above 80 tokens per second in its own tests. The company reports context of 128k to 256k tokens. All benchmarks and demonstrations are vendor-run and not independently reproduced.&quot;, &quot;why_it_matters&quot;: &quot;Local inference at this size would change the cost and privacy maths for agent workloads, but the claims rest on company measurements and hardware-specific tuning that outside testers still have to check.&quot;, &quot;source&quot;: &quot;LavX News&quot;, &quot;url&quot;: &quot;https://news.lavx.hu/article/edge0-releases-open-source-145-billion-parameter-model-for-local-inference-on-laptops&quot;, &quot;category&quot;: &quot;LLM&quot;, &quot;importance&quot;: 7}' style="--c:#7c3aed">Read More</button>
+          </div>
+          <div class="card-meta">LavX News &middot; Score: 7/10</div>
+      </div>
+      <div class="card spotlight" data-category="Tools" data-title="grep.ai open-sources agentrun, a self-improving agent platform" style="--c:#0891b2" data-article='{&quot;title&quot;: &quot;Grep.ai open-sources AgentRun, a self-improving agent platform&quot;, &quot;summary&quot;: &quot;Grep.ai released AgentRun under Apache 2.0, a management layer that adds durable execution, spend caps and approval controls on top of harnesses such as Claude Code, Codex and OpenCode. It lets an agent propose reusable skills and workflow drafts at the end of a run, with code checks and a grader before anything is committed, and keeps run state in SQLite or Postgres so a restart does not lose work.&quot;, &quot;why_it_matters&quot;: &quot;The interesting shift is architectural: durable runs and spend caps are what separate a demo agent from something a finance team will sign off on.&quot;, &quot;source&quot;: &quot;AI Agents Listing&quot;, &quot;url&quot;: &quot;https://aiagentslisting.com/news/agentrun-ships-as-open-source-self-improving-agent-platform&quot;, &quot;category&quot;: &quot;Tools&quot;, &quot;importance&quot;: 7}'>
+        <span class="card-cat" style="background:#0891b2">Tools</span>
+          <h3 class="card-title">Grep.ai open-sources AgentRun, a self-improving agent platform</h3>
+          <p class="card-summary">Grep.ai released AgentRun under Apache 2.0, a management layer that adds durable execution, spend caps and approval controls on top of harnesses such as Claude Code, Codex and OpenCode. It lets an agent propose reusable skills and workflow drafts at the end of a run, with code checks and a grader before anything is committed, and keeps run state in SQLite or Postgres so a restart does not lose work.</p>
+          <div class="card-actions">
+            <a href="https://aiagentslisting.com/news/agentrun-ships-as-open-source-self-improving-agent-platform" target="_blank" rel="noopener" class="open-btn" style="--c:#0891b2">Open ↗</a>
+            <button class="read-more-btn" data-article='{&quot;title&quot;: &quot;Grep.ai open-sources AgentRun, a self-improving agent platform&quot;, &quot;summary&quot;: &quot;Grep.ai released AgentRun under Apache 2.0, a management layer that adds durable execution, spend caps and approval controls on top of harnesses such as Claude Code, Codex and OpenCode. It lets an agent propose reusable skills and workflow drafts at the end of a run, with code checks and a grader before anything is committed, and keeps run state in SQLite or Postgres so a restart does not lose work.&quot;, &quot;why_it_matters&quot;: &quot;The interesting shift is architectural: durable runs and spend caps are what separate a demo agent from something a finance team will sign off on.&quot;, &quot;source&quot;: &quot;AI Agents Listing&quot;, &quot;url&quot;: &quot;https://aiagentslisting.com/news/agentrun-ships-as-open-source-self-improving-agent-platform&quot;, &quot;category&quot;: &quot;Tools&quot;, &quot;importance&quot;: 7}' style="--c:#0891b2">Read More</button>
+          </div>
+          <div class="card-meta">AI Agents Listing &middot; Score: 7/10</div>
+      </div>
+      <div class="card spotlight" data-category="Research" data-title="deepmind&#x27;s alphagenome 2 reads dna one cell type at a time" style="--c:#059669" data-article='{&quot;title&quot;: &quot;DeepMind&#x27;s AlphaGenome 2 reads DNA one cell type at a time&quot;, &quot;summary&quot;: &quot;Google DeepMind released AlphaGenome 2, trained on more than 107 million single-cell profiles across 68 tissues, which predicts how a DNA variant changes gene activity within a specific cell type rather than averaged across a tissue. DeepMind reports identifying causal variants about 30% of the time against 16% for the earlier approach on a chosen benchmark, and the model is free for non-commercial research and explicitly not validated for clinical use.&quot;, &quot;why_it_matters&quot;: &quot;Single-cell resolution is where a lot of disease biology actually lives, and the improvement is large enough to matter even after discounting for benchmark selection.&quot;, &quot;source&quot;: &quot;The Super Intelligence News&quot;, &quot;url&quot;: &quot;https://thesuperintelligencenews.com/topics/labs&quot;, &quot;category&quot;: &quot;Research&quot;, &quot;importance&quot;: 7}'>
+        <span class="card-cat" style="background:#059669">Research</span>
+          <h3 class="card-title">DeepMind&#x27;s AlphaGenome 2 reads DNA one cell type at a time</h3>
+          <p class="card-summary">Google DeepMind released AlphaGenome 2, trained on more than 107 million single-cell profiles across 68 tissues, which predicts how a DNA variant changes gene activity within a specific cell type rather than averaged across a tissue. DeepMind reports identifying causal variants about 30% of the time against 16% for the earlier approach on a chosen benchmark, and the model is free for non-commercial research and explicitly not validated for clinical use.</p>
+          <div class="card-actions">
+            <a href="https://thesuperintelligencenews.com/topics/labs" target="_blank" rel="noopener" class="open-btn" style="--c:#059669">Open ↗</a>
+            <button class="read-more-btn" data-article='{&quot;title&quot;: &quot;DeepMind&#x27;s AlphaGenome 2 reads DNA one cell type at a time&quot;, &quot;summary&quot;: &quot;Google DeepMind released AlphaGenome 2, trained on more than 107 million single-cell profiles across 68 tissues, which predicts how a DNA variant changes gene activity within a specific cell type rather than averaged across a tissue. DeepMind reports identifying causal variants about 30% of the time against 16% for the earlier approach on a chosen benchmark, and the model is free for non-commercial research and explicitly not validated for clinical use.&quot;, &quot;why_it_matters&quot;: &quot;Single-cell resolution is where a lot of disease biology actually lives, and the improvement is large enough to matter even after discounting for benchmark selection.&quot;, &quot;source&quot;: &quot;The Super Intelligence News&quot;, &quot;url&quot;: &quot;https://thesuperintelligencenews.com/topics/labs&quot;, &quot;category&quot;: &quot;Research&quot;, &quot;importance&quot;: 7}' style="--c:#059669">Read More</button>
+          </div>
+          <div class="card-meta">The Super Intelligence News &middot; Score: 7/10</div>
+      </div>
+      <div class="card spotlight" data-category="Research" data-title="a &#x27;task badness&#x27; signal found to rise before reward hacking" style="--c:#059669" data-article='{&quot;title&quot;: &quot;A &#x27;task badness&#x27; signal found to rise before reward hacking&quot;, &quot;summary&quot;: &quot;Researchers report a &#x27;task badness&#x27; direction inside language models whose activation rises before reward hacking behaviour, and show that suppressing it reduces cheating in one model, though the effect differs across models. The paper was the desk&#x27;s top pick from 345 new arXiv submissions in cs.AI, cs.LG, cs.CL and cs.MA.&quot;, &quot;why_it_matters&quot;: &quot;A measurable internal signal that precedes specification gaming would be more useful than post-hoc detection, if it generalises beyond the models tested.&quot;, &quot;source&quot;: &quot;SI Paper Desk&quot;, &quot;url&quot;: &quot;https://thesimind.si/papers/day/2026-11-13/&quot;, &quot;category&quot;: &quot;Research&quot;, &quot;importance&quot;: 7}'>
+        <span class="card-cat" style="background:#059669">Research</span>
+          <h3 class="card-title">A &#x27;task badness&#x27; signal found to rise before reward hacking</h3>
+          <p class="card-summary">Researchers report a &#x27;task badness&#x27; direction inside language models whose activation rises before reward hacking behaviour, and show that suppressing it reduces cheating in one model, though the effect differs across models. The paper was the desk&#x27;s top pick from 345 new arXiv submissions in cs.AI, cs.LG, cs.CL and cs.MA.</p>
+          <div class="card-actions">
+            <a href="https://thesimind.si/papers/day/2026-11-13/" target="_blank" rel="noopener" class="open-btn" style="--c:#059669">Open ↗</a>
+            <button class="read-more-btn" data-article='{&quot;title&quot;: &quot;A &#x27;task badness&#x27; signal found to rise before reward hacking&quot;, &quot;summary&quot;: &quot;Researchers report a &#x27;task badness&#x27; direction inside language models whose activation rises before reward hacking behaviour, and show that suppressing it reduces cheating in one model, though the effect differs across models. The paper was the desk&#x27;s top pick from 345 new arXiv submissions in cs.AI, cs.LG, cs.CL and cs.MA.&quot;, &quot;why_it_matters&quot;: &quot;A measurable internal signal that precedes specification gaming would be more useful than post-hoc detection, if it generalises beyond the models tested.&quot;, &quot;source&quot;: &quot;SI Paper Desk&quot;, &quot;url&quot;: &quot;https://thesimind.si/papers/day/2026-11-13/&quot;, &quot;category&quot;: &quot;Research&quot;, &quot;importance&quot;: 7}' style="--c:#059669">Read More</button>
+          </div>
+          <div class="card-meta">SI Paper Desk &middot; Score: 7/10</div>
+      </div>
+      <div class="card spotlight" data-category="Industry" data-title="what nvidia&#x27;s interim ceo and board chair told employees" style="--c:#d97706" data-article='{&quot;title&quot;: &quot;What Nvidia&#x27;s interim CEO and board chair told employees&quot;, &quot;summary&quot;: &quot;CNBC published the internal notes from Kress and new board chair Harvey Jones, in which the board asks the CFO to hold the CEO role during a search and Jones confirms he is the company&#x27;s first board chair. The messages frame the transition as continuity rather than a reset.&quot;, &quot;why_it_matters&quot;: &quot;Internal messaging aimed at holding a 30,000-person company together is the first real test of whether Nvidia can separate one person&#x27;s conduct from an organisation&#x27;s execution.&quot;, &quot;source&quot;: &quot;CNBC&quot;, &quot;url&quot;: &quot;https://www.cnbc.com/2026/11/12/nvidia-kress-jones-employee-emails.html&quot;, &quot;category&quot;: &quot;Industry&quot;, &quot;importance&quot;: 6}'>
+        <span class="card-cat" style="background:#d97706">Industry</span>
+          <h3 class="card-title">What Nvidia&#x27;s interim CEO and board chair told employees</h3>
+          <p class="card-summary">CNBC published the internal notes from Kress and new board chair Harvey Jones, in which the board asks the CFO to hold the CEO role during a search and Jones confirms he is the company&#x27;s first board chair. The messages frame the transition as continuity rather than a reset.</p>
+          <div class="card-actions">
+            <a href="https://www.cnbc.com/2026/11/12/nvidia-kress-jones-employee-emails.html" target="_blank" rel="noopener" class="open-btn" style="--c:#d97706">Open ↗</a>
+            <button class="read-more-btn" data-article='{&quot;title&quot;: &quot;What Nvidia&#x27;s interim CEO and board chair told employees&quot;, &quot;summary&quot;: &quot;CNBC published the internal notes from Kress and new board chair Harvey Jones, in which the board asks the CFO to hold the CEO role during a search and Jones confirms he is the company&#x27;s first board chair. The messages frame the transition as continuity rather than a reset.&quot;, &quot;why_it_matters&quot;: &quot;Internal messaging aimed at holding a 30,000-person company together is the first real test of whether Nvidia can separate one person&#x27;s conduct from an organisation&#x27;s execution.&quot;, &quot;source&quot;: &quot;CNBC&quot;, &quot;url&quot;: &quot;https://www.cnbc.com/2026/11/12/nvidia-kress-jones-employee-emails.html&quot;, &quot;category&quot;: &quot;Industry&quot;, &quot;importance&quot;: 6}' style="--c:#d97706">Read More</button>
+          </div>
+          <div class="card-meta">CNBC &middot; Score: 6/10</div>
+      </div>
+      <div class="card spotlight" data-category="Research" data-title="huawei open-sources macaq quantization for large models" style="--c:#059669" data-article='{&quot;title&quot;: &quot;Huawei open-sources MACaQ quantization for large models&quot;, &quot;summary&quot;: &quot;Huawei released MACaQ, an open-source quantization method that stores model weights at lower precision so large models fit cheaper hardware. The accompanying paper claims a 122-billion-parameter model converted to 4-bit in 64 minutes using 32.5 GB of GPU memory, with support for vLLM and llama.cpp.&quot;, &quot;why_it_matters&quot;: &quot;Cheap, fast quantization is how open-weight models become deployable on hardware teams already own, and tooling from Chinese labs is increasingly setting that pace.&quot;, &quot;source&quot;: &quot;BYOBot AI Newsstand&quot;, &quot;url&quot;: &quot;https://byobot.ai/ai-news/ai-daily-newsstand-november-14-2026&quot;, &quot;category&quot;: &quot;Research&quot;, &quot;importance&quot;: 6}'>
+        <span class="card-cat" style="background:#059669">Research</span>
+          <h3 class="card-title">Huawei open-sources MACaQ quantization for large models</h3>
+          <p class="card-summary">Huawei released MACaQ, an open-source quantization method that stores model weights at lower precision so large models fit cheaper hardware. The accompanying paper claims a 122-billion-parameter model converted to 4-bit in 64 minutes using 32.5 GB of GPU memory, with support for vLLM and llama.cpp.</p>
+          <div class="card-actions">
+            <a href="https://byobot.ai/ai-news/ai-daily-newsstand-november-14-2026" target="_blank" rel="noopener" class="open-btn" style="--c:#059669">Open ↗</a>
+            <button class="read-more-btn" data-article='{&quot;title&quot;: &quot;Huawei open-sources MACaQ quantization for large models&quot;, &quot;summary&quot;: &quot;Huawei released MACaQ, an open-source quantization method that stores model weights at lower precision so large models fit cheaper hardware. The accompanying paper claims a 122-billion-parameter model converted to 4-bit in 64 minutes using 32.5 GB of GPU memory, with support for vLLM and llama.cpp.&quot;, &quot;why_it_matters&quot;: &quot;Cheap, fast quantization is how open-weight models become deployable on hardware teams already own, and tooling from Chinese labs is increasingly setting that pace.&quot;, &quot;source&quot;: &quot;BYOBot AI Newsstand&quot;, &quot;url&quot;: &quot;https://byobot.ai/ai-news/ai-daily-newsstand-november-14-2026&quot;, &quot;category&quot;: &quot;Research&quot;, &quot;importance&quot;: 6}' style="--c:#059669">Read More</button>
+          </div>
+          <div class="card-meta">BYOBot AI Newsstand &middot; Score: 6/10</div>
+      </div>
+      <div class="card spotlight" data-category="Tools" data-title="harness tuner brings eval-driven tuning to agent stacks" style="--c:#0891b2" data-article='{&quot;title&quot;: &quot;Harness Tuner brings eval-driven tuning to agent stacks&quot;, &quot;summary&quot;: &quot;Kiln-AI released Harness Tuner, a free open-source loop that tunes tools, prompts, skills, model settings and sub-agents rather than only prompts, enforcing train, validation and test splits in code. The company reports large reductions in failures, cost and latency on held-out data for a multi-turn agent with more than 200 tools, and the tool runs alongside existing Claude Code or Codex subscriptions.&quot;, &quot;why_it_matters&quot;: &quot;Most agent quality work is still prompt fiddling by hand; making the tuning loop itself measurable and split-aware is the difference between a tweak and an experiment.&quot;, &quot;source&quot;: &quot;Web Pulse&quot;, &quot;url&quot;: &quot;https://wpnews.pro/news/show-hn-harness-tuner-eval-driven-tuning-loop-for-agent-tools-prompts-model&quot;, &quot;category&quot;: &quot;Tools&quot;, &quot;importance&quot;: 6}'>
+        <span class="card-cat" style="background:#0891b2">Tools</span>
+          <h3 class="card-title">Harness Tuner brings eval-driven tuning to agent stacks</h3>
+          <p class="card-summary">Kiln-AI released Harness Tuner, a free open-source loop that tunes tools, prompts, skills, model settings and sub-agents rather than only prompts, enforcing train, validation and test splits in code. The company reports large reductions in failures, cost and latency on held-out data for a multi-turn agent with more than 200 tools, and the tool runs alongside existing Claude Code or Codex subscriptions.</p>
+          <div class="card-actions">
+            <a href="https://wpnews.pro/news/show-hn-harness-tuner-eval-driven-tuning-loop-for-agent-tools-prompts-model" target="_blank" rel="noopener" class="open-btn" style="--c:#0891b2">Open ↗</a>
+            <button class="read-more-btn" data-article='{&quot;title&quot;: &quot;Harness Tuner brings eval-driven tuning to agent stacks&quot;, &quot;summary&quot;: &quot;Kiln-AI released Harness Tuner, a free open-source loop that tunes tools, prompts, skills, model settings and sub-agents rather than only prompts, enforcing train, validation and test splits in code. The company reports large reductions in failures, cost and latency on held-out data for a multi-turn agent with more than 200 tools, and the tool runs alongside existing Claude Code or Codex subscriptions.&quot;, &quot;why_it_matters&quot;: &quot;Most agent quality work is still prompt fiddling by hand; making the tuning loop itself measurable and split-aware is the difference between a tweak and an experiment.&quot;, &quot;source&quot;: &quot;Web Pulse&quot;, &quot;url&quot;: &quot;https://wpnews.pro/news/show-hn-harness-tuner-eval-driven-tuning-loop-for-agent-tools-prompts-model&quot;, &quot;category&quot;: &quot;Tools&quot;, &quot;importance&quot;: 6}' style="--c:#0891b2">Read More</button>
+          </div>
+          <div class="card-meta">Web Pulse &middot; Score: 6/10</div>
+      </div>
+      <div class="card spotlight" data-category="Industry" data-title="cerebras swings to a surprise quarterly profit" style="--c:#d97706" data-article='{&quot;title&quot;: &quot;Cerebras swings to a surprise quarterly profit&quot;, &quot;summary&quot;: &quot;Cerebras reported adjusted revenue of $230.9 million for the quarter, up 70% year on year, and adjusted net income of $29.82 million against a loss a year earlier, then raised its full-year outlook. The company also said Anthropic&#x27;s IPO book was heavily oversubscribed.&quot;, &quot;why_it_matters&quot;: &quot;Inference silicon is becoming a real business rather than a science project, and profitability at a challenger to Nvidia is a useful counterweight to the assumption that the whole stack consolidates around one vendor.&quot;, &quot;source&quot;: &quot;Himiao Daily Brief&quot;, &quot;url&quot;: &quot;https://himiao.ai/en/daily/2026-11-14/&quot;, &quot;category&quot;: &quot;Industry&quot;, &quot;importance&quot;: 6}'>
+        <span class="card-cat" style="background:#d97706">Industry</span>
+          <h3 class="card-title">Cerebras swings to a surprise quarterly profit</h3>
+          <p class="card-summary">Cerebras reported adjusted revenue of $230.9 million for the quarter, up 70% year on year, and adjusted net income of $29.82 million against a loss a year earlier, then raised its full-year outlook. The company also said Anthropic&#x27;s IPO book was heavily oversubscribed.</p>
+          <div class="card-actions">
+            <a href="https://himiao.ai/en/daily/2026-11-14/" target="_blank" rel="noopener" class="open-btn" style="--c:#d97706">Open ↗</a>
+            <button class="read-more-btn" data-article='{&quot;title&quot;: &quot;Cerebras swings to a surprise quarterly profit&quot;, &quot;summary&quot;: &quot;Cerebras reported adjusted revenue of $230.9 million for the quarter, up 70% year on year, and adjusted net income of $29.82 million against a loss a year earlier, then raised its full-year outlook. The company also said Anthropic&#x27;s IPO book was heavily oversubscribed.&quot;, &quot;why_it_matters&quot;: &quot;Inference silicon is becoming a real business rather than a science project, and profitability at a challenger to Nvidia is a useful counterweight to the assumption that the whole stack consolidates around one vendor.&quot;, &quot;source&quot;: &quot;Himiao Daily Brief&quot;, &quot;url&quot;: &quot;https://himiao.ai/en/daily/2026-11-14/&quot;, &quot;category&quot;: &quot;Industry&quot;, &quot;importance&quot;: 6}' style="--c:#d97706">Read More</button>
+          </div>
+          <div class="card-meta">Himiao Daily Brief &middot; Score: 6/10</div>
+      </div>
+      <div class="card spotlight" data-category="Research" data-title="frontier models drive real robot arms on long-horizon tasks" style="--c:#059669" data-article='{&quot;title&quot;: &quot;Frontier models drive real robot arms on long-horizon tasks&quot;, &quot;summary&quot;: &quot;A new preprint called Reins puts an off-the-shelf frontier model in charge of a dual-arm robot using 3D perception tools and atomic actions that report contact and grip. The model chains actions in a single call, each with a condition that must hold, stopping at the first failure, while a second model instance watches the cameras and narrates what changed. The authors report progress on long-horizon, contact-rich manipulation that current models handle poorly.&quot;, &quot;why_it_matters&quot;: &quot;The harness idea, rather than the model, is the contribution: giving a general model verified preconditions and a continuous observer is a cheap way to get reliability without retraining.&quot;, &quot;source&quot;: &quot;ArXivSignals&quot;, &quot;url&quot;: &quot;https://arxivsignals.io/papers/2611.16632&quot;, &quot;category&quot;: &quot;Research&quot;, &quot;importance&quot;: 6}'>
+        <span class="card-cat" style="background:#059669">Research</span>
+          <h3 class="card-title">Frontier models drive real robot arms on long-horizon tasks</h3>
+          <p class="card-summary">A new preprint called Reins puts an off-the-shelf frontier model in charge of a dual-arm robot using 3D perception tools and atomic actions that report contact and grip. The model chains actions in a single call, each with a condition that must hold, stopping at the first failure, while a second model instance watches the cameras and narrates what changed. The authors report progress on long-horizon, contact-rich manipulation that current models handle poorly.</p>
+          <div class="card-actions">
+            <a href="https://arxivsignals.io/papers/2611.16632" target="_blank" rel="noopener" class="open-btn" style="--c:#059669">Open ↗</a>
+            <button class="read-more-btn" data-article='{&quot;title&quot;: &quot;Frontier models drive real robot arms on long-horizon tasks&quot;, &quot;summary&quot;: &quot;A new preprint called Reins puts an off-the-shelf frontier model in charge of a dual-arm robot using 3D perception tools and atomic actions that report contact and grip. The model chains actions in a single call, each with a condition that must hold, stopping at the first failure, while a second model instance watches the cameras and narrates what changed. The authors report progress on long-horizon, contact-rich manipulation that current models handle poorly.&quot;, &quot;why_it_matters&quot;: &quot;The harness idea, rather than the model, is the contribution: giving a general model verified preconditions and a continuous observer is a cheap way to get reliability without retraining.&quot;, &quot;source&quot;: &quot;ArXivSignals&quot;, &quot;url&quot;: &quot;https://arxivsignals.io/papers/2611.16632&quot;, &quot;category&quot;: &quot;Research&quot;, &quot;importance&quot;: 6}' style="--c:#059669">Read More</button>
+          </div>
+          <div class="card-meta">ArXivSignals &middot; Score: 6/10</div>
+      </div>
+    </div>
+    <div class="no-res" id="noRes" style="display:none">No articles match your search.</div>
+  </div>
+</div>
+
+<!-- MODAL -->
+<div class="modal-overlay" id="modal">
+  <div class="modal-card" id="modalCard">
+    <button class="modal-close" type="button" aria-label="Close">&times;</button>
+    <div id="modalContent"></div>
+  </div>
+</div>
+
+<footer>AI News Daily &bull; Generated by <b>Sarvam AI</b> News Curator &bull; Web Search &bull; arXiv &bull; Hacker News &bull; RSS</footer>
+
+<!-- THREE.JS MORPHING PARTICLE SHAPES -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js" integrity="sha384-CI3ELBVUz9XQO+97x6nwMDPosPR5XvsxW2ua7N1Xeygeh1IxtgqtCkGfQY9WWdHu" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script>
+(function(){
+  const canvas=document.getElementById('bg-canvas');
+  if(!canvas||typeof THREE==='undefined')return;
+  const scene=new THREE.Scene();
+  const camera=new THREE.PerspectiveCamera(60,innerWidth/innerHeight,0.1,1000);
+  const renderer=new THREE.WebGLRenderer({canvas:canvas,alpha:true,antialias:true});
+  renderer.setSize(innerWidth,innerHeight);
+  renderer.setPixelRatio(Math.min(devicePixelRatio,2));
+
+  // ── PARTICLE COUNT ──
+  const PC=innerWidth<640?2500:5000;
+
+  // ── CREATE MORPH SHAPES (hidden geometries to sample vertex positions) ──
+  const shapes=[
+    new THREE.SphereGeometry(120,64,64),
+    new THREE.TorusKnotGeometry(80,28,128,32,2,3),
+    new THREE.IcosahedronGeometry(120,4),
+    new THREE.TorusGeometry(80,30,32,100),
+    new THREE.DodecahedronGeometry(120,3)
+  ];
+
+  // Sample positions from each shape
+  function getShapePositions(geo,count){
+    const pos=geo.attributes.position;
+    const arr=new Float32Array(count*3);
+    for(let i=0;i<count;i++){
+      const idx=Math.floor(Math.random()*pos.count);
+      arr[i*3]=pos.getX(idx);
+      arr[i*3+1]=pos.getY(idx);
+      arr[i*3+2]=pos.getZ(idx);
+    }
+    return arr;
+  }
+
+  // Current and target positions
+  const positions=new Float32Array(PC*3);
+  const current=new Float32Array(PC*3);
+  const targets=shapes.map(s=>getShapePositions(s,PC));
+  let curShape=0,nextShape=1,morphProgress=0;
+  for(let i=0;i<PC*3;i++)current[i]=targets[0][i];
+
+  // Colors — violet, cyan, pink mix
+  const colors=new Float32Array(PC*3);
+  const palette=[[0.49,0.23,0.93],[0.03,0.71,0.93],[0.86,0.15,0.47]];
+  for(let i=0;i<PC;i++){
+    const c=palette[Math.floor(Math.random()*3)];
+    colors[i*3]=c[0];colors[i*3+1]=c[1];colors[i*3+2]=c[2];
+  }
+
+  const geo=new THREE.BufferGeometry();
+  geo.setAttribute('position',new THREE.BufferAttribute(positions,3));
+  geo.setAttribute('color',new THREE.BufferAttribute(colors,3));
+
+  const mat=new THREE.PointsMaterial({
+    size:2.2,vertexColors:true,transparent:true,opacity:.6,
+    blending:THREE.AdditiveBlending,sizeAttenuation:true,depthWrite:false
+  });
+
+  const points=new THREE.Points(geo,mat);
+  scene.add(points);
+
+  // Lines between close particles
+  const lineGeo=new THREE.BufferGeometry();
+  const linePositions=new Float32Array(PC*10*6); // limit connections
+  lineGeo.setAttribute('position',new THREE.BufferAttribute(linePositions,3));
+  const lineMat=new THREE.LineBasicMaterial({color:0x7c3aed,transparent:true,opacity:.04,blending:THREE.AdditiveBlending});
+  const lines=new THREE.LineSegments(lineGeo,lineMat);
+  scene.add(lines);
+
+  camera.position.z=300;
+  let mx=0,my=0,rx=0,ry=0;
+  document.addEventListener('mousemove',e=>{
+    mx=(e.clientX/innerWidth-.5)*2;
+    my=-(e.clientY/innerHeight-.5)*2;
+  });
+
+  let lastTime=performance.now();
+  function animate(){
+    requestAnimationFrame(animate);
+    const now=performance.now();
+    const dt=(now-lastTime)/1000;
+    lastTime=now;
+
+    // Morph progress
+    morphProgress+=dt*0.15;
+    if(morphProgress>=1){
+      morphProgress=0;
+      curShape=nextShape;
+      nextShape=(nextShape+1)%shapes.length;
+      // Copy current target as new current
+      for(let i=0;i<PC*3;i++)current[i]=targets[curShape][i];
+    }
+
+    // Lerp positions between current and next shape
+    const ease=morphProgress*morphProgress*(3-2*morphProgress); // smoothstep
+    for(let i=0;i<PC*3;i++){
+      positions[i]=current[i]+(targets[nextShape][i]-current[i])*ease;
+    }
+    geo.attributes.position.needsUpdate=true;
+
+    // Update lines (limited connections for performance)
+    let li=0;
+    const maxConn=PC*10;
+    for(let i=0;i<PC&&li<maxConn;i++){
+      for(let j=i+1;j<PC&&li<maxConn;j++){
+        const dx=positions[i*3]-positions[j*3];
+        const dy=positions[i*3+1]-positions[j*3+1];
+        const dz=positions[i*3+2]-positions[j*3+2];
+        const d2=dx*dx+dy*dy+dz*dz;
+        if(d2<900){
+          linePositions[li*6]=positions[i*3];
+          linePositions[li*6+1]=positions[i*3+1];
+          linePositions[li*6+2]=positions[i*3+2];
+          linePositions[li*6+3]=positions[j*3];
+          linePositions[li*6+4]=positions[j*3+1];
+          linePositions[li*6+5]=positions[j*3+2];
+          li++;
+        }
+      }
+    }
+    // Zero out remaining
+    for(let k=li*6;k<linePositions.length;k++)linePositions[k]=0;
+    lineGeo.attributes.position.needsUpdate=true;
+
+    // Rotation — smooth follow mouse
+    ry+=(mx*0.5-ry)*0.03;
+    rx+=(my*0.3-rx)*0.03;
+    points.rotation.y=ry+now*0.0001;
+    points.rotation.x=rx*0.5;
+    lines.rotation.y=points.rotation.y;
+    lines.rotation.x=points.rotation.x;
+
+    renderer.render(scene,camera);
+  }
+  animate();
+
+  addEventListener('resize',()=>{
+    camera.aspect=innerWidth/innerHeight;
+    camera.updateProjectionMatrix();
+    renderer.setSize(innerWidth,innerHeight);
+  });
+})();
+</script>
+
+<script>
+// THEME TOGGLE
+function toggleTheme(){
+  const cur=document.documentElement.getAttribute('data-theme');
+  const next=cur==='light'?'dark':'light';
+  document.documentElement.setAttribute('data-theme',next==='dark'?'':'light');
+  document.getElementById('themeLabel').textContent=next==='light'?'Light':'Dark';
+  document.querySelector('.theme-toggle .icon').textContent=next==='light'?'☀️':'🌙';
+  localStorage.setItem('theme',next);
+}
+(function(){const t=localStorage.getItem('theme');if(t==='light'){document.documentElement.setAttribute('data-theme','light');document.getElementById('themeLabel').textContent='Light';document.querySelector('.theme-toggle .icon').textContent='☀️'}})();
+
+// TABS
+document.querySelectorAll('.tab-btn').forEach(b=>{
+  b.addEventListener('click',()=>{
+    document.querySelectorAll('.tab-btn').forEach(x=>x.classList.remove('active'));
+    document.querySelectorAll('.tab-body').forEach(x=>x.classList.remove('active'));
+    b.classList.add('active');
+    document.getElementById(b.dataset.tab).classList.add('active');
+    setTimeout(initReveal,50);
+  });
+});
+
+// MODAL
+function safeUrl(u){
+  try{const x=new URL(String(u),location.href);return(x.protocol==='https:'||x.protocol==='http:')?x.href:'#'}catch(e){return'#'}
+}
+function mk(tag,cls,text){
+  const e=document.createElement(tag);
+  if(cls)e.className=cls;
+  if(text!==undefined)e.textContent=String(text);
+  return e;
+}
+function openModal(data){
+  const c=catColors[data.category]||'#64748b';
+  const cat=mk('span','modal-cat',data.category);
+  cat.style.background=c;
+  const why=mk('div','modal-why');
+  why.append(mk('div','modal-why-label','\u26A1 Why it matters'),mk('p','modal-why-text',data.why_it_matters));
+  const link=mk('a','modal-open-btn','Open Full Article \u2197');
+  link.href=safeUrl(data.url);
+  link.target='_blank';
+  link.rel='noopener noreferrer';
+  document.getElementById('modalContent').replaceChildren(
+    cat,
+    mk('h2','modal-title',data.title),
+    mk('div','modal-score','Importance: '+data.importance+'/10 \u2022 Source: '+data.source),
+    mk('p','modal-summary',data.summary),
+    why,
+    link
+  );
+  document.getElementById('modal').classList.add('active');
+  document.body.style.overflow='hidden';
+}
+function closeModal(){
+  document.getElementById('modal').classList.remove('active');
+  document.body.style.overflow='';
+}
+document.addEventListener('keydown',e=>{if(e.key==='Escape')closeModal()});
+document.getElementById('themeToggle').addEventListener('click',toggleTheme);
+document.querySelector('.modal-close').addEventListener('click',closeModal);
+document.getElementById('modal').addEventListener('click',function(e){if(e.target===this)closeModal()});
+document.addEventListener('click',function(e){
+  const h=e.target.closest('.trend-header');
+  if(h)h.parentElement.classList.toggle('expanded');
+});
+
+var catColors={"LLM":"#7c3aed","Research":"#059669","Safety":"#dc2626","Industry":"#d97706","Tools":"#0891b2","Robotics":"#db2777","Computer Vision":"#9333ea","NLP":"#2563eb"};
+
+// CLICK HANDLERS FOR BRIEFS AND CARDS
+document.querySelectorAll('[data-article]').forEach(el=>{
+  el.addEventListener('click',function(e){
+    if(e.target.closest('a,button'))return;
+    try{
+      const data=JSON.parse(this.dataset.article);
+      openModal(data);
+    }catch(err){console.error(err)}
+  });
+});
+
+// READ MORE BUTTONS
+document.querySelectorAll('.read-more-btn').forEach(btn=>{
+  btn.addEventListener('click',function(e){
+    e.stopPropagation();
+    try{
+      const data=JSON.parse(this.dataset.article);
+      openModal(data);
+    }catch(err){console.error(err)}
+  });
+});
+
+// ANIMATED COUNTERS
+function animateCounters(){
+  document.querySelectorAll('[data-count]').forEach(el=>{
+    const t=parseInt(el.dataset.count),dur=1000,s=performance.now();
+    function u(n){
+      const p=Math.min((n-s)/dur,1),e=1-Math.pow(1-p,3);
+      el.textContent=Math.floor(t*e);
+      if(p<1)requestAnimationFrame(u);else el.textContent=t;
+    }
+    requestAnimationFrame(u);
+  });
+}
+
+// SCROLL REVEAL
+const ro=new IntersectionObserver(es=>{
+  es.forEach(e=>{if(e.isIntersecting)e.target.classList.add('in')})
+},{threshold:.08,rootMargin:'0px 0px -40px 0px'});
+function initReveal(){document.querySelectorAll('.reveal:not(.in)').forEach(e=>ro.observe(e))}
+
+// SPOTLIGHT MOUSE
+document.querySelectorAll('.spotlight').forEach(card=>{
+  card.addEventListener('mousemove',e=>{
+    const r=card.getBoundingClientRect();
+    card.style.setProperty('--mx',(e.clientX-r.left)+'px');
+    card.style.setProperty('--my',(e.clientY-r.top)+'px');
+  });
+});
+
+// SEARCH & FILTER
+const si=document.getElementById('searchInput'),cg=document.getElementById('cardGrid'),
+      nr=document.getElementById('noRes'),chips=document.getElementById('chips');
+let af=null;
+if(si)si.addEventListener('input',()=>fa(si.value.toLowerCase(),af));
+if(chips)chips.querySelectorAll('.chip').forEach(c=>{
+  c.addEventListener('click',()=>{
+    const f=c.dataset.filter;
+    if(af===f){af=null;c.classList.remove('active')}else{
+      af=f;chips.querySelectorAll('.chip').forEach(x=>x.classList.remove('active'));c.classList.add('active');
+    }
+    fa(si?si.value.toLowerCase():'',af);
+  });
+});
+function fa(q,cat){
+  let v=0;if(!cg)return;
+  cg.querySelectorAll('.card').forEach(card=>{
+    const t=card.dataset.title||'',cc=card.dataset.category||'';
+    const mq=!q||t.includes(q),mc=!cat||cc===cat;
+    if(mq&&mc){card.style.display='';v++}else{card.style.display='none'}
+  });
+  if(nr)nr.style.display=v===0?'block':'none';
+}
+
+// INIT
+window.addEventListener('load',()=>{animateCounters();initReveal()});
+</script>
+</body>
+</html>
